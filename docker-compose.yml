@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  php:
+    container_name: hyperdrive-php
+    image: devilbox/php-fpm-7.4:latest
+    volumes:
+      - .:/application
+
+  composer:
+    container_name: hyperdrive-composer
+    image: composer
+    volumes:
+      - .:/application

@@ -1,0 +1,12 @@
+default:
+  suites:
+    application:
+      paths:
+        - ./features/application.feature
+      contexts:
+        - ApplicationContext
+    geography:
+      paths:
+        - ./features/geography.feature
+      contexts:
+        - GeographyContext
