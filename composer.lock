@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6f7ed146f298aa9a98b51ed04971b76",
+    "content-hash": "cf67c2fcad57f238eb825f4c104affe9",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -180,16 +180,16 @@
         },
         {
             "name": "league/climate",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/climate.git",
-                "reference": "04c8aba2ac34cc12ddae6908ac15f6c46d3b4f9f"
+                "reference": "6b53a28a58ad9f5f63042e291eb870cf0d02a9c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/climate/zipball/04c8aba2ac34cc12ddae6908ac15f6c46d3b4f9f",
-                "reference": "04c8aba2ac34cc12ddae6908ac15f6c46d3b4f9f",
+                "url": "https://api.github.com/repos/thephpleague/climate/zipball/6b53a28a58ad9f5f63042e291eb870cf0d02a9c9",
+                "reference": "6b53a28a58ad9f5f63042e291eb870cf0d02a9c9",
                 "shasum": ""
             },
             "require": {
@@ -237,7 +237,7 @@
                 "php",
                 "terminal"
             ],
-            "time": "2019-11-24T22:10:45+00:00"
+            "time": "2019-12-01T15:25:43+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -3050,6 +3050,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "7.4"
+    },
     "platform-dev": []
 }

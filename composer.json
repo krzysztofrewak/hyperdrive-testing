@@ -1,7 +1,13 @@
 {
 	"name": "krzysztofrewak/hyperdrive-testing",
 	"description": "Hiperdrive testing",
-	"keywords": ["PHP 7.4", "Behat", "Docker", "Composer", "CLImate"],
+	"keywords": [
+		"PHP 7.4",
+		"Behat",
+		"Docker",
+		"Composer",
+		"CLImate"
+	],
 	"license": "MIT",
 	"type": "project",
 	"autoload": {
@@ -10,6 +16,7 @@
 		}
 	},
 	"require": {
+		"php": "7.4",
 		"symfony/yaml": "4.0",
 		"illuminate/support": "^6.5",
 		"league/climate": "^3.5"
