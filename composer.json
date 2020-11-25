@@ -26,5 +26,9 @@
 		"phpunit/phpunit": "^9.2",
 		"symplify/easy-coding-standard": "^8.3",
 		"krzysztofrewak/php-cs-double-quote-fixer": "^1.0"
+	},
+	"scripts": {
+		"behat": "./vendor/bin/behat",
+		"ecs": "./vendor/bin/ecs check"
 	}
 }
