@@ -16,13 +16,15 @@
 		}
 	},
 	"require": {
-		"php": "7.4",
-		"symfony/yaml": "4.0",
-		"illuminate/support": "^6.5",
-		"league/climate": "^3.5"
+		"php": "^7.4",
+		"symfony/yaml": "^5.1",
+		"illuminate/support": "^8.16",
+		"league/climate": "^3.6"
 	},
 	"require-dev": {
-		"behat/behat": "^3.5",
-		"phpunit/phpunit": "^8.4"
+		"behat/behat": "^3.8",
+		"phpunit/phpunit": "^9.2",
+		"symplify/easy-coding-standard": "^8.3",
+		"krzysztofrewak/php-cs-double-quote-fixer": "^1.0"
 	}
 }

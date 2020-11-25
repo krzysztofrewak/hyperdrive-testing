@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hyperdrive;
 
@@ -22,8 +22,7 @@ class GalaxyAtlas
             return $this->planets[Str::slug($name)];
         }
 
-        $planet = $this->planets[Str::slug($name)] = new Planet($name);
-        return $planet;
+        return $this->planets[Str::slug($name)] = new Planet($name);
     }
 
     public function getRandomPlanet(): Planet

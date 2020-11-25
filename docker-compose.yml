@@ -3,12 +3,14 @@ version: "3.7"
 services:
   php:
     container_name: hyperdrive-php
-    image: php:7.4.0-fpm-alpine
+    working_dir: /application
+    image: php:7.4.12-alpine
     volumes:
       - .:/application
 
   composer:
     container_name: hyperdrive-composer
-    image: composer:1.9.1
+    working_dir: /application
+    image: composer:2.0.7
     volumes:
       - .:/application

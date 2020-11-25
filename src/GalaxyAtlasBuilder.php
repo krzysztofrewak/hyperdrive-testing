@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hyperdrive;
 
@@ -24,7 +24,7 @@ class GalaxyAtlasBuilder
     public static function buildFromYaml(string $filePath): GalaxyAtlas
     {
         $atlas = new GalaxyAtlas();
-        $routes = Yaml::parseFile("./resources/routes.yaml");
+        $routes = Yaml::parseFile($filePath);
         self::buildPlanets($atlas, $routes);
 
         return $atlas;
@@ -32,7 +32,7 @@ class GalaxyAtlasBuilder
 
     protected static function buildPlanets(GalaxyAtlas &$atlas, array $routes): void
     {
-        foreach ($routes as $name => $planets) {
+        foreach ($routes as $planets) {
             /** @var Planet|null $previous */
             $previous = null;
 
