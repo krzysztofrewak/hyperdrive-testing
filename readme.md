@@ -1,19 +1,22 @@
 ## Installation
 To install all dependencies, run:
 ```bash
-docker-compose run -w /application composer install
+docker-compose run --rm composer install
 ```
 
 To run application itself, run:
 ```bash
-docker-compose up -d php
-docker exec -w /application -it hyperdrive-php php index.php
+docker-compose run --rm php php index.php
 ```
 
-To Behat run tests, run:
+To run Behat tests, run:
 ```bash
-docker-compose up -d php
-docker exec -w /application -it hyperdrive-php ./vendor/bin/behat
+docker-compose run --rm php ./vendor/bin/behat
+```
+
+To run ECS check, run:
+```bash
+docker-compose run --rm php ./vendor/bin/ecs check
 ```
 
 ![CLI example](https://i.imgur.com/1mQFStj.png)

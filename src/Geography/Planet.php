@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Hyperdrive\Geography;
 
@@ -23,6 +23,11 @@ class Planet
         $this->neighbours = collect();
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getNeighbours(): Collection
     {
         return $this->neighbours;
@@ -33,13 +38,8 @@ class Planet
         return Str::slug($this->name);
     }
 
-    public function addNeighbour(Planet $planet): void
+    public function addNeighbour(self $planet): void
     {
         $this->neighbours->add($planet);
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }
