@@ -16,7 +16,6 @@ $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 $player = new Pilot("placeholder",0,0);
 $party = new Party();
-$party->addPilots();
 
 $target = $hyperdrive->getRandomPlanet();
 

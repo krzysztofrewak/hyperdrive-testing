@@ -22,6 +22,7 @@ class Party
     public function __construct()
     {
         $this->pilots = collect();
+        $this->addPilots();
     }
 
     public function addPilot(Pilot $pilot): void
