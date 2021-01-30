@@ -6,6 +6,8 @@ require "./vendor/autoload.php";
 
 use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Pilot\Party;
+use Hyperdrive\Pilot\Pilot;
 use League\CLImate\CLImate;
 
 $cli = new CLImate();
@@ -13,7 +15,14 @@ $cli = new CLImate();
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 
+$party = new Party();
+$party->addPilots();
+
 $target = $hyperdrive->getRandomPlanet();
+
+$character = $party->getPilots()->toArray() + ["" => "[show more option]"];
+
+
 $cli->info("Your target is the $target.");
 
 $planet = $hyperdrive->getRandomPlanet();

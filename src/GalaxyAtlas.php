@@ -18,7 +18,8 @@ class GalaxyAtlas
 
     public function createOrUpdatePlanet(string $name): Planet
     {
-        if (isset($this->planets[Str::slug($name)])) {
+        if (isset($this->planets[Str::slug($name)]))
+        {
             return $this->planets[Str::slug($name)];
         }
 
