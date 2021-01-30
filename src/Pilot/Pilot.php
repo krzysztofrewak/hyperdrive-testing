@@ -27,6 +27,7 @@ class Pilot
         $this->skill = $skill;
     }
 
+
     /**
      * @return int
      */

@@ -20,7 +20,15 @@ $party->addPilots();
 
 $target = $hyperdrive->getRandomPlanet();
 
-$character = $party->getPilots()->toArray() + ["" => "[show more option]"];
+$character = $party->getPilots()->toArray();
+
+for ($i = 0; $i < $party->getPilots()->count(); $i++) {
+    $cli->info("Pilot #".$i.":");
+    $cli->out("Name: ".$party->getPilots()->get($i)->getName());
+    $cli->out("Reputation: ".$party->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
+    $cli->out("Skill: ".$party->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
+    $cli->out("");
+}
 
 
 $cli->info("Your target is the $target.");

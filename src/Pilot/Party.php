@@ -44,6 +44,13 @@ class Party
         return $this->pilots;
     }
 
+    public function choosePilot(): void
+    {
+        for ($i = 0; $i <= $this->getPilots()->count(); $i++)
+        {
+            $this->getPilots()->get($i)->getName();
+        }
 
+    }
 
 }
