@@ -28,6 +28,13 @@ class Pilot
     }
 
 
+    public function choosePilot(Pilot $player, Pilot $choice): void
+    {
+        $player->setName($choice->getName());
+        $player->setReputation($choice->getReputation());
+        $player->setSkill($choice->getSkill());
+    }
+
     /**
      * @return int
      */

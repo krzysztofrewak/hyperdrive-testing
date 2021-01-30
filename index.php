@@ -14,13 +14,11 @@ $cli = new CLImate();
 
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
-
+$player = new Pilot("placeholder",0,0);
 $party = new Party();
 $party->addPilots();
 
 $target = $hyperdrive->getRandomPlanet();
-
-$character = $party->getPilots()->toArray();
 
 for ($i = 0; $i < $party->getPilots()->count(); $i++) {
     $cli->info("Pilot #".$i.":");
@@ -30,6 +28,22 @@ for ($i = 0; $i < $party->getPilots()->count(); $i++) {
     $cli->out("");
 }
 
+$options = ["Mark" => "I'm choosing Mark", "Jack" => "I'm choosing Jack", "John" => "I'm choosing John"];
+$result = $cli->radio("Choose your Pilot", $options)->prompt();
+
+if ($result === "Mark") {
+    $player->choosePilot($player,$party->getPilots()->get(0));
+}
+if ($result === "Jack") {
+    $player->choosePilot($player,$party->getPilots()->get(1));
+}
+if ($result === "John") {
+    $player->choosePilot($player,$party->getPilots()->get(2));
+}
+
+$cli->info("Name: ".$player->getName());
+$cli->info("Skill:".$player->getSkill());
+$cli->info("Rep:".$player->getReputation());
 
 $cli->info("Your target is the $target.");
 
