@@ -20,30 +20,7 @@ $party->addPilots();
 
 $target = $hyperdrive->getRandomPlanet();
 
-for ($i = 0; $i < $party->getPilots()->count(); $i++) {
-    $cli->info("Pilot #".$i.":");
-    $cli->out("Name: ".$party->getPilots()->get($i)->getName());
-    $cli->out("Reputation: ".$party->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
-    $cli->out("Skill: ".$party->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
-    $cli->out("");
-}
-
-$options = ["Mark" => "I'm choosing Mark", "Jack" => "I'm choosing Jack", "John" => "I'm choosing John"];
-$result = $cli->radio("Choose your Pilot", $options)->prompt();
-
-if ($result === "Mark") {
-    $player->choosePilot($player,$party->getPilots()->get(0));
-}
-if ($result === "Jack") {
-    $player->choosePilot($player,$party->getPilots()->get(1));
-}
-if ($result === "John") {
-    $player->choosePilot($player,$party->getPilots()->get(2));
-}
-
-$cli->info("Name: ".$player->getName());
-$cli->info("Skill:".$player->getSkill());
-$cli->info("Rep:".$player->getReputation());
+$party->characterSelection($player,$cli);
 
 $cli->info("Your target is the $target.");
 

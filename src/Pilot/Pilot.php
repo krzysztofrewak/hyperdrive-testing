@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 
 class Pilot
 {
-    protected ?string $name = null;
-    protected ?int $reputation = 0;
-    protected ?int $skill = 0;
+    protected string $name;
+    protected int $reputation;
+    protected int $skill;
 
     /**
      * Pilot constructor.
