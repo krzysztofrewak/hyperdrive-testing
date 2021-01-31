@@ -8,6 +8,7 @@ use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Pilot\Party;
 use Hyperdrive\Pilot\Pilot;
+use Hyperdrive\Quest\QuestLog;
 use League\CLImate\CLImate;
 
 $cli = new CLImate();
@@ -16,20 +17,16 @@ $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 $player = new Pilot("placeholder",0,0);
 $party = new Party();
-
-$target = $hyperdrive->getRandomPlanet();
+$questlog = new QuestLog();
+$questlog->addQuests($hyperdrive);
 
 $party->characterSelection($player,$cli);
-
-$cli->info("Your target is the $target.");
-
-$planet = $hyperdrive->getRandomPlanet();
 
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
 
-    if ($planet === $target) {
-        $cli->info("You reached the $target!");
+    if ($questlog->AreAllQuestsCompleted()) {
+        $cli->info("You completed all your quests!");
         break;
     }
 
@@ -38,9 +35,12 @@ while (true) {
     $result = $cli->radio("Select jump target planet", $options)->prompt();
 
     if (!$result) {
-        $options = ["return" => "return", "quit" => "quit application"];
+        $options = ["return" => "return","quests" => "show quests", "quit" => "quit application"];
         $result = $cli->radio("Select option", $options)->prompt();
 
+        if ($result === "quests") {
+            $questlog->showQuests($cli);
+        }
         if ($result === "quit") {
             break;
         }
@@ -48,4 +48,5 @@ while (true) {
     }
 
     $hyperdrive->jumpTo($result);
+    $questlog->checkIfCompleted($result);
 }

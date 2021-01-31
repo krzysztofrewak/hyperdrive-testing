@@ -14,7 +14,7 @@ class Quest
 {
     protected Cargo $cargo;
     protected Planet $destination;
-    protected Boolean $completed = false;
+    protected Bool $completed = false;
 
     /**
      * Quest constructor.
@@ -29,6 +29,16 @@ class Quest
         $this->completed = $completed;
     }
 
+
+    public function completionToString() :string
+    {
+        if($this->isCompleted() == false){
+            return "No";
+        }
+        else{
+            return "Yes";
+        }
+    }
 
     /**
      * @return Cargo
@@ -61,6 +71,23 @@ class Quest
     {
         $this->destination = $destination;
     }
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return $this->completed;
+    }
+
+    /**
+     * @param bool $completed
+     */
+    public function setCompleted(bool $completed): void
+    {
+        $this->completed = $completed;
+    }
+
 
 
 
