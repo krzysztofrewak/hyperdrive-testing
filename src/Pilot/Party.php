@@ -14,7 +14,7 @@ use Nette\Utils\ArrayList;
 class Party
 {
 
-    protected Collection $pilots;
+    private Collection $pilots;
 
     /**
      * Party constructor.
@@ -33,9 +33,9 @@ class Party
 
     public function addPilots(): void
     {
-        $this->addPilot(new Pilot("Mark",0,1));
-        $this->addPilot(new Pilot("Jack",2,3));
-        $this->addPilot(new Pilot("John",4,5));
+        $this->addPilot(new Pilot("Mark",0,1,3000));
+        $this->addPilot(new Pilot("Jack",2,3,2500));
+        $this->addPilot(new Pilot("John",4,5,2000));
     }
 
     public function characterSelection(Pilot $player, CLImate $cli): void

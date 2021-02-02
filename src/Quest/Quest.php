@@ -12,9 +12,9 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 class Quest
 {
-    protected Cargo $cargo;
-    protected Planet $destination;
-    protected Bool $completed = false;
+    private Cargo $cargo;
+    private Planet $destination;
+    private Bool $completed = false;
 
     /**
      * Quest constructor.

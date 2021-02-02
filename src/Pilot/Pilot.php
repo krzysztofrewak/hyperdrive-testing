@@ -10,21 +10,24 @@ use Illuminate\Support\Str;
 
 class Pilot
 {
-    protected string $name;
-    protected int $reputation;
-    protected int $skill;
+    private string $name;
+    private int $reputation;
+    private int $skill;
+    private int $credits;
 
     /**
      * Pilot constructor.
      * @param string $name
      * @param int $reputation
      * @param int $skill
+     * @param int $credits
      */
-    public function __construct(string $name, int $reputation, int $skill)
+    public function __construct(string $name, int $reputation, int $skill, int $credits)
     {
         $this->name = $name;
         $this->reputation = $reputation;
         $this->skill = $skill;
+        $this->credits = $credits;
     }
 
 
@@ -50,23 +53,6 @@ class Pilot
     {
         $this->skill = $skill;
     }
-
-    /**
-     * @return Collection
-     */
-    public function getPilots(): Collection
-    {
-        return $this->pilots;
-    }
-
-    /**
-     * @param Collection $pilots
-     */
-    public function setPilots(Collection $pilots): void
-    {
-        $this->pilots = $pilots;
-    }
-
 
     /**
      * @return string

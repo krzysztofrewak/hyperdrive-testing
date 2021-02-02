@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Hyperdrive\Quest;
-
 
 use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
@@ -11,11 +9,12 @@ use League\CLImate\CLImate;
 
 class QuestLog
 {
-    protected Collection $quests;
+    private Collection $quests;
 
     public function __construct()
     {
         $this->quests = collect();
+
     }
 
     public function addQuests(HyperdriveNavigator $hyperdrive)
