@@ -134,28 +134,57 @@ class Ship
         $this->laserDamage = $laserDamage;
     }
 
-    public function TakeAction()
+    public function TakeAction(CLImate $cli, Collection $enemies)
     {
-        //player chooses how to attack etc
+        for ($i = 0; $i < $enemies->count(); $i++)
+        {
+            //player chooses who to attack
+            //attack A - Laser
+            //attack B - Missile
+            //check health of an enemy etc
+        }
     }
 
-    public function TakeDamage(int $damage)
+    public function TakeDamage(int $damage,bool $isLaser)
     {
-        //if shields then shields take damage
-        //lasers deal normal damage to shields
-        //missiles deal half damage
-        $this->setHullIntegrity(($this->getHullIntegrity()-$damage));
-        //if hullIntegrity < 0 then game over
+        if($this->getShields()==0)
+        {
+            $this->setHullIntegrity(($this->getHullIntegrity()-$damage));
+        }
+
+
+        if($this->getShields()>0)
+        {
+            if($isLaser)
+            {
+                $this->setShields(($this->getShields()-$damage));
+
+            }
+            if(!$isLaser)
+            {
+                $damage = $damage/2;
+                $this->setShields(($this->getShields()-$damage));
+            }
+
+            if($this->getShields()<0)
+            {
+                $this->setShields(0);
+
+            }
+        }
+
     }
+
+
 
     public function playerAttacksWithMissile(Ship $enemyShip)
     {
-
+        $enemyShip->takeDamage($this->getMissileDamage(),false);
     }
 
     public function playerAttacksWithLaser(Ship $enemyShip)
     {
-
+        $enemyShip->takeDamage($this->getLaserDamage(),true);
     }
 
     public function enemyAttacksPlayer(Ship $playerShip)
@@ -165,12 +194,12 @@ class Ship
         if($result == 1)
         {
             //"Enemy attacks Player with laser"
-            $playerShip->takeDamage($this->getLaserDamage());
+            $playerShip->takeDamage($this->getLaserDamage(),true);
         }
         if($result == 2)
         {
             //"Enemy attacks Player with missile"
-            $playerShip->takeDamage($this->getMissileDamage());
+            $playerShip->takeDamage($this->getMissileDamage(),false);
         }
     }
 
