@@ -16,14 +16,21 @@ class Planet
 {
     protected string $name;
     protected Collection $neighbours;
+    protected int $price;
 
     public function __construct(string $name)
     {
         $this->name = $name;
         $this->neighbours = collect();
+        $this->price = rand(1,3);
     }
 
     public function __toString(): string
+    {
+        return $this->name." price: ".$this->price;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
@@ -42,4 +49,15 @@ class Planet
     {
         $this->neighbours->add($planet);
     }
+
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+
+
+
+
+
 }
