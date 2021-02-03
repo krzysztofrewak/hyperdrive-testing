@@ -136,16 +136,29 @@ class Ship
 
     public function TakeAction(CLImate $cli, Collection $enemies)
     {
+        $cli->out("Which enemy do you want to target?");
         for ($i = 0; $i < $enemies->count(); $i++)
         {
-            //player chooses who to attack
-            //attack A - Laser
-            //attack B - Missile
-            //check health of an enemy etc
+            $cli->info("Enemy #".$i);
+            $cli->info("Shields:".$enemies->get($i)->getShields());
+            $cli->info("Hull Integrity:".$enemies->get($i)->getHullIntegrity());
+
+        }
+        $target = $cli->input("Which enemy do you want to target? (Please type the number)")->prompt();
+
+        $options = ["Laser" => "Attack with lasers! (Deals ".$this->getLaserDamage()." damage)", "Missile" => "Attack with missiles! (Deals ".$this->getMissileDamage()." damage)"];
+        $result = $cli->radio("How do you want to attack him?", $options)->prompt();
+
+        if ($result === "Laser") {
+            $this->playerAttacksWithLaser($enemies->get($target));
+
+        }
+        if ($result === "Missile") {
+            $this->playerAttacksWithMissile($enemies->get($target));
         }
     }
 
-    public function TakeDamage(int $damage,bool $isLaser)
+    public function takeDamage(int $damage,bool $isLaser)
     {
         if($this->getShields()==0)
         {
@@ -175,8 +188,6 @@ class Ship
 
     }
 
-
-
     public function playerAttacksWithMissile(Ship $enemyShip)
     {
         $enemyShip->takeDamage($this->getMissileDamage(),false);
@@ -187,7 +198,7 @@ class Ship
         $enemyShip->takeDamage($this->getLaserDamage(),true);
     }
 
-    public function enemyAttacksPlayer(Ship $playerShip)
+    public function enemyAttacksPlayer(Ship $playerShip,CLImate $cli)
     {
         $result = rand(1,2);
 
@@ -195,11 +206,14 @@ class Ship
         {
             //"Enemy attacks Player with laser"
             $playerShip->takeDamage($this->getLaserDamage(),true);
+            $cli->out("Player was attacked by ".$this->getName()." for ".$this->getLaserDamage()." laser damage!");
         }
         if($result == 2)
         {
             //"Enemy attacks Player with missile"
             $playerShip->takeDamage($this->getMissileDamage(),false);
+            $cli->out("Player was attacked by ".$this->getName()." for ".$this->getMissileDamage()." missile damage! (Damage halved against shields)");
+
         }
     }
 

@@ -17,7 +17,10 @@ class Combat
 
         for ($i = 0; $i < $enemies->count(); $i++)
         {
-            $enemies->get($i)->enemyAttacksPlayer($playerShip);
+            $enemies->get($i)->enemyAttacksPlayer($playerShip,$cli);
+            $cli->info("Current Ship stats:");
+            $cli->out("Shields:".$playerShip->getShields());
+            $cli->out("Hull Integrity:".$playerShip->getHullIntegrity());
         }
     }
 
