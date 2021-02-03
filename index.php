@@ -18,9 +18,11 @@ $cli->info("Your target is the ".$target->getName());
 
 $planet = $hyperdrive->getRandomPlanet();
 
-$person = new \Hyperdrive\Geography\Person();
-$spaceShip = new \Hyperdrive\Geography\SpaceShip();
+$person = new \Hyperdrive\Entity\Person();
+$spaceShip = new Hyperdrive\Ship\SpaceShip();
 $trap = new \Hyperdrive\Geography\Trap();
+
+$trap->enemyOnWay();
 
 $planetToTransportItem = (string)$atlas->getRandomPlanet();
 $spaceShip->setTarget($planetToTransportItem);
@@ -29,13 +31,12 @@ $cli->info("Target to transport ".$spaceShip->getItemToTransport(). " is ".$spac
 
 while (true) {
     $person->trap($hyperdrive);
-    $randFailure = rand(-2,-5);
-    $spaceShip->setFuel($randFailure);
-    $spaceShip->setCondition($randFailure);
+    $spaceShip->setFuel(rand(-2,-8));
+    $spaceShip->setCondition(rand(-2,-8));
     $planet = $hyperdrive->getCurrentPlanet();
     $cli->info("".$spaceShip);
 
-    $person->setToken(-($planet->getPrice()));
+
     echo "\nToken count: ".$person->getToken()."\n";
 
     if(mb_strtolower(mb_substr($planet->getName(), -1)) == 'a') {
@@ -78,6 +79,7 @@ while (true) {
         continue;
     }
 
+    $person->setToken(-($planet->getPrice()));
     $person->setLogs($planet);
     $hyperdrive->jumpTo($result);
 }
