@@ -7,7 +7,7 @@ namespace Hyperdrive\GameInitialization;
 use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
 
-class GameInit
+class GameEnvironmentInit
 {
     private MainMenu $menu;
 

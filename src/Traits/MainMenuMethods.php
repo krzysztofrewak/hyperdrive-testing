@@ -4,16 +4,28 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Traits;
 
+use Hyperdrive\Game\Game;
+use Hyperdrive\Game\MainLoop\GameLoop;
+use Hyperdrive\Game\NewGame\NewGame;
+use Hyperdrive\Game\Resume\ResumeGame;
+
 trait MainMenuMethods
 {
     public function start(): void
     {
         echo "Starting new game" . PHP_EOL;
+        $gameState = new NewGame();
+        $game = new Game($gameState->getGameSave());
+        print_r($game->gameSave);
+        // new GameLoop($game);
     }
 
     public function resume(): void
     {
         echo "Resuming game" . PHP_EOL;
+        $gameState = new ResumeGame();
+        $game = new Game($gameState->getGameSave());
+        // new GameLoop($game);
     }
 
     public function achievements(): void
