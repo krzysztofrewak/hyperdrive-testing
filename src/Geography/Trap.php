@@ -31,16 +31,23 @@ class Trap {
         }
     }
 
-    public function getFuel(SpaceShip $ship, Person $person) {
+    public function completeShipStatus(SpaceShip $ship, Person $person) {
         $cli = new CLImate();
-        $options = ["Yes" => "Yes", "No" => "No"];
-        $result = $cli->radio("Do you want to refuel ?", $options)->prompt();
-        $cli->info("Cost 15$");
-        if($result === "Yes"){
+        $cli->info("my Cash: ".$person->getCash());
+        $options = ["fuel" => "Refuel (15$)", "repair" => "Repair ship (20$)", "nothing" => "Nothing"];
+        $result = $cli->radio("Do you want to refuel or repair ship ?", $options)->prompt();
+        if($result === "fuel"){
             if ($person->getCash() >= 15){
                 $ship->setFuel(15);
                 $cli->info("Added +15% fuel! Total fuel: ".$ship->getFuel());
+                $person->setCash(-15);
             } else $cli->info("Sorry you have no 15$");
+        }else if($result === "repair") {
+            if ($person->getCash() >= 20){
+                $ship->setCondition(20);
+                $cli->info("The ship has been repaired: ".$ship->getCondition()."\n");
+                $person->setCash(-20);
+            } else $cli->info("Sorry you have no 20$");
         }
     }
 
@@ -48,28 +55,30 @@ class Trap {
         $combat = new Combat();
         $cli = new CLImate();
         $enemy = $combat->selectEnemy();
-        echo $enemy;
-        echo $ship->getInfo();
 
         while(true) {
 
             for($i=0;$i<20;$i++){
                 echo $ship->getInfo();
                 echo $enemy;
-                echo "\n RUNDA ".($i + 1)."\n";
+                echo "\n Round ".($i + 1)."\n";
                 if($i % 2 ==0) {
                     $combat->attackEnemy($cli, $enemy, $ship);
                     if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
                 }
                 else {
-                    $ship->setCondition(-($enemy->getPower()));
-                    echo "You got ".$ship->getPower()." damage from enemy";
+                    $combat->enemyAttackYou($ship, $enemy);
                     if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
                 }
                 sleep(2);
             }
-
-            if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break; // wykomentowac
+            if($enemy->getCondition() <=0 ) {
+                $cli->info("\nYou have defeated the enemy!");
+                break;
+            }else {
+                $cli->info("\nEnemy has defeated you!");
+                break;
+            }
         }
 
     }

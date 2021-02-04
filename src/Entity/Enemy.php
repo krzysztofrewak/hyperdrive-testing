@@ -7,6 +7,7 @@ namespace Hyperdrive\Entity;
 
 use Hyperdrive\Geography\SpaceShip;
 use Hyperdrive\Ship\Weapon;
+use League\CLImate\CLImate;
 
 class Enemy
 {
@@ -24,8 +25,10 @@ class Enemy
 
     public function __toString(): string
     {
+        $cli = new CLImate();
         echo "\n----------------------------------\n";
-        return "Enemy on way with \nPower: ".$this->power. "\nCondition: ".$this->condition." \nWeapon: ".$this->weapon->show()."\n";
+        $cli->info("Enemy on way with");
+        return "Power: ".$this->power. "\nCondition: ".$this->condition." \nWeapon: ".$this->weapon->show()."\n";
     }
 
 
@@ -51,7 +54,7 @@ class Enemy
         $this->condition -= $condition;
     }
 
-    public function getWeapon()
+    public function getWeapon(): Weapon
     {
         return $this->weapon;
     }

@@ -38,7 +38,7 @@ while (true) {
     echo "\nToken count: ".$person->getToken()."\n";
 
     if(mb_strtolower(mb_substr($planet->getName(), -1)) == 'a') {
-        $trap->getFuel($spaceShip,$person);
+        $trap->completeShipStatus($spaceShip,$person);
     }
 
     if($planet === $planetToTransportItem) {
