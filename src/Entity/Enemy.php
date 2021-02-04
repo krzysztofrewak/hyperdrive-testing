@@ -24,7 +24,8 @@ class Enemy
 
     public function __toString(): string
     {
-        return "Enemy on way with Power: ".$this->power. " Condition: ".$this->condition." Weapon: ".$this->weapon->show();
+        echo "\n----------------------------------\n";
+        return "Enemy on way with \nPower: ".$this->power. "\nCondition: ".$this->condition." \nWeapon: ".$this->weapon->show()."\n";
     }
 
 
@@ -47,7 +48,7 @@ class Enemy
 
     public function setCondition(int $condition): void
     {
-        $this->condition = $condition;
+        $this->condition -= $condition;
     }
 
     public function getWeapon()

@@ -17,4 +17,38 @@ class Fire extends Weapon
         $this->name = $name;
     }
 
+    /**
+     * @return int
+     */
+    public function getDmg(): int
+    {
+        return $this->dmg;
+    }
+
+    /**
+     * @param int $dmg
+     */
+    public function setDmg(int $dmg): void
+    {
+        $this->dmg = $dmg;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+
+
 }

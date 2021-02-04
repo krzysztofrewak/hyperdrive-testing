@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Geography;
 
-use Hyperdrive\Entity\Enemy;
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Fight\Combat;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Ship\SpaceShip;
-use Hyperdrive\Ship\Weapons\Bombs;
-use Hyperdrive\Ship\Weapons\Fire;
-use Hyperdrive\Ship\Weapons\Lasers;
 use League\CLImate\CLImate;
 
 class Trap {
@@ -47,14 +44,34 @@ class Trap {
         }
     }
 
-    public function enemyOnWay(){
-        $randWeapon = rand(1,3);
-        $randDmg = rand(10,21);
-        $enemy = null;
-        if ($randWeapon == 1) $enemy = new Enemy(30,100, new Bombs($randDmg,"Bombs"));
-        if ($randWeapon == 2) $enemy = new Enemy(30,100, new Fire($randDmg,"Fire"));
-        if ($randWeapon == 3) $enemy = new Enemy(30,100, new Lasers($randDmg, "Lasers"));
+    public function enemyOnWay(SpaceShip $ship){
+        $combat = new Combat();
+        $cli = new CLImate();
+        $enemy = $combat->selectEnemy();
         echo $enemy;
+        echo $ship->getInfo();
+
+        while(true) {
+
+            for($i=0;$i<20;$i++){
+                echo $ship->getInfo();
+                echo $enemy;
+                echo "\n RUNDA ".($i + 1)."\n";
+                if($i % 2 ==0) {
+                    $combat->attackEnemy($cli, $enemy, $ship);
+                    if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
+                }
+                else {
+                    $ship->setCondition(-($enemy->getPower()));
+                    echo "You got ".$ship->getPower()." damage from enemy";
+                    if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
+                }
+                sleep(2);
+            }
+
+            if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break; // wykomentowac
+        }
+
     }
 
 }

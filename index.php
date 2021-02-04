@@ -22,15 +22,13 @@ $person = new \Hyperdrive\Entity\Person();
 $spaceShip = new Hyperdrive\Ship\SpaceShip();
 $trap = new \Hyperdrive\Geography\Trap();
 
-$trap->enemyOnWay();
-
 $planetToTransportItem = (string)$atlas->getRandomPlanet();
 $spaceShip->setTarget($planetToTransportItem);
 $spaceShip->setItemToTransport("Natrium");
 $cli->info("Target to transport ".$spaceShip->getItemToTransport(). " is ".$spaceShip->getTarget()."\n");
 
 while (true) {
-    $person->trap($hyperdrive);
+    $person->trap($hyperdrive,$spaceShip);
     $spaceShip->setFuel(rand(-2,-8));
     $spaceShip->setCondition(rand(-2,-8));
     $planet = $hyperdrive->getCurrentPlanet();

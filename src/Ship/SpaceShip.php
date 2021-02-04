@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Ship;
 
+use Hyperdrive\Ship\Weapons\Bombs;
+use Hyperdrive\Ship\Weapons\Fire;
+use Hyperdrive\Ship\Weapons\Lasers;
+use League\CLImate\CLImate;
+
 class SpaceShip
 {
     protected int $fuel;
@@ -11,17 +16,32 @@ class SpaceShip
     protected int $power;
     protected string $itemToTransport;
     protected string $target;
+    protected array $weapons = [];
 
     public function __construct()
     {
         $this->condition = 100;
         $this->fuel = 100;
+        $this->power = rand(5,10);
+        $this->addWeapons();
     }
 
+    private function addWeapons(){
+        array_push($this->weapons, new Bombs(rand(15,30),"bombing"));
+        array_push($this->weapons, new Fire(rand(5,22),"firefly"));
+        array_push($this->weapons, new Lasers(rand(22,40),"laser eye"));
+    }
 
     public function __toString() : string
     {
         return "\nFuel: ".$this->getFuel()."\nCondition: ".$this->getCondition()."\n";
+    }
+
+    public function getInfo() {
+        $cli = new CLImate();
+        echo "\n-------------------------------------------------------\n";
+        $cli->info("My space ship info:");
+        return "Condition: ".$this->condition."\nPower: ".$this->power;
     }
 
 
@@ -64,6 +84,29 @@ class SpaceShip
     {
         $this->target = $target;
     }
+
+    public function getPower(): int
+    {
+        return $this->power;
+    }
+
+    public function setPower(int $power): void
+    {
+        $this->power = $power;
+    }
+
+    public function getWeaponsDMG(int $index)
+    {
+        return $this->weapons[$index]->getDmg();
+    }
+
+    public function getWeaponsName(int $index)
+    {
+        return $this->weapons[$index]->getName();
+    }
+
+
+
 
 
 }
