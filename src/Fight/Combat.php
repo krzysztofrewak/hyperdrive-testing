@@ -6,6 +6,8 @@ namespace Hyperdrive\Fight;
 
 
 use Hyperdrive\Entity\Enemy;
+use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Quest;
 use Hyperdrive\Ship\SpaceShip;
 use Hyperdrive\Ship\Weapons\Bombs;
 use Hyperdrive\Ship\Weapons\Fire;
@@ -25,7 +27,7 @@ class Combat
         return $enemy;
     }
 
-    public function attackEnemy($cli, Enemy $enemy, SpaceShip $ship){
+    public function attackEnemy($cli, Enemy $enemy, SpaceShip $ship,Quest $quest, Person $person){
         $options = [
             "bombs" => $this->getWeaponInfo(0,$ship),
             "fire" => $this->getWeaponInfo(1,$ship),
@@ -36,15 +38,19 @@ class Combat
 
         if($result === "bombs") {
             $this->getDamageInfo($enemy,$ship,0);
+            $quest->getUseWeapon()->setWeaponCount(1);
         } else if ($result === "fire"){
             $this->getDamageInfo($enemy,$ship,1);
+            $quest->getUseWeapon()->setWeaponCount(1);
         }else if($result === "laser"){
             $this->getDamageInfo($enemy,$ship,2);
+            $quest->getUseWeapon()->setWeaponCount(1);
         }else {
             $enemy->setCondition($ship->getPower());
             echo "You hit for ".$ship->getPower()." damage";
         }
 
+        $quest->getUseWeapon()->missionStatement($ship, $person);
     }
 
     private function getWeaponInfo(int $index,SpaceShip $ship): string {

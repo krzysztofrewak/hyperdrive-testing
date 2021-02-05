@@ -51,7 +51,7 @@ class Trap {
         }
     }
 
-    public function enemyOnWay(SpaceShip $ship){
+    public function enemyOnWay(SpaceShip $ship, $quest, $person){
         $combat = new Combat();
         $cli = new CLImate();
         $enemy = $combat->selectEnemy();
@@ -63,7 +63,7 @@ class Trap {
                 echo $enemy;
                 echo "\n Round ".($i + 1)."\n";
                 if($i % 2 ==0) {
-                    $combat->attackEnemy($cli, $enemy, $ship);
+                    $combat->attackEnemy($cli, $enemy, $ship, $quest, $person);
                     if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
                 }
                 else {
@@ -81,6 +81,29 @@ class Trap {
             }
         }
 
+    }
+
+    public function getAward(SpaceShip $ship, Person $person){
+        $cli = new CLImate();
+        $rand = rand(5,20);
+        $options = [
+            "refuel" => "Refuel (:".$rand."%)",
+            "fix" => "Repair ship (:".$rand."%)",
+            "money" => "Take Money (:".$rand."$)"
+        ];
+        echo "\nMy Cash: ".$person->getCash()."$\n";
+        $result = $cli->radio("\nSelect your prize: ", $options)->prompt();
+
+        if($result === "refuel") {
+            $ship->setFuel($rand);
+            echo "Fuel +".$rand."%";
+        } else if($result === "fix"){
+            $ship->setCondition($rand);
+            echo "Ship condition +".$rand."%";
+        }else {
+            $person->setCash($rand);
+            echo "Cash +".$rand."$";
+        }
     }
 
 }

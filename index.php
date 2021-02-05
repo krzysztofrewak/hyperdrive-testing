@@ -4,8 +4,15 @@ declare(strict_types = 1);
 
 require "./vendor/autoload.php";
 
+use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Quest;
 use Hyperdrive\GalaxyAtlasBuilder;
+use Hyperdrive\Geography\Trap;
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Quests\DefeatEnemy;
+use Hyperdrive\Quests\SpendTokens;
+use Hyperdrive\Quests\UseWeapon;
+use Hyperdrive\Quests\VisitPlanets;
 use League\CLImate\CLImate;
 
 $cli = new CLImate();
@@ -18,9 +25,12 @@ $cli->info("Your target is the ".$target->getName());
 
 $planet = $hyperdrive->getRandomPlanet();
 
-$person = new \Hyperdrive\Entity\Person();
+$person = new Person();
 $spaceShip = new Hyperdrive\Ship\SpaceShip();
-$trap = new \Hyperdrive\Geography\Trap();
+$trap = new Trap();
+$quest = new Quest(new DefeatEnemy(),new SpendTokens(), new UseWeapon(), new VisitPlanets());
+
+print_r($quest->getUseWeapon()->getWeaponCount());
 
 $planetToTransportItem = (string)$atlas->getRandomPlanet();
 $spaceShip->setTarget($planetToTransportItem);
@@ -28,7 +38,7 @@ $spaceShip->setItemToTransport("Natrium");
 $cli->info("Target to transport ".$spaceShip->getItemToTransport(). " is ".$spaceShip->getTarget()."\n");
 
 while (true) {
-    $person->trap($hyperdrive,$spaceShip);
+    $person->trap($hyperdrive,$spaceShip,$quest,$person);
     $spaceShip->setFuel(rand(-2,-8));
     $spaceShip->setCondition(rand(-2,-8));
     $planet = $hyperdrive->getCurrentPlanet();

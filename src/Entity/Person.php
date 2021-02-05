@@ -37,10 +37,10 @@ class Person
         $this->token += $count;
     }
 
-    public function trap($hyperdriveNavigator,$ship){
+    public function trap($hyperdriveNavigator, $ship, $quest, $person){
 
         $trap = new Trap();
-        $rand = rand(0,20);
+        $rand = rand(0,3);
 
         switch ($rand){
             case 0:
@@ -53,7 +53,7 @@ class Person
                 $trap->goToRandomPlanet($hyperdriveNavigator);
                 break;
             case 3:
-                $trap->enemyOnWay($ship);
+                $trap->enemyOnWay($ship, $quest, $person);
                 break;
         }
 
