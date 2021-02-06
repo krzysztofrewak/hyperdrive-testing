@@ -6,10 +6,10 @@ Rifleman:
   - Rifleman
   - Can use rifles and stays vigilant.
 
-Engineer:
-  - Engineer
-  - Sophisticated demolition.
-
 Demolition:
   - Demolition
   - Overcomes any barrier.
+
+Engineer:
+  - Engineer
+  - Sophisticated demolition.

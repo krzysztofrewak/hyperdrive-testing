@@ -13,7 +13,7 @@ trait YamlBuilder
         $yamlFile = Yaml::parseFile($path);
         foreach ($yamlFile as $record)
         {
-            array_push($output, $record[0]);
+            array_push($output, $record[0] . " - " .  $record[1]);
         }
     }
 }
