@@ -20,6 +20,7 @@ class Game
     public function __construct(GameSave $gameSave)
     {
         $this->gameSave = $gameSave;
+        //var_dump($this->gameSave);
         $this->builder = new GameAssetsBuilder();
         $this->setGlobalSettings();
     }

@@ -16,7 +16,6 @@ trait MainMenuMethods
         echo "Starting new game" . PHP_EOL;
         $gameState = new NewGame();
         $game = new Game($gameState->getGameSave());
-        print_r($game->gameSave);
         // new GameLoop($game);
     }
 

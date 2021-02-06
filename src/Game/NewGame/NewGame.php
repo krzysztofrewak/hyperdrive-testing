@@ -16,7 +16,6 @@ class NewGame extends BaseGameType
     private array $gameData = [];
     private array $specializations = [];
     private array $teams = [];
-    private GameSave $gameSave;
     private CLImate $cli;
 
     public function __construct()

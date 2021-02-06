@@ -14,6 +14,7 @@ class GameEnvironmentInit
     public function __construct()
     {
         $_SESSION['language'] = 'en';
+        $_SESSION['saveFile'] = '/application/gamesave';
         $this->menu = new MainMenu();
     }
 /*

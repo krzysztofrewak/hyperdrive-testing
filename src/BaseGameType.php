@@ -6,6 +6,8 @@ namespace Hyperdrive;
 
 abstract class BaseGameType
 {
+    protected GameSave $gameSave;
+
     public function getGameSave(): GameSave
     {
         return $this->gameSave;
