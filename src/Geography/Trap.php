@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Geography;
 
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Quest;
 use Hyperdrive\Fight\Combat;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Ship\SpaceShip;
@@ -51,7 +52,7 @@ class Trap {
         }
     }
 
-    public function enemyOnWay(SpaceShip $ship, $quest, $person){
+    public function enemyOnWay(SpaceShip $ship,Quest $quest, $person){
         $combat = new Combat();
         $cli = new CLImate();
         $enemy = $combat->selectEnemy();
@@ -74,6 +75,10 @@ class Trap {
             }
             if($enemy->getCondition() <=0 ) {
                 $cli->info("\nYou have defeated the enemy!");
+
+                $quest->getDefeatEnemy()->missionStatement($ship, $person);
+                // zabiłeś wroga
+                // Defeat Enemy BONUS
                 break;
             }else {
                 $cli->info("\nEnemy has defeated you!");
@@ -87,9 +92,9 @@ class Trap {
         $cli = new CLImate();
         $rand = rand(5,20);
         $options = [
-            "refuel" => "Refuel (:".$rand."%)",
-            "fix" => "Repair ship (:".$rand."%)",
-            "money" => "Take Money (:".$rand."$)"
+            "refuel" => "Refuel:(".$rand."%)",
+            "fix" => "Repair ship: (".$rand."%)",
+            "money" => "Take Money: (".$rand."$)"
         ];
         echo "\nMy Cash: ".$person->getCash()."$\n";
         $result = $cli->radio("\nSelect your prize: ", $options)->prompt();

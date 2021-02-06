@@ -40,7 +40,7 @@ class Person
     public function trap($hyperdriveNavigator, $ship, $quest, $person){
 
         $trap = new Trap();
-        $rand = rand(0,3);
+        $rand = rand(0,20);
 
         switch ($rand){
             case 0:

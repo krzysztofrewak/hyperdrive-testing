@@ -30,8 +30,6 @@ $spaceShip = new Hyperdrive\Ship\SpaceShip();
 $trap = new Trap();
 $quest = new Quest(new DefeatEnemy(),new SpendTokens(), new UseWeapon(), new VisitPlanets());
 
-print_r($quest->getUseWeapon()->getWeaponCount());
-
 $planetToTransportItem = (string)$atlas->getRandomPlanet();
 $spaceShip->setTarget($planetToTransportItem);
 $spaceShip->setItemToTransport("Natrium");
@@ -43,6 +41,10 @@ while (true) {
     $spaceShip->setCondition(rand(-2,-8));
     $planet = $hyperdrive->getCurrentPlanet();
     $cli->info("".$spaceShip);
+    $quest->getVisitPlanets()->missionStatement($spaceShip,$person);
+    $quest->getVisitPlanets()->setCountPlanet(1);
+    $quest->getSpendTokens()->missionStatement($spaceShip,$person);
+    $quest->getSpendTokens()->setTokenCount($planet->getPrice());
 
 
     echo "\nToken count: ".$person->getToken()."\n";

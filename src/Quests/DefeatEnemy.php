@@ -5,6 +5,7 @@ namespace Hyperdrive\Quests;
 
 
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Geography\Trap;
 use Hyperdrive\Interfaces\TasksInterface;
 use Hyperdrive\Ship\SpaceShip;
 
@@ -13,11 +14,13 @@ class DefeatEnemy implements TasksInterface
 
     public function choosePrize(SpaceShip $ship, Person $person)
     {
-        // TODO: Implement choosePrize() method.
+        $bonus = new Trap();
+        $bonus->getAward($ship, $person);
     }
 
     public function missionStatement(SpaceShip $ship, Person $person)
     {
-        // TODO: Implement missionStatement() method.
+        echo "\nyou have successfully defeated the enemy\n";
+        $this->choosePrize($ship,$person);
     }
 }
