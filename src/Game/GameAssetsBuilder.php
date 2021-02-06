@@ -17,6 +17,5 @@ class GameAssetsBuilder
         $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
         $this->hyperdrive = new HyperdriveNavigator($atlas);
         unset($atlas);
-
     }
 }

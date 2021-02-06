@@ -15,6 +15,7 @@ class GameEnvironmentInit
     {
         $_SESSION['language'] = 'en';
         $_SESSION['saveFile'] = '/application/gamesave';
+        $_SESSION['isInGame'] = 0;
         $this->menu = new MainMenu();
     }
 /*

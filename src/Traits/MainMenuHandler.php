@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Traits;
 
+use Hyperdrive\GameSave\IntegrityController;
+
 trait MainMenuHandler
 {
-    use MainMenuMethods;
+    use MainMenuMethods, IntegrityController;
 
     public function handleMenu(): void
     {
@@ -20,11 +22,13 @@ trait MainMenuHandler
             if($this->choice === "startNewGame")
             {
                 $this->start();
+                $this->toggleInGameState();
             }
 
             if($this->choice === "resume")
             {
                 $this->resume();
+                $this->toggleInGameState();
             }
 
             if($this->choice === "achieve")

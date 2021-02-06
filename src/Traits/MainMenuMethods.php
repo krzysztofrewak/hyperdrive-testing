@@ -16,7 +16,7 @@ trait MainMenuMethods
         echo "Starting new game" . PHP_EOL;
         $gameState = new NewGame();
         $game = new Game($gameState->getGameSave());
-        // new GameLoop($game);
+        new GameLoop($game);
     }
 
     public function resume(): void
@@ -24,7 +24,7 @@ trait MainMenuMethods
         echo "Resuming game" . PHP_EOL;
         $gameState = new ResumeGame();
         $game = new Game($gameState->getGameSave());
-        // new GameLoop($game);
+        new GameLoop($game);
     }
 
     public function achievements(): void
@@ -36,5 +36,4 @@ trait MainMenuMethods
     {
         echo "Displaying options" . PHP_EOL;
     }
-
 }

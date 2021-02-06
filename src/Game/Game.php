@@ -7,11 +7,8 @@ namespace Hyperdrive\Game;
 use Hyperdrive\GameSave;
 use Hyperdrive\GameSave\IntegrityController;
 
-// this class should receive NewGame or ResumeGame classes
-// and then build all the game assets
 class Game
 {
-    // consider putting setGlobalSettings to the trait below
     use IntegrityController;
 
     public GameSave $gameSave;
@@ -20,13 +17,7 @@ class Game
     public function __construct(GameSave $gameSave)
     {
         $this->gameSave = $gameSave;
-        //var_dump($this->gameSave);
         $this->builder = new GameAssetsBuilder();
-        $this->setGlobalSettings();
-    }
-
-    private function setGlobalSettings(): void
-    {
-        $_SESSION['isInGame'] = 1;
+        $this->toggleInGameState();
     }
 }
