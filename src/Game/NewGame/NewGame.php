@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\NewGame;
 
+use Hyperdrive\BaseGameType;
+use League\CLImate\CLImate;
 use Hyperdrive\GameSave;
 use Hyperdrive\Traits\YamlBuilder;
-use League\CLImate\CLImate;
 
-class NewGame
+class NewGame extends BaseGameType
 {
     use YamlBuilder;
 
@@ -25,7 +26,6 @@ class NewGame
         $this->parseYamlFiles();
         $this->getUserControlledUnitsInfo();
         $this->gameSave->fillNewSave($this->gameData);
-        unset($this->cli);
     }
 
     private function parseYamlFiles(): void
@@ -39,6 +39,7 @@ class NewGame
     {
         $this->getMainHeroInfo();
         $this->getFriendsInfo();
+        unset($this->cli);
     }
 
     private function getMainHeroInfo(): void
@@ -74,10 +75,5 @@ class NewGame
     private function getTeams(): array
     {
         return $this->teams;
-    }
-
-    public function getGameSave(): GameSave
-    {
-        return $this->gameSave;
     }
 }

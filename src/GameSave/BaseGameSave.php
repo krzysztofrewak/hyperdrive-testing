@@ -12,8 +12,7 @@ abstract class BaseGameSave
     public int $money = 30_000;
     public int $fuel = 100;
     public string $team;
-    public string $currentPlanet;
-    public string $targetPlanet;
+    public string $currentPlanet = "triton";
+    public ?string $targetPlanet = null;
     public string $missionId = "mission1";
-    private string $checksum;
 }

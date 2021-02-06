@@ -21,7 +21,6 @@ class Game
     {
         $this->gameSave = $gameSave;
         $this->builder = new GameAssetsBuilder();
-        $this->addAssetsIdsToSaveFile($this->builder->getAssetsIdsToSaveFile());
         $this->setGlobalSettings();
     }
 

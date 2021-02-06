@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\Resume;
 
+use Hyperdrive\BaseGameType;
 use Hyperdrive\GameSave;
-use Hyperdrive\Interfaces\GameInterface;
 
-class ResumeGame implements GameInterface
+class ResumeGame extends BaseGameType
 {
     private GameSave $gameSave;
 
