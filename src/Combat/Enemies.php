@@ -13,7 +13,17 @@ class Enemies
 
     private Collection $enemies;
 
-    public function generateEnemies(): void
+    /**
+     * Enemies constructor.
+     */
+    public function __construct()
+    {
+        $this->enemies = collect();
+        $this->generateEnemies();
+    }
+
+
+    private function generateEnemies(): void
     {
         $level = rand(1,3);
 
@@ -34,5 +44,13 @@ class Enemies
             default:
                 break;
         }
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getEnemies(): Collection
+    {
+        return $this->enemies;
     }
 }

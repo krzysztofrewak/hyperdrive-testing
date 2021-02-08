@@ -25,22 +25,6 @@ $selection->characterSelection($player,$playerShip,$cli);
 $questlog = new QuestLog();
 $questlog->addQuests($hyperdrive);
 
-$wrogowie = new Collection();
-
-$shipP = new Ship("player",100,100,100,100,200,100,100,100);
-$ship1 = new Ship("en1",100,100,100,100,200,100,100,100);
-$ship2 = new Ship("en2",100,100,100,100,200,100,100,100);
-$ship3 = new Ship("en3",100,100,100,100,200,100,100,100);
-
-$wrogowie->add($ship1);
-$wrogowie->add($ship2);
-$wrogowie->add($ship3);
-
-//$combat = new Combat();
-
-//$combat->fight($shipP,$wrogowie,$cli);
-
-
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
 
