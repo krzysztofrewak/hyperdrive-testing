@@ -21,7 +21,7 @@ class Event
 
         if($random == 7)
         {
-            $questlog->addQuest(new Quest(new Cargo("Weapons"),$planet,false));
+            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$planet,false));
         }
         if($random == 8)
         {

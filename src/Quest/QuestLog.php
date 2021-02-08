@@ -15,10 +15,11 @@ class QuestLog
     public function __construct()
     {
         $this->quests = collect();
-
+        $this->cargo = collect();
+        $this->generateCargo();
     }
 
-    public function generateCargo(): void
+    private function generateCargo(): void
     {
         $this->cargo->add(new Cargo("Weapons"));
         $this->cargo->add(new Cargo("Armor"));
@@ -38,18 +39,22 @@ class QuestLog
 
     public function addQuests(HyperdriveNavigator $hyperdrive)
     {
-        $this->addQuest(new Quest(new Cargo("Weapons"),$hyperdrive->getRandomPlanet(),false));
-        $this->addQuest(new Quest(new Cargo("Fuel"),$hyperdrive->getRandomPlanet(),false));
-        $this->addQuest(new Quest(new Cargo("Mechanical Parts"),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
     }
 
+    public function getRandomCargo(): Cargo
+    {
+        return $this->cargo->random();
+    }
 
     public function showQuests(CLImate $cli) :void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++)
         {
             $cli->info("Quest #".$i.":");
-            //$cli->out("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
+            $cli->out("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
             $cli->out("Destination: ".$this->getQuests()->get($i)->getDestination());
             $cli->out("Completed: ".$this->getQuests()->get($i)->completionToString());
             $cli->out("");
