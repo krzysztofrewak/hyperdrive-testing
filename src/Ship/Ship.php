@@ -136,15 +136,18 @@ class Ship
 
     public function TakeAction(CLImate $cli, Collection $enemies)
     {
-        $cli->out("Which enemy do you want to target?");
         for ($i = 0; $i < $enemies->count(); $i++)
         {
-            $cli->info("Enemy #".$i);
-            $cli->info("Shields:".$enemies->get($i)->getShields());
-            $cli->info("Hull Integrity:".$enemies->get($i)->getHullIntegrity());
-
+            if($enemies->get($i)->getHullIntegrity() > 0)
+            {
+                $cli->info("Enemy #" . $i);
+                $cli->info("Shields:" . $enemies->get($i)->getShields());
+                $cli->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
+            }
         }
+
         $target = $cli->input("Which enemy do you want to target? (Please type the number)")->prompt();
+
 
         $options = ["Laser" => "Attack with lasers! (Deals ".$this->getLaserDamage()." damage)", "Missile" => "Attack with missiles! (Deals ".$this->getMissileDamage()." damage)"];
         $result = $cli->radio("How do you want to attack him?", $options)->prompt();
@@ -168,25 +171,27 @@ class Ship
 
         if($this->getShields()>0)
         {
-            if($isLaser)
-            {
-                $this->setShields(($this->getShields()-$damage));
-
-            }
             if(!$isLaser)
             {
                 $damage = $damage/2;
-                $this->setShields(($this->getShields()-$damage));
             }
+
+            if($damage>$this->getShields())
+            {
+                $damageToHull = $damage - $this->getShields();
+                $this->setHullIntegrity(($this->getHullIntegrity()-$damageToHull));
+            }
+
+            $this->setShields(($this->getShields()-$damage));
+        }
 
             if($this->getShields()<0)
             {
                 $this->setShields(0);
-
             }
-        }
-
     }
+
+
 
     public function playerAttacksWithMissile(Ship $enemyShip)
     {

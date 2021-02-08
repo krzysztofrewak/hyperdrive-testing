@@ -8,6 +8,9 @@ use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Pilot\Party;
 use Hyperdrive\Pilot\Pilot;
+use Illuminate\Support\Collection;
+use Hyperdrive\Ship\Ship;
+use Hyperdrive\Combat\Combat;
 use Hyperdrive\Quest\QuestLog;
 use League\CLImate\CLImate;
 
@@ -20,20 +23,20 @@ $party = new Party();
 $questlog = new QuestLog();
 $questlog->addQuests($hyperdrive);
 
-$wrogowie = new \Illuminate\Support\Collection();
+$wrogowie = new Collection();
 
-$shipP = new \Hyperdrive\Ship\Ship("player",100,100,100,21,37);
-$ship1 = new \Hyperdrive\Ship\Ship("wrog1",100,100,100,100,100);
-$ship2 = new \Hyperdrive\Ship\Ship("wrog2",100,200,50,100,100);
-$ship3 = new \Hyperdrive\Ship\Ship("wrog3",100,10,100,100,100);
+$shipP = new Ship("player",100,1000,100,200,100);
+$ship1 = new Ship("wrog1",100,100,100,100,100);
+$ship2 = new Ship("wrog2",100,200,50,100,100);
+$ship3 = new Ship("wrog3",100,10,100,100,100);
 $wrogowie->add($ship1);
 $wrogowie->add($ship2);
 $wrogowie->add($ship3);
 
-$combat = new \Hyperdrive\Combat\Combat();
+$combat = new Combat();
 
 $combat->fight($shipP,$wrogowie,$cli);
-$combat->fight($shipP,$wrogowie,$cli);
+
 
 
 $party->characterSelection($player,$cli);
