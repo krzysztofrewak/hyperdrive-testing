@@ -15,18 +15,24 @@ class Quest
     private Cargo $cargo;
     private Planet $destination;
     private Bool $completed = false;
+    private Bool $main = false;
+    private int $exp;
 
     /**
      * Quest constructor.
      * @param Cargo $cargo
      * @param Planet $destination
      * @param bool $completed
+     * @param bool $main
+     * @param int $exp
      */
-    public function __construct(Cargo $cargo, Planet $destination, bool $completed)
+    public function __construct(Cargo $cargo, Planet $destination, bool $completed, bool $main, int $exp)
     {
         $this->cargo = $cargo;
         $this->destination = $destination;
         $this->completed = $completed;
+        $this->main = $main;
+        $this->exp = $exp;
     }
 
 

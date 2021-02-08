@@ -14,6 +14,7 @@ class Pilot
     private int $reputation;
     private int $skill;
     private int $credits;
+    private int $exp;
 
     /**
      * Pilot constructor.
@@ -21,15 +22,21 @@ class Pilot
      * @param int $reputation
      * @param int $skill
      * @param int $credits
+     * @param int $exp
      */
-    public function __construct(string $name, int $reputation, int $skill, int $credits)
+    public function __construct(string $name, int $reputation, int $skill, int $credits, int $exp)
     {
         $this->name = $name;
         $this->reputation = $reputation;
         $this->skill = $skill;
         $this->credits = $credits;
+        $this->exp = $exp;
     }
 
+    public function levelUp(): void
+    {
+        //if more than 5000 exp then remove 5000 and level up skill
+    }
 
     public function choosePilot(Pilot $player, Pilot $choice): void
     {

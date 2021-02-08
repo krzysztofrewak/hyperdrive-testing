@@ -221,4 +221,13 @@ class Ship
         }
     }
 
+    public function loseFuel(int $fuelLost)
+    {
+        if($fuelLost < 0)
+        {
+            $fuelLost = 0;
+        }
+        $this->setFuel($this->getFuel() - $fuelLost);
+    }
+
 }

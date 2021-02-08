@@ -18,27 +18,27 @@ use League\CLImate\CLImate;
 class Event
 {
 
-    public function randomEvents(Pilot $player,Ship $playerShip, Planet $planet,QuestLog $questlog, CLImate $cli): void
+    public function randomEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
     {
         $random = rand(1,10);
 
         if($random == 7)
         {
             //story
-            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$planet,false));
+            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$randomPlanet,false));
         }
         if($random == 8)
         {
             //oh no asteroids
-            $fuel_loss = 30 - (5 * $player->getSkill());
-            $playerShip->setFuel($playerShip->getFuel()-$fuel_loss);
+            $fuelLost = 30 - (5 * $player->getSkill());
+            $playerShip->loseFuel($fuelLost);
         }
         if($random == 9)
         {
             //oh no you've been attacked
            $enemies = new Enemies();
            $combat = new Combat();
-           $combat->fight($playerShip,$enemies->getEnemies(),$cli);
+           $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
         }
         if($random == 10)
         {

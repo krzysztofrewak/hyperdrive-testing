@@ -39,9 +39,8 @@ class QuestLog
 
     public function addQuests(HyperdriveNavigator $hyperdrive)
     {
-        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
-        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
-        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false,false,2500));
+        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false,false,2500));
     }
 
     public function getRandomCargo(): Cargo

@@ -35,9 +35,9 @@ class CharacterSelection
 
     public function addPilots(): void
     {
-        $this->addPilot(new Pilot("Atton Rand",5,5,3000));
-        $this->addPilot(new Pilot("Jarrnes Corring",3,3,2500));
-        $this->addPilot(new Pilot("Garfinn Newdor",0,2,2000));
+        $this->addPilot(new Pilot("Atton Rand",5,5,3000,0));
+        $this->addPilot(new Pilot("Jarrnes Corring",3,3,2500,0));
+        $this->addPilot(new Pilot("Garfinn Newdor",0,2,2000,0));
     }
 
     public function characterSelection(Pilot $player,Ship $playerShip, CLImate $cli): void

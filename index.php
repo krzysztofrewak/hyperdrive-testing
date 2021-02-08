@@ -18,7 +18,7 @@ $cli = new CLImate();
 
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
-$player = new Pilot("placeholder",0,0,0);
+$player = new Pilot("placeholder",0,0,0,0);
 $playerShip = new Ship("placeholder",0,0,0,0,0,0,0,0);
 $selection = new CharacterSelection();
 $selection->characterSelection($player,$playerShip,$cli);

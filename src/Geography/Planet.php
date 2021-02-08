@@ -42,4 +42,14 @@ class Planet
     {
         $this->neighbours->add($planet);
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
 }
