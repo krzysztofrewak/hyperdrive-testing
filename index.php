@@ -6,7 +6,7 @@ require "./vendor/autoload.php";
 
 use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
-use Hyperdrive\Pilot\Party;
+use Hyperdrive\Pilot\CharacterSelection;
 use Hyperdrive\Pilot\Pilot;
 use Illuminate\Support\Collection;
 use Hyperdrive\Ship\Ship;
@@ -19,7 +19,8 @@ $cli = new CLImate();
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 $player = new Pilot("placeholder",0,0,0);
-$party = new Party();
+$selection = new CharacterSelection();
+$selection->characterSelection($player,$cli);
 $questlog = new QuestLog();
 $questlog->addQuests($hyperdrive);
 
@@ -33,13 +34,10 @@ $wrogowie->add($ship1);
 $wrogowie->add($ship2);
 $wrogowie->add($ship3);
 
-$combat = new Combat();
+//$combat = new Combat();
 
-$combat->fight($shipP,$wrogowie,$cli);
+//$combat->fight($shipP,$wrogowie,$cli);
 
-
-
-$party->characterSelection($player,$cli);
 
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();

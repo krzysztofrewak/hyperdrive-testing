@@ -11,13 +11,13 @@ use League\CLImate\CLImate;
 use Nette\Utils\ArrayList;
 
 
-class Party
+class CharacterSelection
 {
 
     private Collection $pilots;
 
     /**
-     * Party constructor.
+     * CharacterSelection constructor.
      */
     public function __construct()
     {
