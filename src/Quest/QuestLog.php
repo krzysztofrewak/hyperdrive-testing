@@ -10,6 +10,7 @@ use League\CLImate\CLImate;
 class QuestLog
 {
     private Collection $quests;
+    private Collection $cargo;
 
     public function __construct()
     {
@@ -17,11 +18,29 @@ class QuestLog
 
     }
 
+    public function generateCargo(): void
+    {
+        $this->cargo->add(new Cargo("Weapons"));
+        $this->cargo->add(new Cargo("Armor"));
+        $this->cargo->add(new Cargo("Fuel"));
+        $this->cargo->add(new Cargo("Mechanical Parts"));
+        $this->cargo->add(new Cargo("Droids"));
+        $this->cargo->add(new Cargo("Medicine"));
+        $this->cargo->add(new Cargo("Alcohol"));
+        $this->cargo->add(new Cargo("Drugs"));
+        $this->cargo->shuffle();
+    }
+
+    public function addQuest(Quest $quest)
+    {
+        $this->quests->add($quest);
+    }
+
     public function addQuests(HyperdriveNavigator $hyperdrive)
     {
-        $this->quests->add(new Quest(new Cargo("Weapons"),$hyperdrive->getRandomPlanet(),false));
-        $this->quests->add(new Quest(new Cargo("Mechanical Parts"),$hyperdrive->getRandomPlanet(),false));
-        $this->quests->add(new Quest(new Cargo("Fuel"),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest(new Cargo("Weapons"),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest(new Cargo("Fuel"),$hyperdrive->getRandomPlanet(),false));
+        $this->addQuest(new Quest(new Cargo("Mechanical Parts"),$hyperdrive->getRandomPlanet(),false));
     }
 
 
