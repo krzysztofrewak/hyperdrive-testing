@@ -19,17 +19,19 @@ $cli = new CLImate();
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 $player = new Pilot("placeholder",0,0,0);
+$playerShip = new Ship("placeholder",0,0,0,0,0,0,0,0);
 $selection = new CharacterSelection();
-$selection->characterSelection($player,$cli);
+$selection->characterSelection($player,$playerShip,$cli);
 $questlog = new QuestLog();
 $questlog->addQuests($hyperdrive);
 
 $wrogowie = new Collection();
 
-$shipP = new Ship("player",100,1000,100,200,100);
-$ship1 = new Ship("wrog1",100,100,100,100,100);
-$ship2 = new Ship("wrog2",100,200,50,100,100);
-$ship3 = new Ship("wrog3",100,10,100,100,100);
+$shipP = new Ship("player",100,100,100,100,200,100,100,100);
+$ship1 = new Ship("en1",100,100,100,100,200,100,100,100);
+$ship2 = new Ship("en2",100,100,100,100,200,100,100,100);
+$ship3 = new Ship("en3",100,100,100,100,200,100,100,100);
+
 $wrogowie->add($ship1);
 $wrogowie->add($ship2);
 $wrogowie->add($ship3);

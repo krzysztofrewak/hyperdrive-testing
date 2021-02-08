@@ -42,6 +42,7 @@ class Combat
             if ($aliveEnemies == 0)
             {
                 $cli->info("Victory! Combat finished.");
+                $playerShip->setShields($playerShip->getMaxShields());
                 break;
             }
         }

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Pilot;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Hyperdrive\Pilot\Pilot;
+use Hyperdrive\Ship\Ship;
+use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
-use Nette\Utils\ArrayList;
 
 
 class CharacterSelection
 {
 
     private Collection $pilots;
+    private Collection $ships;
 
     /**
      * CharacterSelection constructor.
@@ -22,7 +22,9 @@ class CharacterSelection
     public function __construct()
     {
         $this->pilots = collect();
+        $this->ships = collect();
         $this->addPilots();
+        $this->addShips();
     }
 
     public function addPilot(Pilot $pilot): void
@@ -33,12 +35,12 @@ class CharacterSelection
 
     public function addPilots(): void
     {
-        $this->addPilot(new Pilot("Mark",0,1,3000));
-        $this->addPilot(new Pilot("Jack",2,3,2500));
-        $this->addPilot(new Pilot("John",4,5,2000));
+        $this->addPilot(new Pilot("Atton Rand",5,5,3000));
+        $this->addPilot(new Pilot("Jarrnes Corring",3,3,2500));
+        $this->addPilot(new Pilot("Garfinn Newdor",0,2,2000));
     }
 
-    public function characterSelection(Pilot $player, CLImate $cli): void
+    public function characterSelection(Pilot $player,Ship $playerShip, CLImate $cli): void
     {
         for ($i = 0; $i < $this->getPilots()->count(); $i++)
         {
@@ -49,17 +51,41 @@ class CharacterSelection
             $cli->out("");
         }
 
-        $options = ["Mark" => "I'm choosing Mark", "Jack" => "I'm choosing Jack", "John" => "I'm choosing John"];
+        $options = ["Atton" => "I'm choosing Atton", "Jarrnes" => "I'm choosing Jarrnes", "Garfinn" => "I'm choosing Garfinn"];
         $result = $cli->radio("Choose your Pilot", $options)->prompt();
 
-        if ($result === "Mark") {
+        if ($result === "Atton") {
             $player->choosePilot($player,$this->getPilots()->get(0));
         }
-        if ($result === "Jack") {
+        if ($result === "Jarrnes") {
             $player->choosePilot($player,$this->getPilots()->get(1));
         }
-        if ($result === "John") {
+        if ($result === "Garfinn") {
             $player->choosePilot($player,$this->getPilots()->get(2));
+        }
+
+        for ($i = 0; $i < $this->getShips()->count(); $i++)
+        {
+            $cli->info("Ship #".$i.":");
+            $cli->out("Name: ".$this->getShips()->get($i)->getName());
+            $cli->out("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
+            $cli->out("Max Shields ".$this->getShips()->get($i)->getMaxShields());
+            $cli->out("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
+            $cli->out("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
+            $cli->out("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
+        }
+
+        $options = ["EbonHawk" => "I'm choosing Ebon Hawk", "Typhoon" => "I'm choosing Typhoon", "Cyclone" => "I'm choosing Cyclone"];
+        $result = $cli->radio("Choose your Ship", $options)->prompt();
+
+        if ($result === "EbonHawk") {
+            $playerShip->chooseShip($playerShip,$this->getShips()->get(0));
+        }
+        if ($result === "Typhoon") {
+            $playerShip->chooseShip($playerShip,$this->getShips()->get(1));
+        }
+        if ($result === "Cyclone") {
+            $playerShip->chooseShip($playerShip,$this->getShips()->get(2));
         }
 
         $cli->info("Your character:");
@@ -67,6 +93,13 @@ class CharacterSelection
         $cli->out("Reputation: ".$player->getReputation());
         $cli->out("Skill: ".$player->getSkill());
 
+        $cli->info("Your ship:");
+        $cli->out("Name: ".$playerShip->getName());
+        $cli->out("Max Fuel: ".$playerShip->getMaxFuel());
+        $cli->out("Max Shields ".$playerShip->getMaxShields());
+        $cli->out("Max Hull Integrity ".$playerShip->getMaxHullIntegrity());
+        $cli->out("Missile Damage: ".$playerShip->getMissileDamage());
+        $cli->out("Laser Damage ".$playerShip->getLaserDamage());
     }
 
     /**
@@ -77,6 +110,27 @@ class CharacterSelection
         return $this->pilots;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getShips(): Collection
+    {
+        return $this->ships;
+    }
+
+
+
+    private function addShips()
+    {
+        $this->addShip(new Ship("Ebon Hawk",100,100,150,150,150,150,80,60));
+        $this->addShip(new Ship("Typhoon",120,120,200,200,100,100,100,60));
+        $this->addShip(new Ship("Cyclone",80,80,100,100,200,200,70,60));
+    }
+
+    private function addShip(Ship $ship)
+    {
+        $this->ships->add($ship);
+    }
 
 
 }

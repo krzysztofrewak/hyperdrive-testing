@@ -14,124 +14,128 @@ class Ship
 {
     private String $name;
     private int $fuel;
+    private int $maxFuel;
     private int $hullIntegrity;
+    private int $maxHullIntegrity;
     private int $shields;
+    private int $maxShields;
     private int $missileDamage;
     private int $laserDamage;
 
-    /**
-     * Ship constructor.
-     * @param String $name
-     * @param int $fuel
-     * @param int $hullIntegrity
-     * @param int $shields
-     * @param int $missileDamage
-     * @param int $laserDamage
-     */
-    public function __construct(string $name, int $fuel, int $hullIntegrity, int $shields, int $missileDamage, int $laserDamage)
+    public function __construct(string $name, int $fuel, int $maxFuel, int $hullIntegrity, int $maxHullIntegrity, int $shields, int $maxShields, int $missileDamage, int $laserDamage)
     {
         $this->name = $name;
         $this->fuel = $fuel;
+        $this->maxFuel = $maxFuel;
         $this->hullIntegrity = $hullIntegrity;
+        $this->maxHullIntegrity = $maxHullIntegrity;
         $this->shields = $shields;
+        $this->maxShields = $maxShields;
         $this->missileDamage = $missileDamage;
         $this->laserDamage = $laserDamage;
     }
 
-    /**
-     * @return string
-     */
+    public function getMaxFuel(): int
+    {
+        return $this->maxFuel;
+    }
+
+    public function setMaxFuel(int $maxFuel): void
+    {
+        $this->maxFuel = $maxFuel;
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
+    public function getMaxHullIntegrity(): int
+    {
+        return $this->maxHullIntegrity;
+    }
+
+    public function setMaxHullIntegrity(int $maxHullIntegrity): void
+    {
+        $this->maxHullIntegrity = $maxHullIntegrity;
+    }
+
+    public function getMaxShields(): int
+    {
+        return $this->maxShields;
+    }
+
+    public function setMaxShields(int $maxShields): void
+    {
+        $this->maxShields = $maxShields;
+    }
+
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return int
-     */
     public function getFuel(): int
     {
         return $this->fuel;
     }
 
-    /**
-     * @param int $fuel
-     */
     public function setFuel(int $fuel): void
     {
         $this->fuel = $fuel;
     }
 
-    /**
-     * @return int
-     */
     public function getHullIntegrity(): int
     {
         return $this->hullIntegrity;
     }
 
-    /**
-     * @param int $hullIntegrity
-     */
     public function setHullIntegrity(int $hullIntegrity): void
     {
         $this->hullIntegrity = $hullIntegrity;
     }
 
-    /**
-     * @return int
-     */
     public function getShields(): int
     {
         return $this->shields;
     }
 
-    /**
-     * @param int $shields
-     */
     public function setShields(int $shields): void
     {
         $this->shields = $shields;
     }
 
-    /**
-     * @return int
-     */
     public function getMissileDamage(): int
     {
         return $this->missileDamage;
     }
 
-    /**
-     * @param int $missileDamage
-     */
     public function setMissileDamage(int $missileDamage): void
     {
         $this->missileDamage = $missileDamage;
     }
 
-    /**
-     * @return int
-     */
     public function getLaserDamage(): int
     {
         return $this->laserDamage;
     }
 
-    /**
-     * @param int $laserDamage
-     */
     public function setLaserDamage(int $laserDamage): void
     {
         $this->laserDamage = $laserDamage;
+    }
+
+    public function chooseShip(Ship $playerShip, Ship $choice): void
+    {
+        $playerShip->setName($choice->getName());
+        $playerShip->setFuel($choice->getFuel());
+        $playerShip->setMaxFuel($choice->getFuel());
+        $playerShip->setHullIntegrity($choice->getHullIntegrity());
+        $playerShip->setMaxHullIntegrity($choice->getMaxHullIntegrity());
+        $playerShip->setShields($choice->getShields());
+        $playerShip->setMaxShields($choice->getMaxShields());
+        $playerShip->setMissileDamage($choice->getMissileDamage());
+        $playerShip->setLaserDamage($choice->getLaserDamage());
     }
 
     public function TakeAction(CLImate $cli, Collection $enemies)
@@ -168,7 +172,6 @@ class Ship
             $this->setHullIntegrity(($this->getHullIntegrity()-$damage));
         }
 
-
         if($this->getShields()>0)
         {
             if(!$isLaser)
@@ -192,7 +195,6 @@ class Ship
     }
 
 
-
     public function playerAttacksWithMissile(Ship $enemyShip)
     {
         $enemyShip->takeDamage($this->getMissileDamage(),false);
@@ -209,18 +211,14 @@ class Ship
 
         if($result == 1)
         {
-            //"Enemy attacks Player with laser"
             $playerShip->takeDamage($this->getLaserDamage(),true);
             $cli->out("Player was attacked by ".$this->getName()." for ".$this->getLaserDamage()." laser damage!");
         }
         if($result == 2)
         {
-            //"Enemy attacks Player with missile"
             $playerShip->takeDamage($this->getMissileDamage(),false);
             $cli->out("Player was attacked by ".$this->getName()." for ".$this->getMissileDamage()." missile damage! (Damage halved against shields)");
-
         }
     }
-
 
 }
