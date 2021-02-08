@@ -24,9 +24,4 @@ class MainMenu extends Menu
         $this->displayMenu();
         $this->handleMenu();
     }
-
-    public function getResult(): string
-    {
-        return $this->choice;
-    }
 }

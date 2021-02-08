@@ -13,6 +13,6 @@ abstract class BaseGameSave
     public int $fuel = 100;
     public ?string $team = null;
     public string $currentPlanet = "triton";
-    public ?string $targetPlanet = null;
-    public string $missionId = "mission1";
+    public string $targetPlanet = "target";
+    public string $missionId = "intro";
 }

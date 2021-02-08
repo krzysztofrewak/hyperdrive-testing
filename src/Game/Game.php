@@ -12,12 +12,10 @@ class Game
     use IntegrityController;
 
     public GameSave $gameSave;
-    private GameAssetsBuilder $builder;
 
     public function __construct(GameSave $gameSave)
     {
         $this->gameSave = $gameSave;
-        $this->builder = new GameAssetsBuilder();
         $this->toggleInGameState();
     }
 }

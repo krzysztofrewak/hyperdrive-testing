@@ -22,4 +22,9 @@ abstract class Menu implements MenuInterface
     {
         $this->choice = $this->cli->radio("Select option", $this->options)->prompt();
     }
+
+    public function getResult(): string
+    {
+        return $this->choice;
+    }
 }

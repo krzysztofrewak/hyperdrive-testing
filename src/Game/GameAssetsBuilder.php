@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Hyperdrive\Game;
 
 use Hyperdrive\GalaxyAtlasBuilder;
-use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
 
 class GameAssetsBuilder
 {
-    private HyperdriveNavigator $hyperdrive;
+    public HyperdriveNavigator $hyperdrive;
 
     public function __construct()
     {
