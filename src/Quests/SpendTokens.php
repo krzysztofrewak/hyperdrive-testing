@@ -22,8 +22,8 @@ class SpendTokens implements TasksInterface
 
     public function missionStatement(SpaceShip $ship, Person $person)
     {
-        echo "\nYou spend 15 tokens\n";
         if ($this->tokenCount == 15 ){
+            echo "\nYou spend 15 tokens\n";
             $this->choosePrize($ship,$person);
             $this->tokenCount = 0;
         }

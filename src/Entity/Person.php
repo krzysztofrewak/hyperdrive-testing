@@ -55,6 +55,9 @@ class Person
             case 3:
                 $trap->enemyOnWay($ship, $quest, $person);
                 break;
+            case 4:
+                $trap->quiz($ship);
+                break;
         }
 
     }

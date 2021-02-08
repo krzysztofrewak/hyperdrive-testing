@@ -21,8 +21,8 @@ class VisitPlanets implements TasksInterface
 
     public function missionStatement(SpaceShip $ship, Person $person)
     {
-        echo "\nYou've visited 5 planets\n";
         if ($this->countPlanet == 5) {
+            echo "\nYou've visited 5 planets\n";
             $this->choosePrize($ship,$person);
             $this->countPlanet = 0;
         }

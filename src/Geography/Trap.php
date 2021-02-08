@@ -9,6 +9,7 @@ use Hyperdrive\Entity\Quest;
 use Hyperdrive\Fight\Combat;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Ship\SpaceShip;
+use Illuminate\Support\Facades\Http;
 use League\CLImate\CLImate;
 
 class Trap {
@@ -27,7 +28,7 @@ class Trap {
         while(true)
         {
             $cli->info("unloading in progress ...");
-            sleep(5000);
+            sleep(5);
             $cli->info("everything is ready!");
         }
     }
@@ -77,8 +78,6 @@ class Trap {
                 $cli->info("\nYou have defeated the enemy!");
 
                 $quest->getDefeatEnemy()->missionStatement($ship, $person);
-                // zabiłeś wroga
-                // Defeat Enemy BONUS
                 break;
             }else {
                 $cli->info("\nEnemy has defeated you!");
@@ -109,6 +108,47 @@ class Trap {
             $person->setCash($rand);
             echo "Cash +".$rand."$";
         }
+    }
+
+    public function quiz(SpaceShip $ship){
+        $cli = new CLImate();
+        $ch = curl_init();
+        $url = 'https://opentdb.com/api.php?amount=1&type=multiple';
+
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+
+        $resp = curl_exec($ch);
+        if($e = curl_error($ch)){
+            echo $e;
+        }else {
+            $decoded = json_decode($resp);
+            $answers = [];
+            $correctAnswer = $decoded->{"results"}[0]->{"correct_answer"};
+            array_push($answers, $decoded->{"results"}[0]->{"incorrect_answers"});
+            array_push($answers[0], $correctAnswer);
+            shuffle($answers[0]);
+//            print_r("Correct: ".$correctAnswer."\n");
+            $question = utf8_encode($decoded->{"results"}[0]->{"question"});
+            $options = [
+                $answers[0][0] => utf8_encode($answers[0][0]),
+                $answers[0][1] => utf8_encode($answers[0][1]),
+                $answers[0][2] => utf8_encode($answers[0][2]),
+                $answers[0][3] => utf8_encode($answers[0][3]),
+                ];
+            $result = $cli->radio("To advance to the next planet you must answer the question: \n".$question, $options)->prompt();
+            if($result === $correctAnswer){
+                $cli->info("Good answer, you can move on !");
+            } else {
+                $damage = rand(5,10);
+                $ship->setCondition(-$damage);
+                $cli->info("wrong answer, you take damage: -".$damage);
+                echo "Ship condition: ".$ship->getCondition()."\n"."the correct answer is : ".$correctAnswer."\n";
+            }
+        }
+
+        curl_close($ch);
+
     }
 
 }

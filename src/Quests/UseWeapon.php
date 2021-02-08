@@ -22,6 +22,7 @@ class UseWeapon implements TasksInterface
     public function missionStatement($ship, $person)
     {
         if ($this->weaponCount == 3) {
+            echo "\nYou use weapons 3 times\n";
             $this->weaponCount = 0;
             $this->choosePrize($ship, $person);
         }

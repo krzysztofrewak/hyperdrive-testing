@@ -35,6 +35,8 @@ $spaceShip->setTarget($planetToTransportItem);
 $spaceShip->setItemToTransport("Natrium");
 $cli->info("Target to transport ".$spaceShip->getItemToTransport(). " is ".$spaceShip->getTarget()."\n");
 
+$trap->quiz($spaceShip);
+
 while (true) {
     $person->trap($hyperdrive,$spaceShip,$quest,$person);
     $spaceShip->setFuel(rand(-2,-8));
