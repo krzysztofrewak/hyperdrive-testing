@@ -40,8 +40,15 @@ class QuestLog
 
     public function addQuests(HyperdriveNavigator $hyperdrive)
     {
-        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false,false,2500));
-        $this->addQuest(new Quest($this->getRandomCargo(),$hyperdrive->getRandomPlanet(),false,false,2500));
+        for ($i = 0; $i < 2; $i++)
+        {
+            $this->addQuest(new Quest($this->getRandomCargo(), $hyperdrive->getRandomPlanet(), false, false, 2500, $this->generateReward()));
+        }
+    }
+
+    public function generateReward(): int
+    {
+        return $reward = rand(100, 500)+1000;
     }
 
     public function getRandomCargo(): Cargo
@@ -57,6 +64,9 @@ class QuestLog
             $cli->out("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
             $cli->out("Destination: ".$this->getQuests()->get($i)->getDestination());
             $cli->out("Completed: ".$this->getQuests()->get($i)->completionToString());
+            $cli->out("Type: ".$this->getQuests()->get($i)->mainToString());
+            $cli->out("EXP: ".$this->getQuests()->get($i)->getExp());
+            $cli->out("Reward in Credits: ".$this->getQuests()->get($i)->getReward());
             $cli->out("");
         }
     }

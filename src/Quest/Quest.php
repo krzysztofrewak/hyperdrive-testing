@@ -17,6 +17,7 @@ class Quest
     private Bool $completed = false;
     private Bool $main = false;
     private int $exp;
+    private int $reward;
 
     /**
      * Quest constructor.
@@ -25,24 +26,36 @@ class Quest
      * @param bool $completed
      * @param bool $main
      * @param int $exp
+     * @param int $reward
      */
-    public function __construct(Cargo $cargo, Planet $destination, bool $completed, bool $main, int $exp)
+    public function __construct(Cargo $cargo, Planet $destination, bool $completed, bool $main, int $exp, int $reward)
     {
         $this->cargo = $cargo;
         $this->destination = $destination;
         $this->completed = $completed;
         $this->main = $main;
         $this->exp = $exp;
+        $this->reward = $reward;
     }
 
 
     public function completionToString() :string
     {
-        if($this->isCompleted() == false){
+        if(!$this->isCompleted()){
             return "No";
         }
         else{
             return "Yes";
+        }
+    }
+
+    public function mainToString() :string
+    {
+        if(!$this->isMain()){
+            return "Side Quest";
+        }
+        else{
+            return "Main Quest";
         }
     }
 
@@ -92,6 +105,54 @@ class Quest
     public function setCompleted(bool $completed): void
     {
         $this->completed = $completed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMain(): bool
+    {
+        return $this->main;
+    }
+
+    /**
+     * @param bool $main
+     */
+    public function setMain(bool $main): void
+    {
+        $this->main = $main;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExp(): int
+    {
+        return $this->exp;
+    }
+
+    /**
+     * @param int $exp
+     */
+    public function setExp(int $exp): void
+    {
+        $this->exp = $exp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReward(): int
+    {
+        return $this->reward;
+    }
+
+    /**
+     * @param int $reward
+     */
+    public function setReward(int $reward): void
+    {
+        $this->reward = $reward;
     }
 
 
