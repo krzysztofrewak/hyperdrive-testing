@@ -25,12 +25,12 @@ class Event
         if($random == 7)
         {
             //story
-            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$randomPlanet,false));
+            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$randomPlanet,false,false,2500));
         }
         if($random == 8)
         {
             //oh no asteroids
-            $fuelLost = 30 - (5 * $player->getSkill());
+            $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
         }
         if($random == 9)

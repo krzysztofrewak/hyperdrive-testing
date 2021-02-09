@@ -35,7 +35,7 @@ class Combat
                 }
             }
             if ($playerShip->getHullIntegrity() <= 0) {
-                $cli->info("Defeat! Your ship has been destroyed. Your journey has come to an end...");
+                $cli->info("Defeat! Your ship has been destroyed. Your journey has come to an end.");
                 exit(0);
             }
             if ($aliveEnemies == 0) {
@@ -54,7 +54,7 @@ class Combat
         if ($result === "Land")
         {
             //lose fuel, take damage, land on planet
-            $fuelLost = 50 - (5 * $player->getSkill());
+            $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
 
             for ($i = 0; $i < $enemies->count(); $i++)

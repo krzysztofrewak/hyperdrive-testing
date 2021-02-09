@@ -4,6 +4,7 @@ namespace Hyperdrive\Quest;
 
 use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Pilot\Pilot;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 
@@ -60,13 +61,14 @@ class QuestLog
         }
     }
 
-    public function checkIfCompleted(Planet $planet) :void
+    public function checkIfCompleted(Pilot $player,Planet $planet,CLImate $cli) :void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++)
         {
             if($this->getQuests()->get($i)->getDestination() === $planet)
             {
                 $this->getQuests()->get($i)->setCompleted(true);
+                $player->checkForLevelUp($cli);
             }
         }
     }

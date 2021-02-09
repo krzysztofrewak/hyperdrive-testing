@@ -6,6 +6,7 @@ namespace Hyperdrive\Pilot;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use League\CLImate\CLImate;
 
 
 class Pilot
@@ -33,9 +34,25 @@ class Pilot
         $this->exp = $exp;
     }
 
-    public function levelUp(): void
+    public function checkForLevelUp(CLImate $cli): void
     {
-        //if more than 5000 exp then remove 5000 and level up skill
+
+        while($this->getExp() >= 5000)
+        {
+
+            $this->setExp($this->getExp()-5000);
+            $this->setSkill($this->getSkill()+1);
+            $cli->info("You leveled up!");
+            $cli->info("Your piloting skills have increased!");
+            $cli->out("Your current skill: ".$this->getSkill());
+            $rand = rand(1,3);
+            if($rand==3)
+            {
+                $this->setReputation($this->getReputation()+1);
+                $cli->info("Your reputation throughout the galaxy has increased!");
+                $cli->out("Your current reputation: ".$this->getReputation());
+            }
+        }
     }
 
     public function choosePilot(Pilot $player, Pilot $choice): void
@@ -43,22 +60,6 @@ class Pilot
         $player->setName($choice->getName());
         $player->setReputation($choice->getReputation());
         $player->setSkill($choice->getSkill());
-    }
-
-    /**
-     * @return int
-     */
-    public function getSkill(): int
-    {
-        return $this->skill;
-    }
-
-    /**
-     * @param int $skill
-     */
-    public function setSkill(int $skill): void
-    {
-        $this->skill = $skill;
     }
 
     /**
@@ -92,6 +93,56 @@ class Pilot
     {
         $this->reputation = $reputation;
     }
+
+    /**
+     * @return int
+     */
+    public function getSkill(): int
+    {
+        return $this->skill;
+    }
+
+    /**
+     * @param int $skill
+     */
+    public function setSkill(int $skill): void
+    {
+        $this->skill = $skill;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCredits(): int
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param int $credits
+     */
+    public function setCredits(int $credits): void
+    {
+        $this->credits = $credits;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExp(): int
+    {
+        return $this->exp;
+    }
+
+    /**
+     * @param int $exp
+     */
+    public function setExp(int $exp): void
+    {
+        $this->exp = $exp;
+    }
+
+
 
 
 

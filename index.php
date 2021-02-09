@@ -19,7 +19,7 @@ $cli = new CLImate();
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 $player = new Pilot("placeholder",0,0,0,0);
-$playerShip = new Ship("placeholder",0,0,0,0,0,0,0,0);
+$playerShip = new Ship("placeholder",0,0,0,0,0);
 $selection = new CharacterSelection();
 $selection->characterSelection($player,$playerShip,$cli);
 $questlog = new QuestLog();
@@ -34,8 +34,10 @@ while (true) {
     }
 
     $cli->info("You're on the $planet. You can jump to:");
+    $cli->info("Remaining fuel: ".$playerShip->getFuel());
+
     $options = $planet->getNeighbours()->toArray() + ["" => "[show more option]"];
-    $result = $cli->radio("Select jump target planet", $options)->prompt();
+    $result = $cli->radio("Select a planet to jump to:", $options)->prompt();
 
     if (!$result) {
         $options = ["return" => "return","quests" => "show quests", "quit" => "quit application"];
@@ -50,6 +52,7 @@ while (true) {
         continue;
     }
 
-    $hyperdrive->jumpTo($result);
-    $questlog->checkIfCompleted($result);
+    $hyperdrive->jumpTo($playerShip,$result);
+    $questlog->checkIfCompleted($player,$result,$cli);
+
 }

@@ -22,14 +22,14 @@ class Ship
     private int $missileDamage;
     private int $laserDamage;
 
-    public function __construct(string $name, int $fuel, int $maxFuel, int $hullIntegrity, int $maxHullIntegrity, int $shields, int $maxShields, int $missileDamage, int $laserDamage)
+    public function __construct(string $name, int $maxFuel, int $maxHullIntegrity, int $maxShields, int $missileDamage, int $laserDamage)
     {
         $this->name = $name;
-        $this->fuel = $fuel;
+        $this->fuel = $maxFuel;
         $this->maxFuel = $maxFuel;
-        $this->hullIntegrity = $hullIntegrity;
+        $this->hullIntegrity = $maxHullIntegrity;
         $this->maxHullIntegrity = $maxHullIntegrity;
-        $this->shields = $shields;
+        $this->shields = $maxShields;
         $this->maxShields = $maxShields;
         $this->missileDamage = $missileDamage;
         $this->laserDamage = $laserDamage;
@@ -125,11 +125,26 @@ class Ship
         $this->laserDamage = $laserDamage;
     }
 
+    public function checkFuel(): void
+    {
+        $cli = new CLImate();
+        if($this->getFuel() <= 10)
+        {
+            $cli->out("Fuel levels low! Refuel at the earliest convenience!");
+        }
+        if($this->getFuel() <= 0)
+        {
+            $cli->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
+            $cli->info("Now you are destined to float through the space without an end... ");
+            $cli->info("Your journey has come to an end.");
+        }
+    }
+
     public function chooseShip(Ship $playerShip, Ship $choice): void
     {
         $playerShip->setName($choice->getName());
         $playerShip->setFuel($choice->getFuel());
-        $playerShip->setMaxFuel($choice->getFuel());
+        $playerShip->setMaxFuel($choice->getMaxFuel());
         $playerShip->setHullIntegrity($choice->getHullIntegrity());
         $playerShip->setMaxHullIntegrity($choice->getMaxHullIntegrity());
         $playerShip->setShields($choice->getShields());
