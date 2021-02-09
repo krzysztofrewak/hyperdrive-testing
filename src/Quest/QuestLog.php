@@ -79,6 +79,7 @@ class QuestLog
             {
                 $this->getQuests()->get($i)->setCompleted(true);
                 $player->setExp(($player->getExp() + $this->getQuests()->get($i)->getExp()));
+                $player->setCredits(($player->getCredits() + $this->getQuests()->get($i)->getReward()));
                 $player->checkForLevelUp($cli);
             }
         }
