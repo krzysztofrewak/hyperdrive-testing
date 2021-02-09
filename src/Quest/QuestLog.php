@@ -68,6 +68,7 @@ class QuestLog
             if($this->getQuests()->get($i)->getDestination() === $planet)
             {
                 $this->getQuests()->get($i)->setCompleted(true);
+                $player->setExp(($player->getExp() + $this->getQuests()->get($i)->getExp()));
                 $player->checkForLevelUp($cli);
             }
         }
