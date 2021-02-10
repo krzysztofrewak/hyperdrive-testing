@@ -7,10 +7,11 @@ namespace Hyperdrive\Ship;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Hyperdrive\Pilot\Pilot;
+use Hyperdrive\Output\Output;
 use League\CLImate\CLImate;
 use Nette\Utils\ArrayList;
 
-class Ship
+class Ship extends Output
 {
     private String $name;
     private int $fuel;
@@ -137,6 +138,8 @@ class Ship
             $cli->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
             $cli->info("Now you are destined to float through the space without an end... ");
             $cli->info("Your journey has come to an end.");
+            $this->write("Super fajnie");
+            $this->write("Super fajnie 2");
         }
     }
 
@@ -223,7 +226,6 @@ class Ship
     public function enemyAttacksPlayer(Ship $playerShip,CLImate $cli)
     {
         $result = rand(1,2);
-
         if($result == 1)
         {
             $playerShip->takeDamage($this->getLaserDamage(),true);

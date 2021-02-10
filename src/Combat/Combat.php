@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Hyperdrive\Combat;
 
 use Hyperdrive\Geography\Planet;
+use Hyperdrive\Output\Output;
+use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Ship\Ship;
 use Illuminate\Support\Collection;
@@ -13,7 +15,7 @@ use League\CLImate\CLImate;
 class Combat
 {
 
-    public function fight(Ship $playerShip,Collection $enemies,CLImate $cli): void
+    public function fight(Ship $playerShip, Collection $enemies, CLImate $cli): void
     {
         $aliveEnemies = $enemies->count();
 
@@ -71,7 +73,5 @@ class Combat
             $this->fight($playerShip,$enemies,$cli);
         }
     }
-
-
 
 }

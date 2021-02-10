@@ -17,11 +17,11 @@ use League\CLImate\CLImate;
 $cli = new CLImate();
 
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
-$hyperdrive = new HyperdriveNavigator($atlas);
-$player = new Pilot("placeholder",0,0,0,0);
-$playerShip = new Ship("placeholder",0,0,0,0,0);
-$selection = new CharacterSelection();
-$selection->characterSelection($player,$playerShip,$cli);
+$hyperdrive = new HyperdriveNavigator(atlas: $atlas);
+$player = new Pilot(name: "placeholder", reputation: 0, skill: 0, credits: 0, exp: 0);
+$playerShip = new Ship(name: "placeholder", maxFuel: 0, maxHullIntegrity: 0, maxShields: 0, missileDamage: 0, laserDamage: 0);
+$selection = new CharacterSelection(cli: $cli);
+$selection->characterSelection($player,$playerShip);
 $questlog = new QuestLog();
 $questlog->addQuests($hyperdrive);
 

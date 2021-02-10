@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Pilot;
 
+use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Ship\Ship;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 
 
-class CharacterSelection
+class CharacterSelection implements OutputContract
 {
 
     private Collection $pilots;
     private Collection $ships;
+    protected CLImate $cli;
 
     /**
      * CharacterSelection constructor.
+     * @param CLImate $cli
      */
-    public function __construct()
+
+    public function __construct(CLImate $cli)
     {
         $this->pilots = collect();
         $this->ships = collect();
         $this->addPilots();
         $this->addShips();
+        $this->cli = $cli;
     }
+
 
     public function addPilot(Pilot $pilot): void
     {
@@ -35,24 +41,24 @@ class CharacterSelection
 
     public function addPilots(): void
     {
-        $this->addPilot(new Pilot("Atton Rand",5,5,3000,0));
-        $this->addPilot(new Pilot("Jarrnes Corring",3,3,2500,0));
-        $this->addPilot(new Pilot("Garfinn Newdor",0,2,2000,0));
+        $this->addPilot(new Pilot(name: "Atton Rand", reputation: 5, skill: 5, credits: 3000, exp: 0));
+        $this->addPilot(new Pilot(name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 2500, exp: 0));
+        $this->addPilot(new Pilot(name: "Garfinn Newdor", reputation: 0, skill: 2, credits: 2000, exp: 0));
     }
 
-    public function characterSelection(Pilot $player,Ship $playerShip, CLImate $cli): void
+    public function characterSelection(Pilot $player,Ship $playerShip): void
     {
         for ($i = 0; $i < $this->getPilots()->count(); $i++)
         {
-            $cli->info("Pilot #".$i.":");
-            $cli->out("Name: ".$this->getPilots()->get($i)->getName());
-            $cli->out("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
-            $cli->out("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
-            $cli->out("");
+            $this->info("Pilot #".$i.":");
+            $this->write("Name: ".$this->getPilots()->get($i)->getName());
+            $this->write("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
+            $this->write("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
+            $this->write("");
         }
 
         $options = ["Atton" => "I'm choosing Atton", "Jarrnes" => "I'm choosing Jarrnes", "Garfinn" => "I'm choosing Garfinn"];
-        $result = $cli->radio("Choose your Pilot", $options)->prompt();
+        $result = $this->cli->radio("Choose your Pilot", $options)->prompt();
 
         if ($result === "Atton") {
             $player->choosePilot($player,$this->getPilots()->get(0));
@@ -66,17 +72,17 @@ class CharacterSelection
 
         for ($i = 0; $i < $this->getShips()->count(); $i++)
         {
-            $cli->info("Ship #".$i.":");
-            $cli->out("Name: ".$this->getShips()->get($i)->getName());
-            $cli->out("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
-            $cli->out("Max Shields ".$this->getShips()->get($i)->getMaxShields());
-            $cli->out("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
-            $cli->out("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
-            $cli->out("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
+            $this->info("Ship #".$i.":");
+            $this->write("Name: ".$this->getShips()->get($i)->getName());
+            $this->write("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
+            $this->write("Max Shields ".$this->getShips()->get($i)->getMaxShields());
+            $this->write("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
+            $this->write("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
+            $this->write("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
         }
 
         $options = ["EbonHawk" => "I'm choosing Ebon Hawk", "Typhoon" => "I'm choosing Typhoon", "Cyclone" => "I'm choosing Cyclone"];
-        $result = $cli->radio("Choose your Ship", $options)->prompt();
+        $result = $this->cli->radio("Choose your Ship", $options)->prompt();
 
         if ($result === "EbonHawk") {
             $playerShip->chooseShip($playerShip,$this->getShips()->get(0));
@@ -88,18 +94,18 @@ class CharacterSelection
             $playerShip->chooseShip($playerShip,$this->getShips()->get(2));
         }
 
-        $cli->info("Your character:");
-        $cli->out("Name: ".$player->getName());
-        $cli->out("Reputation: ".$player->getReputation());
-        $cli->out("Skill: ".$player->getSkill());
+        $this->info("Your character:");
+        $this->write("Name: ".$player->getName());
+        $this->write("Reputation: ".$player->getReputation());
+        $this->write("Skill: ".$player->getSkill());
 
-        $cli->info("Your ship:");
-        $cli->out("Name: ".$playerShip->getName());
-        $cli->out("Max Fuel: ".$playerShip->getMaxFuel());
-        $cli->out("Max Shields ".$playerShip->getMaxShields());
-        $cli->out("Max Hull Integrity ".$playerShip->getMaxHullIntegrity());
-        $cli->out("Missile Damage: ".$playerShip->getMissileDamage());
-        $cli->out("Laser Damage ".$playerShip->getLaserDamage());
+        $this->info("Your ship:");
+        $this->write("Name: ".$playerShip->getName());
+        $this->write("Max Fuel: ".$playerShip->getMaxFuel());
+        $this->write("Max Shields ".$playerShip->getMaxShields());
+        $this->write("Max Hull Integrity ".$playerShip->getMaxHullIntegrity());
+        $this->write("Missile Damage: ".$playerShip->getMissileDamage());
+        $this->write("Laser Damage ".$playerShip->getLaserDamage());
     }
 
     /**
@@ -122,9 +128,10 @@ class CharacterSelection
 
     private function addShips()
     {
-        $this->addShip(new Ship("Ebon Hawk",100,100,150,150,150,150,80,60));
-        $this->addShip(new Ship("Typhoon",120,120,200,200,100,100,100,60));
-        $this->addShip(new Ship("Cyclone",80,80,100,100,200,200,70,60));
+        $this->addShip(new Ship(name: "Ebon Hawk", maxFuel: 100, maxHullIntegrity: 150, maxShields: 150, missileDamage: 80, laserDamage: 60));
+        $this->addShip(new Ship(name: "Typhoon", maxFuel: 120, maxHullIntegrity: 200, maxShields: 100, missileDamage: 100, laserDamage: 60));
+        $this->addShip(new Ship(name: "Cyclone", maxFuel: 80, maxHullIntegrity: 100, maxShields: 200, missileDamage: 70, laserDamage: 60));
+
     }
 
     private function addShip(Ship $ship)
@@ -132,5 +139,13 @@ class CharacterSelection
         $this->ships->add($ship);
     }
 
+    function write(string $message)
+    {
+        $this->cli->out($message);
+    }
 
+    function info(string $message)
+    {
+        $this->cli->info($message);
+    }
 }

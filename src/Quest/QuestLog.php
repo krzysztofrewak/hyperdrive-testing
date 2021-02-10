@@ -22,14 +22,14 @@ class QuestLog
 
     private function generateCargo(): void
     {
-        $this->cargo->add(new Cargo("Weapons"));
-        $this->cargo->add(new Cargo("Armor"));
-        $this->cargo->add(new Cargo("Fuel"));
-        $this->cargo->add(new Cargo("Mechanical Parts"));
-        $this->cargo->add(new Cargo("Droids"));
-        $this->cargo->add(new Cargo("Medicine"));
-        $this->cargo->add(new Cargo("Alcohol"));
-        $this->cargo->add(new Cargo("Drugs"));
+        $this->cargo->add(new Cargo(name: "Weapons"));
+        $this->cargo->add(new Cargo(name: "Armor"));
+        $this->cargo->add(new Cargo(name: "Fuel"));
+        $this->cargo->add(new Cargo(name: "Mechanical Parts"));
+        $this->cargo->add(new Cargo(name: "Droids"));
+        $this->cargo->add(new Cargo(name: "Medicine"));
+        $this->cargo->add(new Cargo(name: "Alcohol"));
+        $this->cargo->add(new Cargo(name: "Drugs"));
         $this->cargo->shuffle();
     }
 
@@ -42,7 +42,7 @@ class QuestLog
     {
         for ($i = 0; $i < 2; $i++)
         {
-            $this->addQuest(new Quest($this->getRandomCargo(), $hyperdrive->getRandomPlanet(), false, false, 2500, $this->generateReward()));
+            $this->addQuest(new Quest(cargo: $this->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $this->generateReward()));
         }
     }
 

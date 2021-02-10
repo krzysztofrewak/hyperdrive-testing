@@ -25,7 +25,7 @@ class Event
         if($random == 7)
         {
             //story
-            $questlog->addQuest(new Quest($questlog->getRandomCargo(),$randomPlanet,false,false,2500));
+            $questlog->addQuest(new Quest(cargo: $questlog->getRandomCargo(), destination: $randomPlanet, completed: false, main: false, exp: 2500, reward: $questlog->generateReward()));
         }
         if($random == 8)
         {

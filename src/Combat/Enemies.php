@@ -30,16 +30,16 @@ class Enemies
         switch ($level)
         {
             case 1:
-                $this->enemyShips->add(new Ship("Weakest ship",0,0,30,30,50,50,20,15));
-                $this->enemyShips->add(new Ship("Weakest ship",0,0,30,30,50,50,20,15));
-                $this->enemyShips->add(new Ship("Weakest ship",0,0,30,30,50,50,20,15));
+                $this->enemyShips->add(new Ship(name: "Weakest ship",maxFuel: 0, maxHullIntegrity: 30,maxShields: 50,missileDamage: 20,laserDamage: 15));
+                $this->enemyShips->add(new Ship(name: "Weakest ship",maxFuel: 0, maxHullIntegrity: 30,maxShields: 50,missileDamage: 20,laserDamage: 15));
+                $this->enemyShips->add(new Ship(name: "Weakest ship",maxFuel: 0, maxHullIntegrity: 30,maxShields: 50,missileDamage: 20,laserDamage: 15));
                 break;
             case 2:
-                $this->enemyShips->add(new Ship("Weak ship",0,0,80,80,70,70,40,30));
-                $this->enemyShips->add(new Ship("Weak ship",0,0,80,80,70,70,40,30));
+                $this->enemyShips->add(new Ship(name: "Weak ship",maxFuel: 0, maxHullIntegrity: 80,maxShields: 70,missileDamage: 40,laserDamage: 30));
+                $this->enemyShips->add(new Ship(name: "Weak ship",maxFuel: 0, maxHullIntegrity: 80,maxShields: 70,missileDamage: 40,laserDamage: 30));
                 break;
             case 3:
-                $this->enemyShips->add(new Ship("Medium Ship",0,0,100,50,80,80,50,40));
+                $this->enemyShips->add(new Ship(name: "Medium ship",maxFuel: 0, maxHullIntegrity: 100,maxShields: 80, missileDamage: 50, laserDamage: 40));
                 break;
             default:
                 break;
