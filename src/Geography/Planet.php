@@ -14,12 +14,10 @@ use Illuminate\Support\Str;
  */
 class Planet
 {
-    protected string $name;
     protected Collection $neighbours;
 
-    public function __construct(string $name)
+    public function __construct(protected string $name)
     {
-        $this->name = $name;
         $this->neighbours = collect();
     }
 

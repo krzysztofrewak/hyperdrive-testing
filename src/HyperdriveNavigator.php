@@ -8,12 +8,10 @@ use Hyperdrive\Geography\Planet;
 
 class HyperdriveNavigator
 {
-    protected GalaxyAtlas $atlas;
     protected ?Planet $currentPlanet;
 
-    public function __construct(GalaxyAtlas $atlas)
+    public function __construct(protected GalaxyAtlas $atlas)
     {
-        $this->atlas = $atlas;
     }
 
     public function getCurrentPlanet(): Planet

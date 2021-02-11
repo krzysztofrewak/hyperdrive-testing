@@ -13,12 +13,10 @@ use Illuminate\Support\Collection;
  */
 class Route
 {
-    protected string $name;
     protected Collection $planets;
 
-    public function __construct(string $name)
+    public function __construct(protected string $name)
     {
-        $this->name = $name;
         $this->planets = collect();
     }
 

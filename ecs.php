@@ -5,6 +5,8 @@ declare(strict_types=1);
 use KrzysztofRewak\PhpCsFixer\DoubleQuoteFixer\DoubleQuoteFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer;
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
@@ -23,6 +25,8 @@ $skipped = [
     SingleQuoteFixer::class => null,
     ClassAttributesSeparationFixer::class => null,
     NotOperatorWithSuccessorSpaceFixer::class => null,
+    BinaryOperatorSpacesFixer::class => null,
+    NullableTypeDeclarationForDefaultNullValueFixer::class => null,
 ];
 
 $rules = [

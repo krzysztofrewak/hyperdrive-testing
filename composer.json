@@ -2,7 +2,7 @@
 	"name": "krzysztofrewak/hyperdrive-testing",
 	"description": "Hiperdrive testing",
 	"keywords": [
-		"PHP 7.4",
+		"PHP 8.0",
 		"Behat",
 		"Docker",
 		"Composer",
@@ -16,7 +16,7 @@
 		}
 	},
 	"require": {
-		"php": "^7.4",
+        "php": "^8.0",
 		"symfony/yaml": "^5.1",
 		"illuminate/support": "^8.16",
 		"league/climate": "^3.6"
