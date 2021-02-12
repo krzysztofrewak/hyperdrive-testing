@@ -11,7 +11,7 @@ use Hyperdrive\Output\Output;
 use League\CLImate\CLImate;
 use Nette\Utils\ArrayList;
 
-class Ship extends Output
+class Ship
 {
     private String $name;
     private int $fuel;
@@ -138,9 +138,18 @@ class Ship extends Output
             $cli->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
             $cli->info("Now you are destined to float through the space without an end... ");
             $cli->info("Your journey has come to an end.");
-            $this->write("Super fajnie");
-            $this->write("Super fajnie 2");
         }
+    }
+
+    public function showStats(CLImate $cli)
+    {
+        $cli->info("Your ship:");
+        $cli->out("Name: ".$this->getName());
+        $cli->out("Max Fuel: ".$this->getMaxFuel());
+        $cli->out("Max Shields ".$this->getMaxShields());
+        $cli->out("Max Hull Integrity ".$this->getMaxHullIntegrity());
+        $cli->out("Missile Damage: ".$this->getMissileDamage());
+        $cli->out("Laser Damage ".$this->getLaserDamage());
     }
 
     public function chooseShip(Ship $playerShip, Ship $choice): void

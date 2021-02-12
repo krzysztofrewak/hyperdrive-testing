@@ -18,7 +18,7 @@ use League\CLImate\CLImate;
 class Event
 {
 
-    public function randomEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
+    public function randomSpaceEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
     {
         $random = rand(1,10);
 
@@ -44,6 +44,11 @@ class Event
         {
            //greater events
         }
+
+    }
+
+    public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
+    {
 
     }
 

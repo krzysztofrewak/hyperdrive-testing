@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Hyperdrive\Ship\Ship;
 use Hyperdrive\Combat\Combat;
 use Hyperdrive\Quest\QuestLog;
+use Hyperdrive\Geography\PlanetSurface;
 use League\CLImate\CLImate;
 
 $cli = new CLImate();
@@ -40,11 +41,15 @@ while (true) {
     $result = $cli->radio("Select a planet to jump to:", $options)->prompt();
 
     if (!$result) {
-        $options = ["return" => "return","quests" => "show quests", "quit" => "quit application"];
+        $options = ["return" => "return","quests" => "show quests","land" => "land on current planet", "quit" => "quit application"];
         $result = $cli->radio("Select option", $options)->prompt();
 
         if ($result === "quests") {
             $questlog->showQuests($cli);
+        }
+        if ($result === "land") {
+            $surface = new PlanetSurface(cli: $cli);
+            $surface->whatToDo(hyperdrive: $hyperdrive, playerShip: $playerShip,player: $player,questlog: $questlog);
         }
         if ($result === "quit") {
             break;

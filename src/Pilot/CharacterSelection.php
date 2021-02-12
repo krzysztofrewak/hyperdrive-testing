@@ -16,7 +16,7 @@ class CharacterSelection implements OutputContract
 
     private Collection $pilots;
     private Collection $ships;
-    protected CLImate $cli;
+    private CLImate $cli;
 
     /**
      * CharacterSelection constructor.
@@ -54,6 +54,7 @@ class CharacterSelection implements OutputContract
             $this->write("Name: ".$this->getPilots()->get($i)->getName());
             $this->write("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
             $this->write("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
+            $this->write("Credits: ".$this->getPilots()->get($i)->getCredits());
             $this->write("");
         }
 
@@ -94,18 +95,10 @@ class CharacterSelection implements OutputContract
             $playerShip->chooseShip($playerShip,$this->getShips()->get(2));
         }
 
-        $this->info("Your character:");
-        $this->write("Name: ".$player->getName());
-        $this->write("Reputation: ".$player->getReputation());
-        $this->write("Skill: ".$player->getSkill());
 
-        $this->info("Your ship:");
-        $this->write("Name: ".$playerShip->getName());
-        $this->write("Max Fuel: ".$playerShip->getMaxFuel());
-        $this->write("Max Shields ".$playerShip->getMaxShields());
-        $this->write("Max Hull Integrity ".$playerShip->getMaxHullIntegrity());
-        $this->write("Missile Damage: ".$playerShip->getMissileDamage());
-        $this->write("Laser Damage ".$playerShip->getLaserDamage());
+
+
+        $playerShip->showStats($this->cli);
     }
 
     /**

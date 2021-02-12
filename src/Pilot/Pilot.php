@@ -34,6 +34,13 @@ class Pilot
         $this->exp = $exp;
     }
 
+    public function showStats(CLImate $cli)
+    {
+        $cli->info("Your character:");
+        $cli->out("Name: ".$this->getName());
+        $cli->out("Reputation: ".$this->getReputation());
+        $cli->out("Skill: ".$this->getSkill());
+    }
     public function checkForLevelUp(CLImate $cli): void
     {
 
@@ -60,8 +67,13 @@ class Pilot
         $player->setName($choice->getName());
         $player->setReputation($choice->getReputation());
         $player->setSkill($choice->getSkill());
+        $player->setCredits($choice->getCredits());
     }
 
+    public function payCredits(Int $payment): void
+    {
+        $this->setCredits($this->getCredits() - $payment);
+    }
     /**
      * @return string
      */
