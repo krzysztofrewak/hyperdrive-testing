@@ -6,8 +6,10 @@ require "./vendor/autoload.php";
 
 use Hyperdrive\Entity\Person;
 use Hyperdrive\Entity\Quest;
+use Hyperdrive\Entity\Task;
 use Hyperdrive\GalaxyAtlasBuilder;
-use Hyperdrive\Geography\Trap;
+use Hyperdrive\Traps\Pitfall;
+use Hyperdrive\Traps\Trap;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Quests\DefeatEnemy;
 use Hyperdrive\Quests\SpendTokens;
@@ -28,38 +30,22 @@ $planet = $hyperdrive->getRandomPlanet();
 $person = new Person();
 $spaceShip = new Hyperdrive\Ship\SpaceShip();
 $trap = new Trap();
+$task = new Task();
 $quest = new Quest(new DefeatEnemy(),new SpendTokens(), new UseWeapon(), new VisitPlanets());
+$pitfall = new Pitfall();
 
-$planetToTransportItem = (string)$atlas->getRandomPlanet();
-$spaceShip->setTarget($planetToTransportItem);
-$spaceShip->setItemToTransport("Natrium");
-$cli->info("Target to transport ".$spaceShip->getItemToTransport(). " is ".$spaceShip->getTarget()."\n");
-
-$trap->quiz($spaceShip);
+$task->itemToTransport($atlas,$spaceShip,$cli,$planet,$trap);
 
 while (true) {
-    $person->trap($hyperdrive,$spaceShip,$quest,$person);
-    $spaceShip->setFuel(rand(-2,-8));
-    $spaceShip->setCondition(rand(-2,-8));
     $planet = $hyperdrive->getCurrentPlanet();
-    $cli->info("".$spaceShip);
-    $quest->getVisitPlanets()->missionStatement($spaceShip,$person);
-    $quest->getVisitPlanets()->setCountPlanet(1);
-    $quest->getSpendTokens()->missionStatement($spaceShip,$person);
-    $quest->getSpendTokens()->setTokenCount($planet->getPrice());
-
+    $pitfall->trap($hyperdrive,$spaceShip,$quest,$person);
+    $task->shipInformation($spaceShip,$cli);
+    $task->questMissions($quest,$spaceShip,$person,$planet);
 
     echo "\nToken count: ".$person->getToken()."\n";
 
     if(mb_strtolower(mb_substr($planet->getName(), -1)) == 'a') {
         $trap->completeShipStatus($spaceShip,$person);
-    }
-
-    if($planet === $planetToTransportItem) {
-        if($spaceShip->getFuel()<=90) $spaceShip->setFuel(rand(1,10));
-        if($spaceShip->getCondition()<=90) $spaceShip->setCondition(rand(1,10));
-        $trap->unloading();
-        $spaceShip->setItemToTransport(null);
     }
 
     if($person->getToken() <= 0) {
@@ -91,7 +77,6 @@ while (true) {
         continue;
     }
 
-    $person->setToken(-($planet->getPrice()));
-    $person->setLogs($planet);
+    $task->setPersonItems($person, $planet);
     $hyperdrive->jumpTo($result);
 }

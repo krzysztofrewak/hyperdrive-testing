@@ -5,7 +5,7 @@ namespace Hyperdrive\Quests;
 
 
 use Hyperdrive\Entity\Person;
-use Hyperdrive\Geography\Trap;
+use Hyperdrive\Traps\Trap;
 use Hyperdrive\Interfaces\TasksInterface;
 use Hyperdrive\Ship\SpaceShip;
 

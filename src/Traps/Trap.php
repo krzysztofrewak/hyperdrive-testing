@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Geography;
+namespace Hyperdrive\Traps;
 
 use Hyperdrive\Entity\Person;
 use Hyperdrive\Entity\Quest;
 use Hyperdrive\Fight\Combat;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Ship\SpaceShip;
-use Illuminate\Support\Facades\Http;
 use League\CLImate\CLImate;
 
 class Trap {
@@ -148,6 +147,9 @@ class Trap {
         }
 
         curl_close($ch);
+    }
+
+    public function randomPitfall(){
 
     }
 

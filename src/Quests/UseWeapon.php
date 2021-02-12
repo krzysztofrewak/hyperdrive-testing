@@ -4,9 +4,8 @@
 namespace Hyperdrive\Quests;
 
 
-use Hyperdrive\Geography\Trap;
+use Hyperdrive\Traps\Trap;
 use Hyperdrive\Interfaces\TasksInterface;
-use League\CLImate\CLImate;
 
 class UseWeapon implements TasksInterface
 {

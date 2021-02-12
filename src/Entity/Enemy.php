@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Entity;
 
-
 use Hyperdrive\Geography\SpaceShip;
 use Hyperdrive\Ship\Weapon;
 use League\CLImate\CLImate;
 
 class Enemy
 {
-    protected int $power;
-    protected int $condition;
-    protected Weapon $weapon;
+    private int $power;
+    private int $condition;
+    private Weapon $weapon;
 
-    public function __construct(int $power, int $condition, Weapon $weapon)
-    {
+    public function __construct(int $power, int $condition, Weapon $weapon) {
         $this->power = $power;
         $this->condition = $condition;
         $this->weapon = $weapon;
