@@ -4,7 +4,7 @@ services:
   php:
     container_name: hyperdrive-php
     working_dir: /application
-    image: php:7.4.12-alpine
+    image: php:8.0.2-alpine
     volumes:
       - .:/application
 

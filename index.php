@@ -14,7 +14,7 @@ $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator($atlas);
 
 $target = $hyperdrive->getRandomPlanet();
-$cli->info("Your target is the $target.");
+$cli->info("\nYour target is the $target.");
 
 $planet = $hyperdrive->getRandomPlanet();
 
@@ -22,11 +22,11 @@ while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
 
     if ($planet === $target) {
-        $cli->info("You reached the $target!");
+        $cli->br()->info("You reached the $target!");
         break;
     }
 
-    $cli->info("You're on the $planet. You can jump to:");
+    $cli->br()->info("You're on the $planet. You can jump to:");
     $options = $planet->getNeighbours()->toArray() + ["" => "[show more option]"];
     $result = $cli->radio("Select jump target planet", $options)->prompt();
 
