@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Hyperdrive\GalaxyAtlas;
-use Hyperdrive\GalaxyAtlasBuilder;
+use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
+use Hyperdrive\GalaxyAtlas\GalaxyAtlasBuilder;
 use Hyperdrive\Geography\Planet;
-use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Navigator\HyperdriveNavigator;
 use PHPUnit\Framework\Assert;
 
 class ApplicationContext implements Context
@@ -21,7 +21,7 @@ class ApplicationContext implements Context
      */
     public function thereSAnAtlasBuildFromRouteArray(TableNode $table): void
     {
-        $routes = collect($table->getHash())->mapWithKeys(fn (array $route): array => [
+        $routes = collect($table->getHash())->mapWithKeys(fn(array $route): array => [
             $route["route"] => explode(", ", $route["planets"]),
         ]);
 
@@ -53,7 +53,7 @@ class ApplicationContext implements Context
     public function currentPlanetShouldHaveFollowingNeighbors(TableNode $table): void
     {
         $planet = $this->navigator->getCurrentPlanet();
-        $neighbors = $planet->getNeighbours()->map(fn (Planet $planet): string => (string)$planet);
+        $neighbors = $planet->getNeighbours()->map(fn(Planet $planet): string => (string)$planet);
 
         Assert::assertEquals($neighbors, $planet->getNeighbours());
     }

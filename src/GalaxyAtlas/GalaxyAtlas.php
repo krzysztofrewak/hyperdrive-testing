@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\GalaxyAtlas;
 
 use Hyperdrive\Geography\Planet;
 use Illuminate\Support\Str;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class GalaxyAtlas
@@ -25,6 +26,7 @@ class GalaxyAtlas
         return $this->planets[Str::slug($name)] = new Planet($name);
     }
 
+    #[Pure]
     public function getRandomPlanet(): Planet
     {
         return $this->planets[array_rand($this->planets)];

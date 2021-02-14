@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\GalaxyAtlas;
 
 use Hyperdrive\Geography\Planet;
 use Symfony\Component\Yaml\Yaml;

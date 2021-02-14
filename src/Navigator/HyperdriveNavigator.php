@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Navigator;
 
+use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
 use Hyperdrive\Geography\Planet;
 
 class HyperdriveNavigator
