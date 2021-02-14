@@ -70,6 +70,16 @@ class Pilot
         $player->setCredits($choice->getCredits());
     }
 
+    public function earnCredits(Int $payment): void
+    {
+        $this->setCredits($this->getCredits() + $payment);
+    }
+
+    public function earnXP(Int $exp): void
+    {
+        $this->setExp($this->getExp() + $exp);
+    }
+
     public function payCredits(Int $payment): void
     {
         $this->setCredits($this->getCredits() - $payment);

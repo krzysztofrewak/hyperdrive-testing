@@ -15,7 +15,7 @@ use League\CLImate\CLImate;
 class Combat
 {
 
-    public function fight(Ship $playerShip, Collection $enemies, CLImate $cli): void
+    public function fight(Pilot $player,Ship $playerShip, Collection $enemies, CLImate $cli): void
     {
         $aliveEnemies = $enemies->count();
 
@@ -43,6 +43,8 @@ class Combat
             if ($aliveEnemies == 0) {
                 $cli->info("Victory! Combat finished.");
                 $playerShip->setShields($playerShip->getMaxShields());
+                $exp = $enemies->count() * 1000;
+                $player->earnXP($exp);
                 break;
             }
         }
@@ -50,7 +52,7 @@ class Combat
 
     public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,CLImate $cli,Planet $currentPlanet): void
     {
-        $options = ["Land" => "I will try to escape and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
+        $options = ["Land" => "I will try to escape combat and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
         $result = $cli->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
         if ($result === "Land")
@@ -70,7 +72,7 @@ class Combat
         }
         if ($result === "Fight")
         {
-            $this->fight($playerShip,$enemies,$cli);
+            $this->fight($player,$playerShip,$enemies,$cli);
         }
     }
 

@@ -16,7 +16,7 @@ class PlanetSurface
 {
 
     private CLImate $cli;
-
+    private bool $jobFound;
 
     public function __construct(CLImate $cli)
     {
@@ -54,7 +54,7 @@ class PlanetSurface
 
     }
 
-    private function leavePlanet(HyperdriveNavigator $hyperdrive,Ship $playerShip)
+    private function leavePlanet(HyperdriveNavigator $hyperdrive,Ship $playerShip): void
     {
         $planet = $hyperdrive->getCurrentPlanet();
 
@@ -168,8 +168,33 @@ class PlanetSurface
 
     private function searchForJob(QuestLog $questLog,HyperdriveNavigator $hyperdrive)
     {
-        $questLog->addQuest(new Quest(cargo: $questLog->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $questLog->generateReward()));
+        if(!$this->isJobFound())
+        {
+            $questLog->addQuest(new Quest(cargo: $questLog->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $questLog->generateReward()));
+            $this->setJobFound(true);
+        }
+
     }
+
+    /**
+     * @return bool
+     */
+    public function isJobFound(): bool
+    {
+        return $this->jobFound;
+    }
+
+    /**
+     * @param bool $jobFound
+     */
+    public function setJobFound(bool $jobFound): void
+    {
+        $this->jobFound = $jobFound;
+    }
+
+
+
+
 
 
 }

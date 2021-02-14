@@ -8,9 +8,7 @@ use Hyperdrive\GalaxyAtlasBuilder;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Pilot\CharacterSelection;
 use Hyperdrive\Pilot\Pilot;
-use Illuminate\Support\Collection;
 use Hyperdrive\Ship\Ship;
-use Hyperdrive\Combat\Combat;
 use Hyperdrive\Quest\QuestLog;
 use Hyperdrive\Geography\PlanetSurface;
 use League\CLImate\CLImate;
@@ -29,10 +27,6 @@ $questlog->addQuests($hyperdrive);
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
 
-    if ($questlog->AreAllQuestsCompleted()) {
-        $cli->info("You completed all your quests!");
-        break;
-    }
 
     $cli->info("You're on the $planet. You can jump to:");
     $cli->info("Remaining fuel: ".$playerShip->getFuel());

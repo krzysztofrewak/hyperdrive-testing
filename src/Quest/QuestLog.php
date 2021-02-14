@@ -77,33 +77,26 @@ class QuestLog
         {
             if($this->getQuests()->get($i)->getDestination() === $planet)
             {
-                $this->getQuests()->get($i)->setCompleted(true);
-                $player->setExp(($player->getExp() + $this->getQuests()->get($i)->getExp()));
-                $player->setCredits(($player->getCredits() + $this->getQuests()->get($i)->getReward()));
-                $player->checkForLevelUp($cli);
+                $this->questCompletion($this->getQuests()->get($i),$player,$cli);
             }
         }
     }
 
-    public function AreAllQuestsCompleted() :bool
+    public function questCompletion(Quest $quest,Pilot $player,CLImate $cli): void
     {
-        $complete = 0;
+        $cli->info("You completed a Quest!");
+        $cli->info("You delivered ".$quest->getCargo()->getName()." to ".$quest->getDestination());
+        $quest->setCompleted(true);
+        $player->earnXP($quest->getExp());
+        $player->earnCredits($quest->getReward());
+        $player->checkForLevelUp($cli);
+    }
 
-        for ($i = 0; $i < $this->getQuests()->count(); $i++)
-        {
-            if($this->getQuests()->get($i)->isCompleted())
-            {
-                $complete++;
-            }
-        }
-
-        if ($complete == $this->getQuests()->count())
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
+    private function finalQuestCompleted(CLImate $cli): void
+    {
+        $cli->info("You finished your last quest and finished the game!");
+        $cli->info("Thank you for playing!");
+        exit(0);
     }
 
     /**

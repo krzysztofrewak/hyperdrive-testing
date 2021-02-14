@@ -49,7 +49,10 @@ class Event
 
     public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
     {
-
+        //fight
+        //gambling
+        //racing
+        //some credits laying on the ground
     }
 
 
