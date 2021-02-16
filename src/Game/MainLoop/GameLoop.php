@@ -15,6 +15,7 @@ class GameLoop extends BaseGameLoop
 
     public function __construct(Game $game)
     {
+        parent::__construct($game);
         $this->game = $game;
         if($this->canStartGame())
         {
