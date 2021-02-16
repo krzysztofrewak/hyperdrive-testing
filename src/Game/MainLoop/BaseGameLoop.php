@@ -22,7 +22,7 @@ class BaseGameLoop
         $this->builder = new GameAssetsBuilder();
     }
 
-    private function loadSave()
+    protected function loadSave()
     {
         $this->player = $this->game->gameSave->player;
         $this->friend1 = $this->game->gameSave->friend1;

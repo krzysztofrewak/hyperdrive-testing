@@ -20,6 +20,7 @@ class GameLoop extends BaseGameLoop
         if($this->canStartGame())
         {
             $this->buildAssets();
+            $this->loadSave();
             $this->loadMission();
             $this->startGame();
         }
