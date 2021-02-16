@@ -1,4 +1,4 @@
 .idea
 vendor
 gamesave
-/src/GameData
+src/GameData
