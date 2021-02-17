@@ -23,7 +23,7 @@ $playerShip = new Ship(output: $cli, name: "placeholder", maxFuel: 0, maxHullInt
 $selection = new CharacterSelection(cli: $cli);
 $selection->characterSelection($player,$playerShip);
 $questlog = new QuestLog();
-$questlog->addQuests($hyperdrive);
+$questlog->generateStartingQuests($hyperdrive);
 
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();

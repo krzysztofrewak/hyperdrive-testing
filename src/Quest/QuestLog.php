@@ -38,7 +38,7 @@ class QuestLog
         $this->quests->add($quest);
     }
 
-    public function addQuests(HyperdriveNavigator $hyperdrive)
+    public function generateStartingQuests(HyperdriveNavigator $hyperdrive)
     {
         for ($i = 0; $i < 2; $i++)
         {

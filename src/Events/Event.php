@@ -30,15 +30,17 @@ class Event
         if($random == 8)
         {
             //oh no asteroids
+            $cli->info("You encountered an Asteroid belt! You lost some fuel while trying to maneuver through them.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
         }
         if($random == 9)
         {
+            $cli->info("You've been attacked!");
             //oh no you've been attacked
-           $enemies = new Enemies();
-           $combat = new Combat();
-           $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
+            $enemies = new Enemies();
+            $combat = new Combat();
+            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
         }
         if($random == 10)
         {
@@ -49,6 +51,27 @@ class Event
 
     public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
     {
+        $random = rand(1,10);
+
+        if($random == 7)
+        {
+            //fight
+        }
+        if($random == 8)
+        {
+
+        }
+        if($random == 9)
+        {
+            //oh no you've been attacked
+            $enemies = new Enemies();
+            $combat = new Combat();
+            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
+        }
+        if($random == 10)
+        {
+            //greater events
+        }
         //fight
         //gambling
         //racing

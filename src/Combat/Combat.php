@@ -15,7 +15,7 @@ use League\CLImate\CLImate;
 class Combat
 {
 
-    public function fight(Pilot $player,Ship $playerShip, Collection $enemies, CLImate $cli): void
+    private function fight(Pilot $player,Ship $playerShip, Collection $enemies, CLImate $cli): void
     {
         $aliveEnemies = $enemies->count();
 
