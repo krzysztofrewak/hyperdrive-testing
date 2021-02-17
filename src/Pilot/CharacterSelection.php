@@ -11,19 +11,19 @@ use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 
 
-class CharacterSelection implements OutputContract
+class CharacterSelection
 {
 
     private Collection $pilots;
     private Collection $ships;
-    private CLImate $cli;
+    private OutputContract $cli;
 
     /**
      * CharacterSelection constructor.
-     * @param CLImate $cli
+     * @param OutputContract $cli
      */
 
-    public function __construct(CLImate $cli)
+    public function __construct(OutputContract $cli)
     {
         $this->pilots = collect();
         $this->ships = collect();
@@ -50,12 +50,12 @@ class CharacterSelection implements OutputContract
     {
         for ($i = 0; $i < $this->getPilots()->count(); $i++)
         {
-            $this->info("Pilot #".$i.":");
-            $this->write("Name: ".$this->getPilots()->get($i)->getName());
-            $this->write("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
-            $this->write("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
-            $this->write("Credits: ".$this->getPilots()->get($i)->getCredits());
-            $this->write("");
+            $this->cli->info("Pilot #".$i.":");
+            $this->cli->write("Name: ".$this->getPilots()->get($i)->getName());
+            $this->cli->write("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
+            $this->cli->write("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
+            $this->cli->write("Credits: ".$this->getPilots()->get($i)->getCredits());
+            $this->cli->write("");
         }
 
         $options = ["Atton" => "I'm choosing Atton", "Jarrnes" => "I'm choosing Jarrnes", "Garfinn" => "I'm choosing Garfinn"];
@@ -73,13 +73,13 @@ class CharacterSelection implements OutputContract
 
         for ($i = 0; $i < $this->getShips()->count(); $i++)
         {
-            $this->info("Ship #".$i.":");
-            $this->write("Name: ".$this->getShips()->get($i)->getName());
-            $this->write("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
-            $this->write("Max Shields ".$this->getShips()->get($i)->getMaxShields());
-            $this->write("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
-            $this->write("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
-            $this->write("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
+            $this->cli->info("Ship #".$i.":");
+            $this->cli->write("Name: ".$this->getShips()->get($i)->getName());
+            $this->cli->write("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
+            $this->cli->write("Max Shields ".$this->getShips()->get($i)->getMaxShields());
+            $this->cli->write("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
+            $this->cli->write("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
+            $this->cli->write("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
         }
 
         $options = ["EbonHawk" => "I'm choosing Ebon Hawk", "Typhoon" => "I'm choosing Typhoon", "Cyclone" => "I'm choosing Cyclone"];
@@ -94,9 +94,6 @@ class CharacterSelection implements OutputContract
         if ($result === "Cyclone") {
             $playerShip->chooseShip($playerShip,$this->getShips()->get(2));
         }
-
-
-
 
         $playerShip->showStats($this->cli);
     }
@@ -117,8 +114,6 @@ class CharacterSelection implements OutputContract
         return $this->ships;
     }
 
-
-
     private function addShips()
     {
         $this->addShip(new Ship(name: "Ebon Hawk", maxFuel: 100, maxHullIntegrity: 150, maxShields: 150, missileDamage: 80, laserDamage: 60));
@@ -130,15 +125,5 @@ class CharacterSelection implements OutputContract
     private function addShip(Ship $ship)
     {
         $this->ships->add($ship);
-    }
-
-    function write(string $message)
-    {
-        $this->cli->out($message);
-    }
-
-    function info(string $message)
-    {
-        $this->cli->info($message);
     }
 }

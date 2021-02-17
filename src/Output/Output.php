@@ -8,7 +8,12 @@ use League\CLImate\CLImate;
 
 class Output implements OutputContract
 {
-    private CLImate $cli;
+    protected CLImate $cli;
+
+    public function __construct(CLImate $cli)
+    {
+        $this->cli = $cli;
+    }
 
     public function write(String $message): void
     {

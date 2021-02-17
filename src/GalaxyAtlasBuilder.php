@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive;
 
 use Hyperdrive\Geography\Planet;
+use Hyperdrive\Output\Output;
 use Symfony\Component\Yaml\Yaml;
 
 class GalaxyAtlasBuilder

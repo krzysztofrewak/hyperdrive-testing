@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Ship;
 
+use Hyperdrive\Output\OutputContract;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Hyperdrive\Pilot\Pilot;
-use Hyperdrive\Output\Output;
 use League\CLImate\CLImate;
-use Nette\Utils\ArrayList;
 
 class Ship
 {
-    private String $name;
+    private string $name;
     private int $fuel;
     private int $maxFuel;
     private int $hullIntegrity;
@@ -22,9 +19,11 @@ class Ship
     private int $maxShields;
     private int $missileDamage;
     private int $laserDamage;
+    protected OutputContract $output;
 
-    public function __construct(string $name, int $maxFuel, int $maxHullIntegrity, int $maxShields, int $missileDamage, int $laserDamage)
+    public function __construct(OutputContract $output, string $name, int $maxFuel, int $maxHullIntegrity, int $maxShields, int $missileDamage, int $laserDamage)
     {
+        $this->output = $output;
         $this->name = $name;
         $this->fuel = $maxFuel;
         $this->maxFuel = $maxFuel;
@@ -128,28 +127,25 @@ class Ship
 
     public function checkFuel(): void
     {
-        $cli = new CLImate();
-        if($this->getFuel() <= 10)
-        {
-            $cli->out("Fuel levels low! Refuel at the earliest convenience!");
+        if ($this->getFuel() <= 10) {
+            $this->output->write("Fuel levels low! Refuel at the earliest convenience!");
         }
-        if($this->getFuel() <= 0)
-        {
-            $cli->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
-            $cli->info("Now you are destined to float through the space without an end... ");
-            $cli->info("Your journey has come to an end.");
+        if ($this->getFuel() <= 0) {
+            $this->output->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
+            $this->output->info("Now you are destined to float through the space without an end... ");
+            $this->output->info("Your journey has come to an end.");
         }
     }
 
     public function showStats(CLImate $cli)
     {
         $cli->info("Your ship:");
-        $cli->out("Name: ".$this->getName());
-        $cli->out("Max Fuel: ".$this->getMaxFuel());
-        $cli->out("Max Shields ".$this->getMaxShields());
-        $cli->out("Max Hull Integrity ".$this->getMaxHullIntegrity());
-        $cli->out("Missile Damage: ".$this->getMissileDamage());
-        $cli->out("Laser Damage ".$this->getLaserDamage());
+        $cli->out("Name: " . $this->getName());
+        $cli->out("Max Fuel: " . $this->getMaxFuel());
+        $cli->out("Max Shields " . $this->getMaxShields());
+        $cli->out("Max Hull Integrity " . $this->getMaxHullIntegrity());
+        $cli->out("Missile Damage: " . $this->getMissileDamage());
+        $cli->out("Laser Damage " . $this->getLaserDamage());
     }
 
     public function chooseShip(Ship $playerShip, Ship $choice): void
@@ -167,10 +163,8 @@ class Ship
 
     public function TakeAction(CLImate $cli, Collection $enemies)
     {
-        for ($i = 0; $i < $enemies->count(); $i++)
-        {
-            if($enemies->get($i)->getHullIntegrity() > 0)
-            {
+        for ($i = 0; $i < $enemies->count(); $i++) {
+            if ($enemies->get($i)->getHullIntegrity() > 0) {
                 $cli->info("Enemy #" . $i);
                 $cli->info("Shields:" . $enemies->get($i)->getShields());
                 $cli->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
@@ -180,7 +174,7 @@ class Ship
         $target = $cli->input("Which enemy do you want to target? (Please type the number)")->prompt();
 
 
-        $options = ["Laser" => "Attack with lasers! (Deals ".$this->getLaserDamage()." damage)", "Missile" => "Attack with missiles! (Deals ".$this->getMissileDamage()." damage)"];
+        $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];
         $result = $cli->radio("How do you want to attack him?", $options)->prompt();
 
         if ($result === "Laser") {
@@ -192,65 +186,57 @@ class Ship
         }
     }
 
-    public function takeDamage(int $damage,bool $isLaser)
+    public function takeDamage(int $damage, bool $isLaser)
     {
-        if($this->getShields()==0)
-        {
-            $this->setHullIntegrity(($this->getHullIntegrity()-$damage));
+        if ($this->getShields() == 0) {
+            $this->setHullIntegrity(($this->getHullIntegrity() - $damage));
         }
 
-        if($this->getShields()>0)
-        {
-            if(!$isLaser)
-            {
-                $damage = $damage/2;
+        if ($this->getShields() > 0) {
+            if (!$isLaser) {
+                $damage = $damage / 2;
             }
 
-            if($damage>$this->getShields())
-            {
+            if ($damage > $this->getShields()) {
                 $damageToHull = $damage - $this->getShields();
-                $this->setHullIntegrity(($this->getHullIntegrity()-$damageToHull));
+                $this->setHullIntegrity(($this->getHullIntegrity() - $damageToHull));
             }
 
-            $this->setShields(($this->getShields()-$damage));
+            $this->setShields(($this->getShields() - $damage));
         }
 
-            if($this->getShields()<0)
-            {
-                $this->setShields(0);
-            }
+        if ($this->getShields() < 0) {
+            $this->setShields(0);
+        }
     }
 
 
     public function playerAttacksWithMissile(Ship $enemyShip)
     {
-        $enemyShip->takeDamage($this->getMissileDamage(),false);
+        $enemyShip->takeDamage($this->getMissileDamage(), false);
     }
 
     public function playerAttacksWithLaser(Ship $enemyShip)
     {
-        $enemyShip->takeDamage($this->getLaserDamage(),true);
+        $enemyShip->takeDamage($this->getLaserDamage(), true);
     }
 
-    public function enemyAttacksPlayer(Ship $playerShip,CLImate $cli)
+    public function enemyAttacksPlayer(Ship $playerShip, OutputContract $cli): void
     {
-        $result = rand(1,2);
-        if($result == 1)
-        {
-            $playerShip->takeDamage($this->getLaserDamage(),true);
-            $cli->out("Player was attacked by ".$this->getName()." for ".$this->getLaserDamage()." laser damage!");
+        $result = rand(1, 2);
+        if ($result == 1) {
+            $playerShip->takeDamage($this->getLaserDamage(), true);
+            $cli->write("Player was attacked by " . $this->getName() . " for " . $this->getLaserDamage() . " laser damage!");
         }
-        if($result == 2)
-        {
-            $playerShip->takeDamage($this->getMissileDamage(),false);
-            $cli->out("Player was attacked by ".$this->getName()." for ".$this->getMissileDamage()." missile damage! (Damage halved against shields)");
+        if ($result == 2) {
+            $playerShip->takeDamage($this->getMissileDamage(), false);
+            $cli->write("Player was attacked by " . $this->getName() . " for " . $this->getMissileDamage() . " missile damage! (Damage halved against shields)");
         }
     }
 
     public function loseFuel(int $fuelLost)
     {
-        if($fuelLost < 0)
-        {
+        if ($fuelLost < 0) {
             $fuelLost = 0;
         }
         $this->setFuel($this->getFuel() - $fuelLost);
