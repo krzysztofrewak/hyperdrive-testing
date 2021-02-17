@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Hyperdrive\GalaxyAtlas;
 
+use Hyperdrive\Contracts\BuilderContract;
 use Hyperdrive\Geography\Planet;
 use Symfony\Component\Yaml\Yaml;
 
-class GalaxyAtlasBuilder
+class GalaxyAtlasBuilder implements BuilderContract
 {
     protected function __construct()
     {
     }
 
-    public static function buildFromRoutesArray(array $routes): GalaxyAtlas
+    public static function buildFromRoutesArray(array $data): GalaxyAtlas
     {
         $atlas = new GalaxyAtlas();
-        self::buildPlanets($atlas, $routes);
+        self::buildPlanets($atlas, $data);
 
         return $atlas;
     }

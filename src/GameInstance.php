@@ -5,51 +5,54 @@ declare(strict_types=1);
 namespace Hyperdrive;
 
 use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
-use Hyperdrive\GalaxyAtlas\GalaxyAtlasBuilder;
-use Hyperdrive\Geography\Planet;
 use Hyperdrive\Navigator\HyperdriveNavigator;
+use Hyperdrive\Player\Player;
+use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 
 class GameInstance
 {
     protected CLImate $cli;
+    protected Player $player;
     protected GalaxyAtlas $atlas;
-    protected HyperdriveNavigator $navigator;
-    protected Planet $targetPlanet;
-    protected Planet $currentPlanet;
+    protected Collection $pilots;
 
-    public function __construct(private string $filePath = "./resources/routes.yaml")
+    public function __construct(GalaxyAtlas $atlas, Collection $pilots)
     {
+        $this->atlas = $atlas;
+        $this->pilots = $pilots;
         $this->cli = new CLImate();
-        $this->atlas = GalaxyAtlasBuilder::buildFromYaml($this->filePath);
-        $this->navigator = new HyperdriveNavigator($this->atlas);
-        $this->targetPlanet = $this->navigator->getRandomPlanet();
-        $this->currentPlanet = $this->navigator->getRandomPlanet();
     }
 
     public function start(): void
     {
-        $this->cli->info("Your target is the {$this->targetPlanet}.");
+        $this->cli->info("Select Your Pilot");
+        $options = $this->pilots->toArray();
+        $result =$this->cli->radio("Select Pilot", $options)->prompt();
+
+        $this->player = new Player($result, new HyperdriveNavigator($this->atlas));
+
+        $this->cli->info("Your target is the {$this->player->getTargetPlanet()}.");
 
         while (true) {
-            if ($this->currentPlanet === $this->targetPlanet) {
-                $this->cli->info("You reached the {$this->targetPlanet}!");
+            if ($this->player->checkPlanetsEquals()) {
+                $this->cli->info("You reached the {$this->player->getTargetPlanet()}!");
                 break;
             }
 
-            $this->cli->info("You're on the {$this->currentPlanet}. You can jump to:");
+            $this->cli->info("You're on the {$this->player->getCurrentPlanet()}. You can jump to:");
 
-            $options = $this->currentPlanet->getNeighbours()->toArray() + [
+            $options = $this->player->getCurrentPlanet()->getNeighbours()->toArray() + [
                 "more" => "[show more option]",
             ];
-            $result = $this->selectOption("Select jump target planet", $options);
+            $result = $this->cli->radio("Select jump target planet", $options)->prompt();
 
             if ($result === "more") {
                 $options = [
                     "return" => "return",
                     "quit" => "quit application",
                 ];
-                $result = $this->selectOption("Select option", $options);
+                $result = $this->cli->radio("Select option", $options)->prompt();
 
                 if ($result === "quit") {
                     break;
@@ -57,13 +60,7 @@ class GameInstance
                 continue;
             }
 
-            $this->navigator->jumpTo($result);
-            $this->currentPlanet = $this->navigator->getCurrentPlanet();
+            $this->player->jumpToPlanet($result);
         }
-    }
-
-    private function selectOption(string $message, array $options): string|Planet
-    {
-        return $this->cli->radio($message, $options)->prompt();
     }
 }
