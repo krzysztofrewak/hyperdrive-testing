@@ -16,4 +16,21 @@ trait YamlBuilder
             array_push($output, $record[0] . " - " .  $record[1]);
         }
     }
+
+    private function loadMissionFromYamlFile(string $id): array
+    {
+        $missionData = [];
+        $missionList = array_values(Yaml::parseFile('./src/GameData/missions.yaml'));
+
+        foreach ($missionList as $mission) {
+            $currentMission = array_search($id, $mission);
+
+            if($currentMission > -1){
+                $path = './src/GameData/Missions/' . $missionList[$currentMission][1];
+                $missionData = Yaml::parseFile($path);
+                break;
+            }
+        }
+        return  $missionData;
+    }
 }

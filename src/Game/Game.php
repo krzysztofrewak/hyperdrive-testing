@@ -18,4 +18,9 @@ class Game
         $this->gameSave = $gameSave;
         $this->toggleInGameState();
     }
+
+    public function run(MissionLoop $loop): void
+    {
+        $loop->start();
+    }
 }

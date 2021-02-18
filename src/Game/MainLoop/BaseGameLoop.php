@@ -6,23 +6,25 @@ namespace Hyperdrive\Game\MainLoop;
 
 use Hyperdrive\Game\Game;
 use Hyperdrive\Game\GameAssetsBuilder;
+use Hyperdrive\Game\Mission;
+use Hyperdrive\Game\MissionLoop;
+use Hyperdrive\Traits\YamlBuilder;
 
 class BaseGameLoop
 {
+    use YamlBuilder;
+
     protected GameAssetsBuilder $builder;
-    private Game $game;
+    protected Game $game;
+    private MainLoopPauseMenu $pauseMenu;
+    private Mission $mission;
 
-    public function __construct(Game $game)
-    {
-        $this->game = $game;
-    }
-
-    protected function buildAssets(): void
+    private function buildAssets(): void
     {
         $this->builder = new GameAssetsBuilder();
     }
 
-    protected function loadSave()
+    private function loadSave()
     {
         $this->player = $this->game->gameSave->player;
         $this->friend1 = $this->game->gameSave->friend1;
@@ -35,12 +37,21 @@ class BaseGameLoop
         $this->missionId = $this->game->gameSave->missionId;
     }
 
-    protected function loadMission(): void
+    private function loadMission(): void
     {
+        $mission = $this->loadMissionFromYamlFile($this->missionId);
+        $this->mission = new Mission($mission, $this->missionId);
     }
 
+    // move to inst
     protected function startGame(): void
     {
-        new MainLoopMenu();
+        $this->buildAssets();
+        $this->loadSave();
+        $this->loadMission();
+        $missionLoop = new MissionLoop($this->mission);
+        // move run to the game function
+        $this->game->run($missionLoop);
+        //$missionLoop->run($this->game);
     }
 }

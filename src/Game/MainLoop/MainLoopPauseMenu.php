@@ -1,28 +1,26 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Hyperdrive\Game\MainLoop;
 
-
 use Hyperdrive\Menu;
 
-class MainLoopMenu extends Menu
+class MainLoopPauseMenu extends Menu
 {
     public function __construct()
     {
         parent::__construct();
         $this->options = [
-            "something" => "Do something",
-            "return" => "Return to main menu",
+            "save" => "Save game",
+            "return" => "Return to the game",
             "quit" => "Quit application"
         ];
-        $this->displayMenu();
-        $this->handleMenu();
     }
 
     public function handleMenu(): void
     {
-        while(True)
+        while(true)
         {
             if ($this->choice === "quit")
             {
@@ -34,9 +32,9 @@ class MainLoopMenu extends Menu
                 break;
             }
 
-            if ($this->choice === "something")
+            if ($this->choice === "save")
             {
-                echo "You did something" . PHP_EOL;
+                echo "Game is saved!" . PHP_EOL;
             }
 
             $this->displayMenu();

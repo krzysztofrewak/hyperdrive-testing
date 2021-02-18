@@ -11,17 +11,12 @@ class GameLoop extends BaseGameLoop
 {
     use IntegrityController;
 
-    private Game $game;
-
     public function __construct(Game $game)
     {
-        parent::__construct($game);
         $this->game = $game;
+
         if($this->canStartGame())
         {
-            $this->buildAssets();
-            $this->loadSave();
-            $this->loadMission();
             $this->startGame();
         }
     }
