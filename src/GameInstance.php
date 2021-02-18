@@ -7,8 +7,10 @@ namespace Hyperdrive;
 use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
 use Hyperdrive\Navigator\HyperdriveNavigator;
 use Hyperdrive\Player\Player;
+use Hyperdrive\Player\Spaceship\SpaceshipsCollection;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class GameInstance
 {
@@ -16,24 +18,38 @@ class GameInstance
     protected Player $player;
     protected GalaxyAtlas $atlas;
     protected Collection $pilots;
+    protected SpaceshipsCollection $spaceships;
 
-    public function __construct(GalaxyAtlas $atlas, Collection $pilots)
+    public function __construct(GalaxyAtlas $atlas, Collection $pilots, SpaceshipsCollection $spaceships)
     {
         $this->atlas = $atlas;
         $this->pilots = $pilots;
+        $this->spaceships = $spaceships;
         $this->cli = new CLImate();
     }
 
     public function start(): void
     {
+        //Select Pilot
         $this->cli->info("Select Your Pilot");
         $options = $this->pilots->toArray();
-        $result =$this->cli->radio("Select Pilot", $options)->prompt();
+        $pilot = $this->cli->radio("Select Pilot", $options)->prompt();
+        $this->cli->info("Your Select {$pilot}.");
 
-        $this->player = new Player($result, new HyperdriveNavigator($this->atlas));
+        //Select Spaceship
+        $this->cli->table($this->spaceships->getSpaceshipsData());
+        $this->cli->info("Select Your Spaceship");
+        $options = $this->spaceships->toArray();
+        $spaceship = $this->cli->radio("Select Spaceship", $options)->prompt();
+        $this->cli->info("Your Select {$spaceship}.");
 
+        //Create Player
+        $this->player = new Player($pilot, $spaceship, new HyperdriveNavigator($this->atlas));
+
+        //Show target
         $this->cli->info("Your target is the {$this->player->getTargetPlanet()}.");
 
+        //Game
         while (true) {
             if ($this->player->checkPlanetsEquals()) {
                 $this->cli->info("You reached the {$this->player->getTargetPlanet()}!");
@@ -49,6 +65,9 @@ class GameInstance
 
             if ($result === "more") {
                 $options = [
+                    "spaceship" => "show spaceship details",
+                    "player" => "show player details",
+                    "refueling" => "refueling Spaceship",
                     "return" => "return",
                     "quit" => "quit application",
                 ];
@@ -56,11 +75,24 @@ class GameInstance
 
                 if ($result === "quit") {
                     break;
+                } elseif ($result === "spaceship") {
+                    $this->cli->table([$this->player->showSpaceshipData()]);
+                } elseif ($result === "refueling") {
+                    try {
+                        $this->player->refuelingSpaceship();
+                    } catch (Exception $exception) {
+                        $this->cli->error($exception->getMessage());
+                    }
+                } elseif ($result === "player") {
+                    $this->cli->table([$this->player->showPlayerData()]);
                 }
                 continue;
             }
-
-            $this->player->jumpToPlanet($result);
+            try {
+                $this->player->jumpToPlanet($result);
+            } catch (Exception $exception) {
+                $this->cli->error($exception->getMessage());
+            }
         }
     }
 }

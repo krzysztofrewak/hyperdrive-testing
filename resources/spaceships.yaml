@@ -1,0 +1,36 @@
+Spaceship-1:
+  name: U-wing
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
+Spaceship-2:
+  name: TIE Interceptor
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
+Spaceship-3:
+  name: X-wing
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
+Spaceship-4:
+  name: TIE Advanced
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
+Spaceship-5:
+  name: Naboo N-1
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
+Spaceship-6:
+  name: Millennium Falcon
+  tank:
+    fuel: 10000
+    capacity: 40000
+    fuelConsumption: 500
