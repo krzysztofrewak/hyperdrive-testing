@@ -15,25 +15,25 @@ class SpaceshipsBuilder implements BuilderContract
 
     public static function buildFromRoutesArray(array $data): SpaceshipsCollection
     {
-        $spaceships = new SpaceshipsCollection();
-        self::buildSpaceship($spaceships, $data);
+        $spaceshipsCollection = new SpaceshipsCollection();
+        self::buildSpaceship($spaceshipsCollection, $data);
 
-        return $spaceships;
+        return $spaceshipsCollection;
     }
 
     public static function buildFromYaml(string $filePath): SpaceshipsCollection
     {
-        $spaceships = new SpaceshipsCollection();
+        $spaceshipsCollection = new SpaceshipsCollection();
         $spaceshipsData = Yaml::parseFile($filePath);
-        self::buildSpaceship($spaceships, $spaceshipsData);
+        self::buildSpaceship($spaceshipsCollection, $spaceshipsData);
 
-        return $spaceships;
+        return $spaceshipsCollection;
     }
 
-    protected static function buildSpaceship(SpaceshipsCollection &$spaceships, array $spaceshipsData): void
+    protected static function buildSpaceship(SpaceshipsCollection &$spaceshipsCollection, array $spaceshipsData): void
     {
         foreach ($spaceshipsData as $spaceshipData) {
-            $spaceships->addSpaceship(new Spaceship($spaceshipData));
+            $spaceshipsCollection->addSpaceship(new Spaceship($spaceshipData));
         }
     }
 }

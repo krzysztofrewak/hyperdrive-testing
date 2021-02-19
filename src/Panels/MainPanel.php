@@ -39,8 +39,8 @@ class MainPanel extends BasePanel
 
     public function selectionSection(): void
     {
-        $options = new MainOptions();
-        $result = $this->cli->radio("Select jump target planet", $options($this->player))->prompt();
+        $mainOptions = new MainOptions();
+        $result = $this->cli->radio("Select jump target planet", $mainOptions($this->player))->prompt();
 
         if ($result instanceof Planet) {
             try {
@@ -49,8 +49,8 @@ class MainPanel extends BasePanel
                 $this->showException($exception);
             }
         } else {
-            $moreSelectionSection = new MorePanel($this->player);
-            $moreSelectionSection->selectionSection();
+            $morePanel = new MorePanel($this->player);
+            $morePanel->selectionSection();
         }
     }
 }

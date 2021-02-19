@@ -25,10 +25,17 @@
         "behat/behat": "^3.8",
         "phpunit/phpunit": "^9.2",
         "symplify/easy-coding-standard": "^9.1",
-        "krzysztofrewak/php-cs-double-quote-fixer": "^1.0"
+        "krzysztofrewak/php-cs-double-quote-fixer": "^1.0",
+        "rector/rector": "^0.9.29"
     },
     "scripts": {
         "behat": "./vendor/bin/behat",
-        "ecs": "./vendor/bin/ecs check"
+        "ecs": "./vendor/bin/ecs check",
+        "rector": "./vendor/bin/rector process src --dry-run",
+        "check": [
+            "composer behat",
+            "composer ecs",
+            "composer rector"
+        ]
     }
 }

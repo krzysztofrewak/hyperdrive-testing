@@ -15,16 +15,16 @@ class Player
 {
     protected Capital $capital;
     protected Planet $targetPlanet;
-    protected Planet $currentPlanet;
+    protected ?Planet $currentPlanet;
 
     public function __construct(
         protected Pilot $pilot,
         protected Spaceship $spaceship,
-        protected HyperdriveNavigator $navigator
+        protected HyperdriveNavigator $hyperdriveNavigator
     ) {
         $this->capital = new Capital(20000);
-        $this->targetPlanet = $this->navigator->getRandomPlanet();
-        $this->currentPlanet = $this->navigator->getRandomPlanet();
+        $this->targetPlanet = $this->hyperdriveNavigator->getRandomPlanet();
+        $this->currentPlanet = $this->hyperdriveNavigator->getRandomPlanet();
     }
 
     public function getTargetPlanet(): Planet
@@ -32,7 +32,7 @@ class Player
         return $this->targetPlanet;
     }
 
-    public function getCurrentPlanet(): Planet
+    public function getCurrentPlanet(): ?Planet
     {
         return $this->currentPlanet;
     }
@@ -50,8 +50,8 @@ class Player
     public function jumpToPlanet(Planet $planet): void
     {
         $this->spaceship->fuelConsumption();
-        $this->navigator->jumpTo($planet);
-        $this->currentPlanet = $this->navigator->getCurrentPlanet();
+        $this->hyperdriveNavigator->jumpTo($planet);
+        $this->currentPlanet = $this->hyperdriveNavigator->getCurrentPlanet();
     }
 
     #[ArrayShape([

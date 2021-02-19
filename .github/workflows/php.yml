@@ -32,5 +32,8 @@ jobs:
     - name: Run ecs
       run: docker-compose run --rm php ./vendor/bin/ecs check
 
+    - name: Run rector
+      run: docker-compose run --rm php ./vendor/bin/rector process src --dry-run
+
     - name: Run behat
       run: docker-compose run --rm php ./vendor/bin/behat

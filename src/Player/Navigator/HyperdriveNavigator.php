@@ -12,11 +12,11 @@ class HyperdriveNavigator
     protected ?Planet $currentPlanet;
 
     public function __construct(
-        protected GalaxyAtlas $atlas
+        protected GalaxyAtlas $galaxyAtlas
     ) {
     }
 
-    public function getCurrentPlanet(): Planet
+    public function getCurrentPlanet(): ?Planet
     {
         return $this->currentPlanet;
     }
@@ -28,7 +28,7 @@ class HyperdriveNavigator
 
     public function getRandomPlanet(): Planet
     {
-        $this->currentPlanet = $this->atlas->getRandomPlanet();
+        $this->currentPlanet = $this->galaxyAtlas->getRandomPlanet();
         return $this->currentPlanet;
     }
 }

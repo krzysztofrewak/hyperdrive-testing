@@ -18,8 +18,8 @@ class MorePanel extends BasePanel
 
     public function selectionSection(): void
     {
-        $options = new MoreOptions();
-        $result = $this->cli->radio("Select option", $options())->prompt();
+        $moreOptions = new MoreOptions();
+        $result = $this->cli->radio("Select option", $moreOptions())->prompt();
         $this->checkResult($result);
     }
 

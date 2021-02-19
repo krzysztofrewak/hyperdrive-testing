@@ -18,9 +18,9 @@ class Game
     protected Player $player;
 
     public function __construct(
-        protected GalaxyAtlas $atlas,
-        protected Collection $pilots,
-        protected SpaceshipsCollection $spaceships
+        protected GalaxyAtlas $galaxyAtlas,
+        protected Collection $collection,
+        protected SpaceshipsCollection $spaceshipsCollection
     ) {
     }
 
@@ -44,8 +44,8 @@ class Game
     private function createPlayer(): void
     {
         $startPanel = new StartPanel();
-        $pilot = $startPanel->selectPilot($this->pilots);
-        $spaceship = $startPanel->selectSpaceship($this->spaceships);
-        $this->player = new Player($pilot, $spaceship, new HyperdriveNavigator($this->atlas));
+        $pilot = $startPanel->selectPilot($this->collection);
+        $spaceship = $startPanel->selectSpaceship($this->spaceshipsCollection);
+        $this->player = new Player($pilot, $spaceship, new HyperdriveNavigator($this->galaxyAtlas));
     }
 }

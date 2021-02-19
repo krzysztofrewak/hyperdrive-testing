@@ -16,30 +16,30 @@ class GalaxyAtlasBuilder implements BuilderContract
 
     public static function buildFromRoutesArray(array $data): GalaxyAtlas
     {
-        $atlas = new GalaxyAtlas();
-        self::buildPlanets($atlas, $data);
+        $galaxyAtlas = new GalaxyAtlas();
+        self::buildPlanets($galaxyAtlas, $data);
 
-        return $atlas;
+        return $galaxyAtlas;
     }
 
     public static function buildFromYaml(string $filePath): GalaxyAtlas
     {
-        $atlas = new GalaxyAtlas();
+        $galaxyAtlas = new GalaxyAtlas();
         $routes = Yaml::parseFile($filePath);
-        self::buildPlanets($atlas, $routes);
+        self::buildPlanets($galaxyAtlas, $routes);
 
-        return $atlas;
+        return $galaxyAtlas;
     }
 
-    protected static function buildPlanets(GalaxyAtlas &$atlas, array $routes): void
+    protected static function buildPlanets(GalaxyAtlas &$galaxyAtlas, array $routes): void
     {
         foreach ($routes as $planets) {
             /** @var Planet|null $previous */
             $previous = null;
 
             foreach ($planets as $planet) {
-                $planet = $atlas->createOrUpdatePlanet($planet);
-                if ($previous) {
+                $planet = $galaxyAtlas->createOrUpdatePlanet($planet);
+                if ($previous !== null) {
                     $previous->addNeighbour($planet);
                     $planet->addNeighbour($previous);
                 }
