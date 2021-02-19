@@ -14,9 +14,8 @@ trait MainMenuMethods
     public function start(): void
     {
         echo "Starting new game" . PHP_EOL;
-        $gameState = new NewGame();
-        $game = new Game($gameState);
-        new GameLoop($game);
+        new NewGame();
+        $this->resume();
     }
 
     public function resume(): void

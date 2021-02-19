@@ -20,6 +20,7 @@ trait MissionLoopHandler
     {
         $this->uniqueHandler = $this->mission->getDecisionHandler();
     }
+
     public function printText(): void
     {
         $stage = $this->currentStage;
@@ -34,9 +35,9 @@ trait MissionLoopHandler
     {
         foreach (str_split($sentence) as $letter) {
             $this->cli->inline($letter);
-            usleep(5);
+            usleep(50000);
         }
-        //sleep(1);
+        sleep(1);
         echo PHP_EOL;
     }
 
@@ -47,7 +48,7 @@ trait MissionLoopHandler
         $options = $stage[$this->index]["options"];
         $decisions = $stage[$this->index + 1]["decisions"];
 
-        for ($i=0; $i<sizeof($options);$i++) {
+        for ($i = 0; $i < sizeof($options); $i++) {
             $decision = $decisions[$i];
             $option = $options[$i];
             $this->uniqueHandler->addOptions($decision, $option);
@@ -74,8 +75,7 @@ trait MissionLoopHandler
         $decision = $this->uniqueHandler->getResult();
         $this->uniqueHandler->handleDecision($decision);
 
-        if ($this->uniqueHandler->isSaveFlagSet())
-        {
+        if ($this->uniqueHandler->isSaveFlagSet()) {
             $this->saveGame();
         }
     }
@@ -88,28 +88,24 @@ trait MissionLoopHandler
     private function saveGame(): void
     {
         $saveData = (array)$this->gameState;
-        echo "save#@Q#";
-        print_r($saveData);
+
         $sortedData = [
-          "player" => $saveData["player"],
-          "friend1" => $saveData["friend1"],
-          "friend2" => $saveData["friend2"],
-          "money" => $saveData["money"],
-          "fuel" => $saveData["fuel"],
-          "team" => $saveData["team"],
-          "currentPlanet" => $saveData["currentPlanet"],
-          "targetPlanet" => $saveData["targetPlanet"],
-          "missionId" => $saveData["missionId"],
-          "stage" => $saveData["stage"]
+            "player" => $saveData["player"],
+            "friend1" => $saveData["friend1"],
+            "friend2" => $saveData["friend2"],
+            "money" => $saveData["money"],
+            "fuel" => $saveData["fuel"],
+            "team" => $saveData["team"],
+            "currentPlanet" => $saveData["currentPlanet"],
+            "targetPlanet" => $saveData["targetPlanet"],
+            "missionId" => $saveData["missionId"],
+            "stage" => $saveData["stage"]
         ];
-        print_r($sortedData);
 
         $saveFile = fopen($_SESSION['saveFile'], 'w');
 
-        foreach ($sortedData as $record)
-        {
-            if(is_array($record))
-            {
+        foreach ($sortedData as $record) {
+            if (is_array($record)) {
                 foreach ($record as $index) {
                     fwrite($saveFile, "$index;");
                 }
@@ -121,6 +117,5 @@ trait MissionLoopHandler
 
         fclose($saveFile);
         unset($saveData);
-        echo "Succ saved" . PHP_EOL;
     }
 }

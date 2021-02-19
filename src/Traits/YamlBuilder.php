@@ -11,9 +11,8 @@ trait YamlBuilder
     private function buildFromYamlFile(string $path, array &$output): void
     {
         $yamlFile = Yaml::parseFile($path);
-        foreach ($yamlFile as $record)
-        {
-            array_push($output, $record[0] . " - " .  $record[1]);
+        foreach ($yamlFile as $record) {
+            array_push($output, $record[0] . " - " . $record[1]);
         }
     }
 
@@ -25,12 +24,12 @@ trait YamlBuilder
         foreach ($missionList as $missionDataArray) {
             $currentMission = array_search($id, $missionDataArray);
 
-            if($currentMission > -1){
+            if ($currentMission > -1) {
                 $path = './src/GameData/Missions/' . $missionDataArray[1];
                 $missionData = Yaml::parseFile($path);
                 break;
             }
         }
-        return  $missionData;
+        return $missionData;
     }
 }

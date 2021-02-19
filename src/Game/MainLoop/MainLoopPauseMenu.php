@@ -24,20 +24,16 @@ class MainLoopPauseMenu extends Menu
     {
         $this->saveFlag = false;
 
-        while(true)
-        {
-            if ($this->choice === "quit")
-            {
+        while (true) {
+            if ($this->choice === "quit") {
                 exit();
             }
 
-            if ($this->choice === "return")
-            {
+            if ($this->choice === "return") {
                 break;
             }
 
-            if ($this->choice === "save")
-            {
+            if ($this->choice === "save") {
                 $this->toggleGameSaveFlag();
                 echo "Game is saved!" . PHP_EOL;
             }
@@ -55,6 +51,6 @@ class MainLoopPauseMenu extends Menu
 
     public function getSaveFlagState(): bool
     {
-        return $this->saveFlag ;
+        return $this->saveFlag;
     }
 }

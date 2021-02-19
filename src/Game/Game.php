@@ -18,11 +18,6 @@ class Game
     public GameState $gameState;
     public BaseGameType $gameType;
 
-    /*public function __construct(GameSave $gameSave)
-    {
-        $this->gameSave = $gameSave;
-        $this->toggleInGameState();
-    }*/
     public function __construct(BaseGameType $gameType)
     {
         $this->gameType = $gameType;
@@ -30,7 +25,7 @@ class Game
         $this->toggleInGameState();
     }
 
-    public function start(Mission $mission): void
+    public function play(Mission $mission): void
     {
         $this->constructMissionLoop($mission);
         $this->startMissionLoop();

@@ -21,8 +21,8 @@ trait MissionLoopT
     public function startMissionLoop(): void
     {
         $this->createUniqueMissionHandler();
-print_r($this->gameState);
-        for($this->stageIndex = $this->gameSave->stage; $this->stageIndex < sizeof($this->mission->data); $this->stageIndex++) {
+
+        for ($this->stageIndex = $this->gameSave->stage; $this->stageIndex < sizeof($this->mission->data); $this->stageIndex++) {
             $this->setCurrentStage();
             $this->printText();
             $this->mapOptionsToDecisions();
@@ -35,7 +35,7 @@ print_r($this->gameState);
             $this->uniqueHandler->toggleProgress();
             $this->updateGameState();
         }
-        // write new mission to gamestate
+
         $this->gameState->missionId = $_SESSION['nextMission'];
         $this->gameState->stage = 0;
         $this->saveGame();
