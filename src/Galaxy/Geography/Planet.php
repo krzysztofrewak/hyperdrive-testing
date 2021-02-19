@@ -2,23 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Geography;
+namespace Hyperdrive\Galaxy\Geography;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 /**
  * Class Planet
- * @package Hyperdrive\Geography
+ * @package Hyperdrive\Galaxy\Geography
  * @var Planet[] $neighbours
  */
 class Planet
 {
     protected Collection $neighbours;
 
-    public function __construct(
-        protected string $name
-    ) {
+    public function __construct(protected string $name)
+    {
         $this->neighbours = collect();
     }
 
@@ -30,11 +28,6 @@ class Planet
     public function getNeighbours(): Collection
     {
         return $this->neighbours;
-    }
-
-    public function getId(): string
-    {
-        return Str::slug($this->name);
     }
 
     public function addNeighbour(self $planet): void

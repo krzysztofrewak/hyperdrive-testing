@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use KrzysztofRewak\PhpCsFixer\DoubleQuoteFixer\DoubleQuoteFixer;
+use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer;
@@ -11,6 +12,7 @@ use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
@@ -21,11 +23,13 @@ $sets = [
 ];
 
 $skipped = [
-    SingleQuoteFixer::class => null,
-    ClassAttributesSeparationFixer::class => null,
-    NotOperatorWithSuccessorSpaceFixer::class => null,
-    BinaryOperatorSpacesFixer::class => null,
-    NullableTypeDeclarationForDefaultNullValueFixer::class => null,
+    StandaloneLinePromotedPropertyFixer::class,
+    BracesFixer::class,
+    SingleQuoteFixer::class,
+    ClassAttributesSeparationFixer::class,
+    NotOperatorWithSuccessorSpaceFixer::class,
+    BinaryOperatorSpacesFixer::class,
+    NullableTypeDeclarationForDefaultNullValueFixer::class,
 ];
 
 $rules = [

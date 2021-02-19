@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Panels;
 
+use Hyperdrive\Galaxy\GalaxyAtlas\GalaxyAtlas;
+use Hyperdrive\Galaxy\Geography\Route;
 use Hyperdrive\Player\Pilot\Pilot;
 use Hyperdrive\Player\Spaceship\Spaceship;
 use Hyperdrive\Player\Spaceship\SpaceshipsCollection;
@@ -27,5 +29,14 @@ class StartPanel extends BasePanel
         $spaceship = $this->cli->radio("Select Spaceship", $spaceshipsCollection->toArray())->prompt();
         $this->cli->info("Your Select {$spaceship}.");
         return $spaceship;
+    }
+
+    public function selectRoute(GalaxyAtlas $galaxyAtlas): Route
+    {
+        $this->cli->info("Select Your Route of Galaxy");
+
+        $route = $this->cli->radio("Select Route", $galaxyAtlas->toArray())->prompt();
+        $this->cli->info("Your Select {$route}.");
+        return $route;
     }
 }

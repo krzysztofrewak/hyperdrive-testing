@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
-use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
+use Hyperdrive\Galaxy\GalaxyAtlas\GalaxyAtlas;
 use Hyperdrive\Panels\MainPanel;
 use Hyperdrive\Panels\StartPanel;
 use Hyperdrive\Player\Navigator\HyperdriveNavigator;
@@ -21,7 +21,8 @@ class Game
         protected GalaxyAtlas $galaxyAtlas,
         protected Collection $collection,
         protected SpaceshipsCollection $spaceshipsCollection
-    ) {
+    )
+    {
     }
 
     public function start(): void
@@ -46,6 +47,7 @@ class Game
         $startPanel = new StartPanel();
         $pilot = $startPanel->selectPilot($this->collection);
         $spaceship = $startPanel->selectSpaceship($this->spaceshipsCollection);
-        $this->player = new Player($pilot, $spaceship, new HyperdriveNavigator($this->galaxyAtlas));
+        $route = $startPanel->selectRoute($this->galaxyAtlas);
+        $this->player = new Player($pilot, $spaceship, new HyperdriveNavigator($route));
     }
 }

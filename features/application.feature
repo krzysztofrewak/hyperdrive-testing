@@ -1,11 +1,10 @@
 Feature: Check application behaviour
 
   Background:
-    Given there's an atlas built from route array:
-      | route                 | planets              |
-      | Kessel Run            | Formos, Rion, Kessel |
-      | Kessel Trade Corridor | Kessel, Zerm         |
-    And given atlas is mounted in a navigator instance
+    Given there's an route built from array:
+      | route      | planets              |
+      | Kessel Run | Formos, Rion, Kessel |
+    And given route is mounted in a navigator instance
 
   Scenario:
     When "Kessel" is first selected planet
@@ -22,12 +21,6 @@ Feature: Check application behaviour
 
   Scenario:
     When "Rion" is first selected planet
-    Then current planet should have following neighbors:
-      | planet |
-      | Kessel |
-
-  Scenario:
-    When "Zerm" is first selected planet
     Then current planet should have following neighbors:
       | planet |
       | Kessel |

@@ -12,6 +12,7 @@ class MoreOptions
         "spaceship" => "string",
         "player" => "string",
         "refueling" => "string",
+        "map" => "string",
         "return" => "string",
         "quit" => "string",
     ])]
@@ -20,7 +21,8 @@ class MoreOptions
         return [
             "spaceship" => "show spaceship details",
             "player" => "show player details",
-            "refueling" => "refueling Spaceship",
+            "refueling" => "refueling spaceship",
+            "map" => "show planets list",
             "return" => "return",
             "quit" => "quit application",
         ];

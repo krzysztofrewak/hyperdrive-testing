@@ -14,7 +14,7 @@ class PilotsBuilder implements BuilderContract
     {
     }
 
-    public static function buildFromRoutesArray(array $data): Collection
+    public static function buildFromArray(array $data): Collection
     {
         $pilots = collect();
         self::buildPilots($pilots, $data);

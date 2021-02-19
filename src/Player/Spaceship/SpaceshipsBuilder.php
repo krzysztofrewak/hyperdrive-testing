@@ -13,7 +13,7 @@ class SpaceshipsBuilder implements BuilderContract
     {
     }
 
-    public static function buildFromRoutesArray(array $data): SpaceshipsCollection
+    public static function buildFromArray(array $data): SpaceshipsCollection
     {
         $spaceshipsCollection = new SpaceshipsCollection();
         self::buildSpaceship($spaceshipsCollection, $data);

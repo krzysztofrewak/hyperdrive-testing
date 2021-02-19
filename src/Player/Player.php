@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Player;
 
-use Hyperdrive\Geography\Planet;
+use Hyperdrive\Galaxy\Geography\Planet;
 use Hyperdrive\Player\Capital\Capital;
 use Hyperdrive\Player\Navigator\HyperdriveNavigator;
 use Hyperdrive\Player\Pilot\Pilot;
@@ -21,7 +21,8 @@ class Player
         protected Pilot $pilot,
         protected Spaceship $spaceship,
         protected HyperdriveNavigator $hyperdriveNavigator
-    ) {
+    )
+    {
         $this->capital = new Capital(20000);
         $this->targetPlanet = $this->hyperdriveNavigator->getRandomPlanet();
         $this->currentPlanet = $this->hyperdriveNavigator->getRandomPlanet();
@@ -75,5 +76,10 @@ class Player
             "name" => $this->pilot,
             "capital" => $this->capital->getCapital(),
         ];
+    }
+
+    public function getMap(): array
+    {
+        return $this->hyperdriveNavigator->getMap();
     }
 }

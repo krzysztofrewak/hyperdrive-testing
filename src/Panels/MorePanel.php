@@ -10,9 +10,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class MorePanel extends BasePanel
 {
-    public function __construct(
-        protected Player $player
-    ) {
+    public function __construct(protected Player $player)
+    {
         parent::__construct();
     }
 
@@ -38,6 +37,9 @@ class MorePanel extends BasePanel
                 } catch (Exception $exception) {
                     $this->showException($exception);
                 }
+                break;
+            case "map":
+                $this->cli->columns($this->player->getMap(), 6);
                 break;
             case "quit":
                 throw new Exception("You left the game :(");

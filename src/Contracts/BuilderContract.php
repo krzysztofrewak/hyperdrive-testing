@@ -6,7 +6,7 @@ namespace Hyperdrive\Contracts;
 
 interface BuilderContract
 {
-    public static function buildFromRoutesArray(array $data);
+    public static function buildFromArray(array $data);
 
     public static function buildFromYaml(string $filePath);
 }

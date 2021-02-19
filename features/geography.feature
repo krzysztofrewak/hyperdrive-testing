@@ -1,18 +1,18 @@
 Feature: Check geographical models behaviours
 
-  Scenario: Checking planet's id generator
+  Scenario: Checking planet's name generator
     Given there's a planet named "Coruscant"
-    Then its id should be "coruscant"
+    Then its name should be "Coruscant"
     And its neighbour list should not have any planets
 
-  Scenario: Checking planet's id generator for more complicated names
+  Scenario: Checking planet's name generator for more complicated names
     Given there's a planet named "Berrol's Donn"
-    Then its id should be "berrols-donn"
+    Then its name should be "Berrol's Donn"
     And its neighbour list should not have any planets
 
   Scenario: Checking if planets are connecting in proper way
     Given there's a planet named "Corellia" with "Coruscant" neighbor
-    Then its id should be "corellia"
+    Then its name should be "Corellia"
     And its neighbour list should have "1" planet
 
   Scenario: Checking route empty aggregation

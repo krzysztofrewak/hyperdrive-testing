@@ -4,36 +4,38 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
-use Hyperdrive\GalaxyAtlas\GalaxyAtlasBuilder;
-use Hyperdrive\Geography\Planet;
+use Hyperdrive\Galaxy\GalaxyAtlas\GalaxyAtlasBuilder;
+use Hyperdrive\Galaxy\Geography\Planet;
+use Hyperdrive\Galaxy\Geography\Route;
 use Hyperdrive\Player\Navigator\HyperdriveNavigator;
 use PHPUnit\Framework\Assert;
 
 class ApplicationContext implements Context
 {
-    protected GalaxyAtlas $atlas;
+    protected Route $route;
     protected HyperdriveNavigator $navigator;
 
     /**
-     * @Given there's an atlas built from route array:
+     * @Given there's an route built from array:
      * @param TableNode $table
      */
-    public function thereSAnAtlasBuildFromRouteArray(TableNode $table): void
+    public function thereSAnRouteBuildFromArray(TableNode $table): void
     {
-        $routes = collect($table->getHash())->mapWithKeys(fn(array $route): array => [
-            $route["route"] => explode(", ", $route["planets"]),
+        $data = collect($table->getHash())->mapWithKeys(fn(array $route): array => [
+            "name" => $route["route"],
+            "planets" => explode(", ", $route["planets"]),
         ]);
 
-        $this->atlas = GalaxyAtlasBuilder::buildFromRoutesArray($routes->toArray());
+        $this->route = GalaxyAtlasBuilder::buildRouteFromArray($data->toArray());
+
     }
 
     /**
-     * @Given given atlas is mounted in a navigator instance
+     * @Given given route is mounted in a navigator instance
      */
-    public function givenAtlasIsMountedInANavigatorInstance(): void
+    public function givenRouteIsMountedInANavigatorInstance(): void
     {
-        $this->navigator = new HyperdriveNavigator($this->atlas);
+        $this->navigator = new HyperdriveNavigator($this->route);
     }
 
     /**
@@ -42,7 +44,7 @@ class ApplicationContext implements Context
      */
     public function isFirstSelectedPlanet(string $planet): void
     {
-        $planet = $this->atlas->getPlanet($planet);
+        $planet = $this->route->getPlanetByName($planet);
         $this->navigator->jumpTo($planet);
     }
 

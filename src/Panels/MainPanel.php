@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Panels;
 
-use Hyperdrive\Geography\Planet;
+use Hyperdrive\Galaxy\Geography\Planet;
 use Hyperdrive\Panels\Options\MainOptions;
 use Hyperdrive\Player\Player;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class MainPanel extends BasePanel
 {
-    public function __construct(
-        protected Player $player
-    ) {
+    public function __construct(protected Player $player)
+    {
         parent::__construct();
     }
 
