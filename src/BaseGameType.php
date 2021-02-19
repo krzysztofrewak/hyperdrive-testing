@@ -12,4 +12,21 @@ abstract class BaseGameType
     {
         return $this->gameSave;
     }
+
+    protected function getGameStateFromSaveFile(): array
+    {
+        $data = array_map('str_getcsv', file($_SESSION['saveFile']));
+        foreach ($data as &$record)
+        {
+            $record = implode("", $record);
+            $record = explode(";", $record, -1);
+        }
+        return $data;
+    }
+
+    public function deserialize()
+    {
+        $gameSaveData = $this->getGameStateFromSaveFile();
+        $this->gameSave->fillFromSaveFile($gameSaveData);
+    }
 }

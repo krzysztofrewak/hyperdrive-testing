@@ -15,9 +15,14 @@ class GameLoop extends BaseGameLoop
     {
         $this->game = $game;
 
-        if($this->canStartGame())
+        while(True)
         {
-            $this->startGame();
+            if($this->canStartGame())
+            {
+                $this->startGame();
+            }
+            echo "YO GAME LOOP ENDED" . PHP_EOL;
+            $this->game->gameType->deserialize();
         }
     }
 }

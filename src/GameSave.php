@@ -11,9 +11,15 @@ class GameSave extends BaseGameSave
     public function fillNewSave(array $userProvidedData): void
     {
         $this->player = [$userProvidedData[0][0], $userProvidedData[0][1]];
-        $this->team = $userProvidedData[0][2];
         $this->friend1 = $userProvidedData[1];
         $this->friend2 = $userProvidedData[2];
+        $this->money = 30000;
+        $this->fuel = 100;
+        $this->team = $userProvidedData[0][2];
+        $this->currentPlanet = "Vanik";
+        $this->targetPlanet = "";
+        $this->missionId = "intro";
+        $this->stage = 0;
         $this->serialize();
     }
 

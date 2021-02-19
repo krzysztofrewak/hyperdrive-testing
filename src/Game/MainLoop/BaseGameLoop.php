@@ -7,7 +7,6 @@ namespace Hyperdrive\Game\MainLoop;
 use Hyperdrive\Game\Game;
 use Hyperdrive\Game\GameAssetsBuilder;
 use Hyperdrive\Game\Mission;
-use Hyperdrive\Game\MissionLoop;
 use Hyperdrive\Traits\YamlBuilder;
 
 class BaseGameLoop
@@ -31,9 +30,9 @@ class BaseGameLoop
         $this->game->gameState->player = (array)$this->game->gameSave->player;
         $this->game->gameState->friend1 = (array)$this->game->gameSave->friend1;
         $this->game->gameState->friend2 = (array)$this->game->gameSave->friend2;
-        $this->game->gameState->team = (string)$this->game->gameSave->team;
         $this->game->gameState->money = $this->game->gameSave->money;
         $this->game->gameState->fuel = $this->game->gameSave->fuel;
+        $this->game->gameState->team = (string)$this->game->gameSave->team;
         $this->game->gameState->currentPlanet = $this->game->gameSave->currentPlanet;
         $this->game->gameState->targetPlanet = $this->game->gameSave->targetPlanet;
         $this->game->gameState->missionId = $this->game->gameSave->missionId;
@@ -48,12 +47,18 @@ class BaseGameLoop
 
     protected function startGame(): void
     {
+        $_SESSION['isMissionComplete'] = false;
+
         $this->buildAssets();
         $this->loadSave();
         $this->loadMission();
-        // do wyjebania
-        $missionLoop = new MissionLoop($this->mission);
+        while(!$_SESSION['isMissionComplete']) {
+            //play()
+            $this->game->start($this->mission);
+        }
 
-        $this->game->start($this->mission);
+        unset($this->builder);
+        unset($this->game->gameState);
+        unset($this->mission);
     }
 }

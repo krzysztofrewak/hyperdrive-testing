@@ -12,15 +12,16 @@ trait MissionLoopT
 
     private Mission $mission;
 
-    public function constructMissionLoop(Mission $mission)
+    public function constructMissionLoop(Mission $mission): void
     {
         $this->cli = new CLImate();
         $this->mission = $mission;
     }
 
-    public function startMissionLoop()
+    public function startMissionLoop(): void
     {
         $this->createUniqueMissionHandler();
+print_r($this->gameState);
         for($this->stageIndex = $this->gameSave->stage; $this->stageIndex < sizeof($this->mission->data); $this->stageIndex++) {
             $this->setCurrentStage();
             $this->printText();
@@ -34,10 +35,14 @@ trait MissionLoopT
             $this->uniqueHandler->toggleProgress();
             $this->updateGameState();
         }
+        // write new mission to gamestate
+        $this->gameState->missionId = $_SESSION['nextMission'];
+        $this->gameState->stage = 0;
+        $this->saveGame();
     }
 
     private function updateGameState(): void
     {
-        $this->gameState->stage = $this->stageIndex;
+        $this->gameState->stage = $this->stageIndex + 1;
     }
 }

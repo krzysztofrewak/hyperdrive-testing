@@ -77,7 +77,6 @@ trait MissionLoopHandler
         if ($this->uniqueHandler->isSaveFlagSet())
         {
             $this->saveGame();
-
         }
     }
 
@@ -88,11 +87,26 @@ trait MissionLoopHandler
 
     private function saveGame(): void
     {
-        $saveData = $this->gameState;
-        var_dump($saveData);
+        $saveData = (array)$this->gameState;
+        echo "save#@Q#";
+        print_r($saveData);
+        $sortedData = [
+          "player" => $saveData["player"],
+          "friend1" => $saveData["friend1"],
+          "friend2" => $saveData["friend2"],
+          "money" => $saveData["money"],
+          "fuel" => $saveData["fuel"],
+          "team" => $saveData["team"],
+          "currentPlanet" => $saveData["currentPlanet"],
+          "targetPlanet" => $saveData["targetPlanet"],
+          "missionId" => $saveData["missionId"],
+          "stage" => $saveData["stage"]
+        ];
+        print_r($sortedData);
+
         $saveFile = fopen($_SESSION['saveFile'], 'w');
 
-        foreach ($saveData as $record)
+        foreach ($sortedData as $record)
         {
             if(is_array($record))
             {
@@ -106,6 +120,7 @@ trait MissionLoopHandler
         }
 
         fclose($saveFile);
+        unset($saveData);
         echo "Succ saved" . PHP_EOL;
     }
 }

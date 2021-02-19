@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Game;
 
 use Hyperdrive\GameData\Missions\Intro;
+use Hyperdrive\GameData\Missions\Mission1;
 
 class DecisionHandler
 {

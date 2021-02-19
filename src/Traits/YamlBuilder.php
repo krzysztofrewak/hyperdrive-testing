@@ -22,11 +22,11 @@ trait YamlBuilder
         $missionData = [];
         $missionList = array_values(Yaml::parseFile('./src/GameData/missions.yaml'));
 
-        foreach ($missionList as $mission) {
-            $currentMission = array_search($id, $mission);
+        foreach ($missionList as $missionDataArray) {
+            $currentMission = array_search($id, $missionDataArray);
 
             if($currentMission > -1){
-                $path = './src/GameData/Missions/' . $missionList[$currentMission][1];
+                $path = './src/GameData/Missions/' . $missionDataArray[1];
                 $missionData = Yaml::parseFile($path);
                 break;
             }
