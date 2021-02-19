@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Hyperdrive\Game;
 
 use Hyperdrive\GameData\Missions\DecisionHandlerInterface;
+use League\CLImate\CLImate;
 
 trait MissionLoopHandler
 {
     private int $index = 1;
     private array $currentStage;
-    private string $lineToRepeat;
+    private int $stageIndex = 0;
     private DecisionHandlerInterface $uniqueHandler;
+    // decide where to keep it
+    public CLImate $cli;
 
     public function createUniqueMissionHandler(): void
     {
@@ -23,9 +26,18 @@ trait MissionLoopHandler
         $condition = $stage[0]["linesCount"];
 
         for ($this->index = 1; $this->index <= $condition; $this->index++) {
-            echo $stage[$this->index] . PHP_EOL;
-            $this->lineToRepeat = $stage[$this->index];
+            $this->typewriterEffect($stage[$this->index]);
         }
+    }
+
+    public function typewriterEffect(string $sentence = ""): void
+    {
+        foreach (str_split($sentence) as $letter) {
+            $this->cli->inline($letter);
+            usleep(5);
+        }
+        //sleep(1);
+        echo PHP_EOL;
     }
 
     public function mapOptionsToDecisions(): void
@@ -47,26 +59,53 @@ trait MissionLoopHandler
         $this->uniqueHandler->displayMenu();
     }
 
-    public function setCurrentStage(array $stage): void
+    public function setCurrentStage(): void
     {
-        $this->currentStage = $stage;
+        $this->currentStage = $this->mission->data[$this->stageIndex];
+    }
+
+    public function getCurrentStage()
+    {
+        return $this->currentStage;
     }
 
     public function handleDecision(): void
     {
-        $this->printLastLine();
-        //                          getDecision()
         $decision = $this->uniqueHandler->getResult();
         $this->uniqueHandler->handleDecision($decision);
-    }
 
-    private function printLastLine(): void
-    {
-        echo $this->lineToRepeat . PHP_EOL;
+        if ($this->uniqueHandler->isSaveFlagSet())
+        {
+            $this->saveGame();
+
+        }
     }
 
     private function hasProgressed(): bool
     {
         return $this->uniqueHandler->isProgressing();
+    }
+
+    private function saveGame(): void
+    {
+        $saveData = $this->gameState;
+        var_dump($saveData);
+        $saveFile = fopen($_SESSION['saveFile'], 'w');
+
+        foreach ($saveData as $record)
+        {
+            if(is_array($record))
+            {
+                foreach ($record as $index) {
+                    fwrite($saveFile, "$index;");
+                }
+                fwrite($saveFile, "\n");
+            } else {
+                fwrite($saveFile, "$record;\n");
+            }
+        }
+
+        fclose($saveFile);
+        echo "Succ saved" . PHP_EOL;
     }
 }

@@ -26,32 +26,34 @@ class BaseGameLoop
 
     private function loadSave()
     {
-        $this->player = $this->game->gameSave->player;
-        $this->friend1 = $this->game->gameSave->friend1;
-        $this->friend2 = $this->game->gameSave->friend2;
-        $this->team = $this->game->gameSave->team;
-        $this->money = $this->game->gameSave->money;
-        $this->fuel = $this->game->gameSave->fuel;
-        $this->currentPlanet = $this->game->gameSave->currentPlanet;
-        $this->targetPlanet = $this->game->gameSave->targetPlanet;
-        $this->missionId = $this->game->gameSave->missionId;
+        //foreach
+        $this->game->gameState = new GameState();
+        $this->game->gameState->player = (array)$this->game->gameSave->player;
+        $this->game->gameState->friend1 = (array)$this->game->gameSave->friend1;
+        $this->game->gameState->friend2 = (array)$this->game->gameSave->friend2;
+        $this->game->gameState->team = (string)$this->game->gameSave->team;
+        $this->game->gameState->money = $this->game->gameSave->money;
+        $this->game->gameState->fuel = $this->game->gameSave->fuel;
+        $this->game->gameState->currentPlanet = $this->game->gameSave->currentPlanet;
+        $this->game->gameState->targetPlanet = $this->game->gameSave->targetPlanet;
+        $this->game->gameState->missionId = $this->game->gameSave->missionId;
+        $this->game->gameState->stage = $this->game->gameSave->stage;
     }
 
     private function loadMission(): void
     {
-        $mission = $this->loadMissionFromYamlFile($this->missionId);
-        $this->mission = new Mission($mission, $this->missionId);
+        $mission = $this->loadMissionFromYamlFile($this->game->gameState->missionId);
+        $this->mission = new Mission($mission, $this->game->gameState->missionId);
     }
 
-    // move to inst
     protected function startGame(): void
     {
         $this->buildAssets();
         $this->loadSave();
         $this->loadMission();
+        // do wyjebania
         $missionLoop = new MissionLoop($this->mission);
-        // move run to the game function
-        $this->game->run($missionLoop);
-        //$missionLoop->run($this->game);
+
+        $this->game->start($this->mission);
     }
 }

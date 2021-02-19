@@ -15,7 +15,7 @@ class DecisionHandler
         $this->id = $id;
     }
 
-    public function getHandler()
+    public function getUniqueHandler()
     {
         $handler = null;
 

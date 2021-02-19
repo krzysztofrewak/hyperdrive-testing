@@ -31,7 +31,7 @@ class Mission
 
     public function getDecisionHandler()
     {
-        return $this->handler->getHandler();
+        return $this->handler->getUniqueHandler();
     }
 
     public function progress()

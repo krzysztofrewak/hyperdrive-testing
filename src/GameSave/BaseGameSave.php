@@ -15,4 +15,5 @@ abstract class BaseGameSave
     public string $currentPlanet = "triton";
     public string $targetPlanet = "target";
     public string $missionId = "intro";
+    public int $stage = 0;
 }

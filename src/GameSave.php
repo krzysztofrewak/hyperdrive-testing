@@ -28,6 +28,7 @@ class GameSave extends BaseGameSave
         $this->currentPlanet = $gameSaveData[6][0];
         $this->targetPlanet = $gameSaveData[7][0];
         $this->missionId = $gameSaveData[8][0];
+        $this->stage = (int) $gameSaveData[9][0];
     }
 
     public function serialize(): void

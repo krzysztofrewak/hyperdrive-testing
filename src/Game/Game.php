@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
+use Hyperdrive\Game\MainLoop\GameState;
 use Hyperdrive\GameSave;
 use Hyperdrive\GameSave\IntegrityController;
 
 class Game
 {
     use IntegrityController;
+    use MissionLoopT;
 
     public GameSave $gameSave;
+    public GameState $gameState;
 
     public function __construct(GameSave $gameSave)
     {
@@ -19,8 +22,10 @@ class Game
         $this->toggleInGameState();
     }
 
-    public function run(MissionLoop $loop): void
+    public function start(Mission $mission): void
     {
-        $loop->start();
+        $this->constructMissionLoop($mission);
+        $this->startMissionLoop();
+        //$loop->start();
     }
 }

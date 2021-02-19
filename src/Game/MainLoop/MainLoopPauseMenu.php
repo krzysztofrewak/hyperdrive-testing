@@ -8,6 +8,8 @@ use Hyperdrive\Menu;
 
 class MainLoopPauseMenu extends Menu
 {
+    private bool $saveFlag = false;
+
     public function __construct()
     {
         parent::__construct();
@@ -20,6 +22,8 @@ class MainLoopPauseMenu extends Menu
 
     public function handleMenu(): void
     {
+        $this->saveFlag = false;
+
         while(true)
         {
             if ($this->choice === "quit")
@@ -34,6 +38,7 @@ class MainLoopPauseMenu extends Menu
 
             if ($this->choice === "save")
             {
+                $this->toggleGameSaveFlag();
                 echo "Game is saved!" . PHP_EOL;
             }
 
@@ -41,5 +46,15 @@ class MainLoopPauseMenu extends Menu
 
             continue;
         }
+    }
+
+    private function toggleGameSaveFlag()
+    {
+        $this->saveFlag = !$this->saveFlag;
+    }
+
+    public function getSaveFlagState(): bool
+    {
+        return $this->saveFlag ;
     }
 }
