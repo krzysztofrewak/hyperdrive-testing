@@ -16,8 +16,9 @@ class Planet
 {
     protected Collection $neighbours;
 
-    public function __construct(protected string $name)
-    {
+    public function __construct(
+        protected string $name
+    ) {
         $this->neighbours = collect();
     }
 

@@ -5,27 +5,24 @@ declare(strict_types=1);
 namespace Hyperdrive\Player;
 
 use Hyperdrive\Geography\Planet;
-use Hyperdrive\Navigator\HyperdriveNavigator;
 use Hyperdrive\Player\Capital\Capital;
+use Hyperdrive\Player\Navigator\HyperdriveNavigator;
 use Hyperdrive\Player\Pilot\Pilot;
 use Hyperdrive\Player\Spaceship\Spaceship;
 use JetBrains\PhpStorm\ArrayShape;
 
 class Player
 {
-    protected Pilot $pilot;
-    protected Spaceship $spaceship;
     protected Capital $capital;
     protected Planet $targetPlanet;
     protected Planet $currentPlanet;
-    protected HyperdriveNavigator $navigator;
 
-    public function __construct(Pilot $pilot, Spaceship $spaceship, HyperdriveNavigator $navigator)
-    {
-        $this->pilot = $pilot;
-        $this->navigator = $navigator;
-        $this->spaceship = $spaceship;
-        $this->capital = new Capital(2000);
+    public function __construct(
+        protected Pilot $pilot,
+        protected Spaceship $spaceship,
+        protected HyperdriveNavigator $navigator
+    ) {
+        $this->capital = new Capital(20000);
         $this->targetPlanet = $this->navigator->getRandomPlanet();
         $this->currentPlanet = $this->navigator->getRandomPlanet();
     }
@@ -40,9 +37,14 @@ class Player
         return $this->currentPlanet;
     }
 
-    public function checkPlanetsEquals(): bool
+    public function isPlanetsEqual(): bool
     {
         return $this->currentPlanet === $this->targetPlanet;
+    }
+
+    public function refuelingSpaceship(): void
+    {
+        $this->spaceship->fullRefueling($this->capital);
     }
 
     public function jumpToPlanet(Planet $planet): void
@@ -52,18 +54,13 @@ class Player
         $this->currentPlanet = $this->navigator->getCurrentPlanet();
     }
 
-    public function refuelingSpaceship(): void
-    {
-        $this->spaceship->fullRefueling($this->capital);
-    }
-
     #[ArrayShape([
         "name" => "string",
         "fuel" => "int",
         "capacity" => "int",
         "fuelConsumption" => "int",
     ])]
-    public function showSpaceshipData(): array
+    public function getSpaceshipData(): array
     {
         return $this->spaceship->getSpaceshipData();
     }
@@ -72,7 +69,7 @@ class Player
         "name" => "string",
         "capital" => "int",
     ])]
-    public function showPlayerData(): array
+    public function getPlayerData(): array
     {
         return [
             "name" => $this->pilot,

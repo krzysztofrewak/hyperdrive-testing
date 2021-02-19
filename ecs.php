@@ -10,6 +10,7 @@ use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
+use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -22,6 +23,7 @@ $sets = [
 ];
 
 $skipped = [
+    DisallowMultiPropertyDefinitionSniff::class => null,
     SingleQuoteFixer::class => null,
     ClassAttributesSeparationFixer::class => null,
     NotOperatorWithSuccessorSpaceFixer::class => null,

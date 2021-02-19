@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Navigator;
+namespace Hyperdrive\Player\Navigator;
 
 use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
 use Hyperdrive\Geography\Planet;
@@ -11,8 +11,9 @@ class HyperdriveNavigator
 {
     protected ?Planet $currentPlanet;
 
-    public function __construct(protected GalaxyAtlas $atlas)
-    {
+    public function __construct(
+        protected GalaxyAtlas $atlas
+    ) {
     }
 
     public function getCurrentPlanet(): Planet

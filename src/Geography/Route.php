@@ -15,8 +15,9 @@ class Route
 {
     protected Collection $planets;
 
-    public function __construct(protected string $name)
-    {
+    public function __construct(
+        protected string $name
+    ) {
         $this->planets = collect();
     }
 

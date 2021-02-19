@@ -7,7 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Hyperdrive\GalaxyAtlas\GalaxyAtlas;
 use Hyperdrive\GalaxyAtlas\GalaxyAtlasBuilder;
 use Hyperdrive\Geography\Planet;
-use Hyperdrive\Navigator\HyperdriveNavigator;
+use Hyperdrive\Player\Navigator\HyperdriveNavigator;
 use PHPUnit\Framework\Assert;
 
 class ApplicationContext implements Context

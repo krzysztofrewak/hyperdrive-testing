@@ -24,7 +24,7 @@
     "require-dev": {
         "behat/behat": "^3.8",
         "phpunit/phpunit": "^9.2",
-        "symplify/easy-coding-standard": "^8.3",
+        "symplify/easy-coding-standard": "^9.1",
         "krzysztofrewak/php-cs-double-quote-fixer": "^1.0"
     },
     "scripts": {
