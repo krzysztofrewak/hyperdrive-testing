@@ -52,13 +52,9 @@ class BaseGameLoop
         $this->buildAssets();
         $this->loadSave();
         $this->loadMission();
+
         while (!$_SESSION['isMissionComplete']) {
-            //play()
             $this->game->play($this->mission);
         }
-
-        unset($this->builder);
-        unset($this->game->gameState);
-        unset($this->mission);
     }
 }

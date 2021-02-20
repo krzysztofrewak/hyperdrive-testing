@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Hyperdrive\GameInitialization;
 
-use Hyperdrive\GalaxyAtlasBuilder;
-use Hyperdrive\HyperdriveNavigator;
-
 class GameEnvironmentInit
 {
     private MainMenu $menu;
@@ -15,7 +12,9 @@ class GameEnvironmentInit
     {
         $_SESSION['language'] = 'en';
         $_SESSION['saveFile'] = '/application/gamesave';
-        $_SESSION['isInGame'] = 0;
+        $_SESSION['isInGame'] = false;
+        $_SESSION['isMissionComplete'] = false;
+        $_SESSION['nextMission'] = "";
         $this->menu = new MainMenu();
     }
 /*

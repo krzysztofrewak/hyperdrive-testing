@@ -6,7 +6,7 @@ namespace Hyperdrive\Game;
 
 use League\CLImate\CLImate;
 
-trait MissionLoopT
+trait MissionLoopManager
 {
     use MissionLoopHandler;
 
@@ -30,6 +30,10 @@ trait MissionLoopT
             while (!$this->hasProgressed()) {
                 $this->displayOptions();
                 $this->handleDecision();
+
+                if ($this->uniqueHandler->isSaveFlagSet()) {
+                    $this->saveGame();
+                }
             }
 
             $this->uniqueHandler->toggleProgress();

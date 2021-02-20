@@ -9,7 +9,6 @@ class Mission
     public array $data;
     private array $stage;
     private DecisionHandler $handler;
-    private bool $progress;
 
     public function __construct(array $data, string $missionId)
     {
@@ -23,19 +22,8 @@ class Mission
         return $this->data;
     }
 
-    public function dump()
-    {
-        echo "Mission obj" . PHP_EOL;
-        print_r(sizeof($this->data));
-    }
-
     public function getDecisionHandler()
     {
         return $this->handler->getUniqueHandler();
-    }
-
-    public function progress()
-    {
-        $this->progress = true;
     }
 }

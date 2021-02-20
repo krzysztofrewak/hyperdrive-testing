@@ -35,7 +35,7 @@ class MainLoopPauseMenu extends Menu
 
             if ($this->choice === "save") {
                 $this->toggleGameSaveFlag();
-                echo "Game is saved!" . PHP_EOL;
+                break;
             }
 
             $this->displayMenu();

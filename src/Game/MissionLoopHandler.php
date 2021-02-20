@@ -35,9 +35,9 @@ trait MissionLoopHandler
     {
         foreach (str_split($sentence) as $letter) {
             $this->cli->inline($letter);
-            usleep(50000);
+            usleep(5);
         }
-        sleep(1);
+        // sleep(1);
         echo PHP_EOL;
     }
 
@@ -65,19 +65,10 @@ trait MissionLoopHandler
         $this->currentStage = $this->mission->data[$this->stageIndex];
     }
 
-    public function getCurrentStage()
-    {
-        return $this->currentStage;
-    }
-
     public function handleDecision(): void
     {
         $decision = $this->uniqueHandler->getResult();
         $this->uniqueHandler->handleDecision($decision);
-
-        if ($this->uniqueHandler->isSaveFlagSet()) {
-            $this->saveGame();
-        }
     }
 
     private function hasProgressed(): bool
@@ -116,6 +107,6 @@ trait MissionLoopHandler
         }
 
         fclose($saveFile);
-        unset($saveData);
+        echo "Game is saved!" . PHP_EOL;
     }
 }

@@ -12,7 +12,7 @@ use Hyperdrive\GameSave\IntegrityController;
 class Game
 {
     use IntegrityController;
-    use MissionLoopT;
+    use MissionLoopManager;
 
     public GameSave $gameSave;
     public GameState $gameState;
@@ -22,7 +22,6 @@ class Game
     {
         $this->gameType = $gameType;
         $this->gameSave = $gameType->getGameSave();
-        $this->toggleInGameState();
     }
 
     public function play(Mission $mission): void
