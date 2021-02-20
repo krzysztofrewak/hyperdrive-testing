@@ -25,18 +25,13 @@ class BaseGameLoop
 
     private function loadSave()
     {
-        //foreach
         $this->game->gameState = new GameState();
-        $this->game->gameState->player = (array)$this->game->gameSave->player;
-        $this->game->gameState->friend1 = (array)$this->game->gameSave->friend1;
-        $this->game->gameState->friend2 = (array)$this->game->gameSave->friend2;
-        $this->game->gameState->money = $this->game->gameSave->money;
-        $this->game->gameState->fuel = $this->game->gameSave->fuel;
-        $this->game->gameState->team = (string)$this->game->gameSave->team;
-        $this->game->gameState->currentPlanet = $this->game->gameSave->currentPlanet;
-        $this->game->gameState->targetPlanet = $this->game->gameSave->targetPlanet;
-        $this->game->gameState->missionId = $this->game->gameSave->missionId;
-        $this->game->gameState->stage = $this->game->gameSave->stage;
+        $gameSave = (array)($this->game->gameSave);
+
+        foreach ($this->game->gameState as &$record) {
+            $record = current($gameSave);
+            next($gameSave);
+        }
     }
 
     private function loadMission(): void
