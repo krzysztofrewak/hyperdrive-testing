@@ -8,21 +8,28 @@ use League\CLImate\CLImate;
 
 trait TextHandler
 {
-    private CLImate $cli;
+    private CLImate $climate;
 
-    public function init(): void
+    public function __construct()
     {
-        $this->cli = new CLImate();
+        $this->climate = new CLImate();
+        $this->climate->addArt('./src/GameData/Art');
     }
 
     public function typewriterEffect(string $sentence = ""): void
     {
-        $cli = new CLImate();
+        $this->climate = new CLImate();
         foreach (str_split($sentence) as $letter) {
-            $cli->inline($letter);
+            $this->climate->inline($letter);
             usleep(5);
         }
         // sleep(1);
         echo PHP_EOL;
+    }
+
+    public function drawBanner(string $id): void
+    {
+        $this->climate->animation($id)->enterFrom('bottom');
+        sleep(3);
     }
 }

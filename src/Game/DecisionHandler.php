@@ -32,6 +32,7 @@ class DecisionHandler
             $handler = new Mission2();
         }
 
+        $handler->init();
         return $handler;
     }
 }

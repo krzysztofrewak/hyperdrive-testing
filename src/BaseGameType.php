@@ -24,7 +24,7 @@ abstract class BaseGameType
         return $data;
     }
 
-    public function deserialize()
+    public function deserialize(): void
     {
         $gameSaveData = $this->getGameStateFromSaveFile();
         $this->gameSave->fillFromSaveFile($gameSaveData);
