@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Hyperdrive\Game;
 
 use Hyperdrive\GameData\Missions\DecisionHandlerInterface;
-use League\CLImate\CLImate;
+use Hyperdrive\Traits\SaveHandler;
+use Hyperdrive\Traits\TextHandler;
 
 trait MissionLoopHandler
 {
+    use TextHandler;
+    use SaveHandler;
+
     private int $index = 1;
-    private array $currentStage;
     private int $stageIndex = 0;
+    private array $currentStage;
     private DecisionHandlerInterface $uniqueHandler;
-    // decide where to keep it
-    public CLImate $cli;
 
     public function createUniqueMissionHandler(): void
     {
@@ -29,16 +31,6 @@ trait MissionLoopHandler
         for ($this->index = 1; $this->index <= $condition; $this->index++) {
             $this->typewriterEffect($stage[$this->index]);
         }
-    }
-
-    public function typewriterEffect(string $sentence = ""): void
-    {
-        foreach (str_split($sentence) as $letter) {
-            $this->cli->inline($letter);
-            usleep(5);
-        }
-        // sleep(1);
-        echo PHP_EOL;
     }
 
     public function mapOptionsToDecisions(): void
@@ -80,33 +72,30 @@ trait MissionLoopHandler
     {
         $saveData = (array)$this->gameState;
 
-        $sortedData = [
-            "player" => $saveData["player"],
-            "friend1" => $saveData["friend1"],
-            "friend2" => $saveData["friend2"],
-            "money" => $saveData["money"],
-            "fuel" => $saveData["fuel"],
-            "team" => $saveData["team"],
-            "currentPlanet" => $saveData["currentPlanet"],
-            "targetPlanet" => $saveData["targetPlanet"],
-            "missionId" => $saveData["missionId"],
-            "stage" => $saveData["stage"]
-        ];
+        $sortedData = $this->sortForGameSave($saveData);
 
-        $saveFile = fopen($_SESSION['saveFile'], 'w');
+        $this->serialize($sortedData);
+        $this->typewriterEffect("Game saved successfully!");
+    }
 
-        foreach ($sortedData as $record) {
-            if (is_array($record)) {
-                foreach ($record as $index) {
-                    fwrite($saveFile, "$index;");
+    private function startLoop(): void
+    {
+        for ($this->stageIndex = $this->gameSave->stage; $this->stageIndex < sizeof($this->mission->data); $this->stageIndex++) {
+            $this->setCurrentStage();
+            $this->printText();
+            $this->mapOptionsToDecisions();
+
+            while (!$this->hasProgressed()) {
+                $this->displayOptions();
+                $this->handleDecision();
+
+                if ($this->uniqueHandler->isSaveFlagSet()) {
+                    $this->saveGame();
                 }
-                fwrite($saveFile, "\n");
-            } else {
-                fwrite($saveFile, "$record;\n");
             }
-        }
 
-        fclose($saveFile);
-        echo "Game is saved!" . PHP_EOL;
+            $this->uniqueHandler->toggleProgress();
+            $this->updateGameState();
+        }
     }
 }

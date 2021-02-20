@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Hyperdrive;
 
 use Hyperdrive\GameSave\BaseGameSave;
+use Hyperdrive\Traits\SaveHandler;
 
 class GameSave extends BaseGameSave
 {
+    use SaveHandler;
+
     public function fillNewSave(array $userProvidedData): void
     {
         $this->player = [$userProvidedData[0][0], $userProvidedData[0][1]];
@@ -20,7 +23,7 @@ class GameSave extends BaseGameSave
         $this->targetPlanet = "";
         $this->missionId = "intro";
         $this->stage = 0;
-        $this->serialize();
+        $this->serialize((array)$this);
     }
 
     public function fillFromSaveFile(array $gameSaveData): void
@@ -35,23 +38,5 @@ class GameSave extends BaseGameSave
         $this->targetPlanet = $gameSaveData[7][0];
         $this->missionId = $gameSaveData[8][0];
         $this->stage = (int)$gameSaveData[9][0];
-    }
-
-    public function serialize(): void
-    {
-        $saveFile = fopen($_SESSION['saveFile'], 'w');
-
-        foreach ($this as $record) {
-            if (is_array($record)) {
-                foreach ($record as $index) {
-                    fwrite($saveFile, "$index;");
-                }
-                fwrite($saveFile, "\n");
-            } else {
-                fwrite($saveFile, "$record;\n");
-            }
-        }
-
-        fclose($saveFile);
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use League\CLImate\CLImate;
-
 trait MissionLoopManager
 {
     use MissionLoopHandler;
@@ -14,7 +12,6 @@ trait MissionLoopManager
 
     public function constructMissionLoop(Mission $mission): void
     {
-        $this->cli = new CLImate();
         $this->mission = $mission;
     }
 
@@ -22,30 +19,14 @@ trait MissionLoopManager
     {
         $this->createUniqueMissionHandler();
 
-        for ($this->stageIndex = $this->gameSave->stage; $this->stageIndex < sizeof($this->mission->data); $this->stageIndex++) {
-            $this->setCurrentStage();
-            $this->printText();
-            $this->mapOptionsToDecisions();
-
-            while (!$this->hasProgressed()) {
-                $this->displayOptions();
-                $this->handleDecision();
-
-                if ($this->uniqueHandler->isSaveFlagSet()) {
-                    $this->saveGame();
-                }
-            }
-
-            $this->uniqueHandler->toggleProgress();
-            $this->updateGameState();
-        }
+        $this->startLoop();
 
         $this->gameState->missionId = $_SESSION['nextMission'];
         $this->gameState->stage = 0;
         $this->saveGame();
     }
 
-    private function updateGameState(): void
+    protected function updateGameState(): void
     {
         $this->gameState->stage = $this->stageIndex + 1;
     }
