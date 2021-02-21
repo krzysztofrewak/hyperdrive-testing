@@ -33,6 +33,8 @@ class SpaceshipsCollection
     public function getSpaceshipsData(): array
     {
         $spaceshipsData = [];
+
+        /** @var Spaceship $spaceship */
         foreach ($this->spaceships as $spaceship) {
             $spaceshipsData[] = $spaceship->getSpaceshipData();
         }

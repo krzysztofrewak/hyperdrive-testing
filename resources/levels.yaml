@@ -1,0 +1,9 @@
+Easy:
+  fuel: 10000
+  capital: 2000
+Normal:
+  fuel: 8000
+  capital: 1500
+Hard:
+  fuel: 6000
+  capital: 1000

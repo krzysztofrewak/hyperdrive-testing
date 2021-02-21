@@ -6,20 +6,12 @@ namespace Hyperdrive\Player\Pilot;
 
 class Pilot
 {
-    protected string $name;
-
-    public function __construct(array $pilotData)
+    public function __construct(protected string $name)
     {
-        $this->setPilotData($pilotData);
     }
 
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    private function setPilotData(array $pilotData): void
-    {
-        $this->name = $pilotData["name"];
     }
 }

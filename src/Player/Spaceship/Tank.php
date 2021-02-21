@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Player\Spaceship;
 
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Tank
 {
-    protected int $fuel;
+    protected int $fuel = 0;
     protected int $capacity;
     protected int $fuelConsumption;
     protected int $fillingRate = 100;
@@ -17,6 +16,11 @@ class Tank
     public function __construct(array $tankData)
     {
         $this->setTankData($tankData);
+    }
+
+    public function setFuel(int $fuel): void
+    {
+        $this->fuel = $fuel;
     }
 
     public function isItFull(): bool
@@ -46,23 +50,23 @@ class Tank
         $this->fuel -= $this->fuelConsumption;
     }
 
-    #[ArrayShape([
-        "fuel" => "int",
-        "capacity" => "int",
-        "fuelConsumption" => "int",
-    ])]
     public function getTankData(): array
     {
-        return [
-            "fuel" => $this->fuel,
+        $data = [
             "capacity" => $this->capacity,
             "fuelConsumption" => $this->fuelConsumption,
         ];
+
+        if ($this->fuel === 0) {
+            return $data;
+        }
+        return [
+            "fuel" => $this->fuel,
+        ] + $data;
     }
 
     private function setTankData(array $tankData): void
     {
-        $this->fuel = $tankData["fuel"];
         $this->capacity = $tankData["capacity"];
         $this->fuelConsumption = $tankData["fuelConsumption"];
     }

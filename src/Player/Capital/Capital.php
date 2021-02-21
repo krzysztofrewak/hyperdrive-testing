@@ -8,9 +8,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Capital
 {
-    public function __construct(
-        protected int $capital
-    ) {
+    public function __construct(protected int $capital)
+    {
     }
 
     public function getCapital(): int

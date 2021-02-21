@@ -23,14 +23,14 @@ class GalaxyAtlasBuilder implements BuilderContract
         return $galaxyAtlas;
     }
 
-    public static function buildRouteFromArray(array $routeData): Route
+    public static function buildRouteFromArray(array $data): Route
     {
-        $route = new Route($routeData["name"]);
+        $route = new Route($data["name"]);
 
         /** @var Planet|null $previous */
         $previous = null;
 
-        foreach ($routeData["planets"] as $planet) {
+        foreach ($data["planets"] as $planet) {
             $planet = $route->createOrUpdatePlanet($planet);
             if ($previous !== null) {
                 $previous->addNeighbour($planet);
@@ -45,16 +45,19 @@ class GalaxyAtlasBuilder implements BuilderContract
     public static function buildFromYaml(string $filePath): GalaxyAtlas
     {
         $galaxyAtlas = new GalaxyAtlas();
-        $routesData = Yaml::parseFile($filePath);
-        self::buildPlanets($galaxyAtlas, $routesData);
+        $data = Yaml::parseFile($filePath);
+        self::buildPlanets($galaxyAtlas, $data);
 
         return $galaxyAtlas;
     }
 
-    protected static function buildPlanets(GalaxyAtlas &$galaxyAtlas, array $routesData): void
+    protected static function buildPlanets(GalaxyAtlas &$galaxyAtlas, array $data): void
     {
-        foreach ($routesData as $routeData) {
-            $route = self::buildRouteFromArray($routeData);
+        foreach ($data as $name => $planets) {
+            $route = self::buildRouteFromArray([
+                "name" => $name,
+                "planets" => $planets,
+            ]);
             $galaxyAtlas->addRoute($route);
         }
     }

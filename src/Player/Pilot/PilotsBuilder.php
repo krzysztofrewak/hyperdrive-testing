@@ -25,16 +25,16 @@ class PilotsBuilder implements BuilderContract
     public static function buildFromYaml(string $filePath): Collection
     {
         $pilots = collect();
-        $pilotsData = Yaml::parseFile($filePath);
-        self::buildPilots($pilots, $pilotsData);
+        $data = Yaml::parseFile($filePath);
+        self::buildPilots($pilots, $data);
 
         return $pilots;
     }
 
-    protected static function buildPilots(Collection &$collection, array $pilotsData): void
+    protected static function buildPilots(Collection &$collection, array $data): void
     {
-        foreach ($pilotsData as $pilotData) {
-            $collection->add(new Pilot($pilotData));
+        foreach ($data as $name) {
+            $collection->add(new Pilot($name));
         }
     }
 }
