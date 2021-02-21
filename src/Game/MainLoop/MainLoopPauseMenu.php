@@ -14,6 +14,7 @@ class MainLoopPauseMenu extends Menu
     {
         parent::__construct();
         $this->options = [
+            "map" => "Show galaxy map",
             "save" => "Save game",
             "return" => "Return to the game",
             "quit" => "Quit application"
@@ -30,6 +31,11 @@ class MainLoopPauseMenu extends Menu
             }
 
             if ($this->choice === "return") {
+                break;
+            }
+
+            if ($this->choice === "map") {
+                $this->cli->draw('mapFinal');
                 break;
             }
 

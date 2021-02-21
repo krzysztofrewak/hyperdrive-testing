@@ -21,7 +21,7 @@ trait TextHandler
         $this->climate = new CLImate();
         foreach (str_split($sentence) as $letter) {
             $this->climate->inline($letter);
-            usleep(50);
+            usleep(5000);
         }
         //sleep(1);
         echo PHP_EOL;

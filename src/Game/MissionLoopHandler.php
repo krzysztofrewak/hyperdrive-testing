@@ -13,7 +13,7 @@ trait MissionLoopHandler
     use TextHandler;
     use SaveHandler;
 
-    private int $index = 1;
+    private int $lineIndex = 1;
     private int $stageIndex = 0;
     private array $currentStage;
     private DecisionHandlerInterface $uniqueHandler;
@@ -29,8 +29,8 @@ trait MissionLoopHandler
         $stage = $this->currentStage;
         $condition = $stage[0]["linesCount"];
 
-        for ($this->index = 1; $this->index <= $condition; $this->index++) {
-            $this->typewriterEffect($stage[$this->index]);
+        for ($this->lineIndex = 1; $this->lineIndex <= $condition; $this->lineIndex++) {
+            $this->typewriterEffect($stage[$this->lineIndex]);
         }
     }
 
@@ -38,8 +38,8 @@ trait MissionLoopHandler
     {
         $this->uniqueHandler->clearOptions();
         $stage = $this->currentStage;
-        $options = $stage[$this->index]["options"];
-        $decisions = $stage[$this->index + 1]["decisions"];
+        $options = $stage[$this->lineIndex]["options"];
+        $decisions = $stage[$this->lineIndex + 1]["decisions"];
 
         for ($i = 0; $i < sizeof($options); $i++) {
             $decision = $decisions[$i];
