@@ -13,7 +13,7 @@ class BaseGameLoop
 {
     use YamlBuilder;
 
-    protected GameAssetsBuilder $builder;
+    public GameAssetsBuilder $builder;
     protected Game $game;
     private MainLoopPauseMenu $pauseMenu;
     private Mission $mission;

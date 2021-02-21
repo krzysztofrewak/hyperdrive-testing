@@ -21,6 +21,7 @@ trait MissionLoopHandler
     public function createUniqueMissionHandler(): void
     {
         $this->uniqueHandler = $this->mission->getDecisionHandler();
+        $this->uniqueHandler->setGameState($this->gameState);
     }
 
     public function printText(): void
