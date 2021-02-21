@@ -40,6 +40,10 @@ class Planet
 
     public function addNeighbour(self $planet): void
     {
-        $this->neighbours->add($planet);
+        if (!$this->neighbours->contains($planet->getId())) {
+            $this->neighbours->add($planet);
+        } else {
+            echo "planet is already a friend" . PHP_EOL;
+        }
     }
 }
