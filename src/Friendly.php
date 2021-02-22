@@ -14,30 +14,4 @@ class Friendly extends Being
         $this->setSpecialization($specialization);
         $this->setTag("Friend");
     }
-
-    public function setPlayerBeing(): void
-    {
-
-        if ($this->specialization === "Commander") {
-            // Defence
-            $this->bonus = 10;
-            $this->weaponType = 1;
-        }
-
-        if ($this->specialization === "Rifleman") {
-            // Accuracy
-            $this->bonus = 10;
-            $this->weaponType = 2;
-        }
-
-        if ($this->specialization === "Demolition") {
-            // Weapon strength
-            $this->bonus = 6;
-        }
-
-        if ($this->specialization === "Engineer") {
-            // Weapon strength
-            $this->bonus = 3;
-        }
-    }
 }

@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Hyperdrive;
 
-
-class Being
+class Being implements CombatInterface
 {
     protected string $name;
     protected int $health = 100;
@@ -43,21 +43,16 @@ class Being
 
     private function updateHealth(int $value): void
     {
-        echo "$this->name has now $this->health";
-        $this->health -= $value;
+        echo "Damage to deal $value" . PHP_EOL;
+        $this->health -= abs($value);
         echo "$this->name has now $this->health";
     }
 
     protected function getWeaponType(int $strengthLevel): int
     {
         $goodWeaponChance = round($strengthLevel / ($strengthLevel + 1), 2) * 100;
-        echo "Weapon chance $goodWeaponChance" . PHP_EOL;
-
         $condition = rand(1, 100) >= $goodWeaponChance;
-        echo "Condition $condition" . PHP_EOL;
-
         $weaponType = $condition ? 2 : 1;
-        echo "weapon type $weaponType" . PHP_EOL;
 
         return $weaponType;
     }
@@ -75,11 +70,6 @@ class Being
     protected function setSpecialization(string $type): void
     {
         $this->specialization = $type;
-    }
-
-    public function getBonus(): int
-    {
-        return $this->bonus;
     }
 
     public function getSpecialization(): string
@@ -105,4 +95,10 @@ class Being
             $this->weaponStrength += $value;
         }
     }
+
+    public function getTag(): string
+    {
+        return $this->tag;
+    }
+
 }
