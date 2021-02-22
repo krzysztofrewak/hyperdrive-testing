@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Game;
 
 use Hyperdrive\GameData\Missions\DecisionHandlerInterface;
+use Hyperdrive\Traits\MusicHandler;
 use Hyperdrive\Traits\SaveHandler;
 use Hyperdrive\Traits\TextHandler;
 
@@ -12,6 +13,7 @@ trait MissionLoopHandler
 {
     use TextHandler;
     use SaveHandler;
+    use MusicHandler;
 
     private int $lineIndex = 1;
     private int $stageIndex = 0;
@@ -30,6 +32,7 @@ trait MissionLoopHandler
         $condition = $stage[0]["linesCount"];
 
         for ($this->lineIndex = 1; $this->lineIndex <= $condition; $this->lineIndex++) {
+            $this->playMusic($this->gameState->missionId, $this->stageIndex + 1);
             $this->typewriterEffect($stage[$this->lineIndex]);
         }
     }

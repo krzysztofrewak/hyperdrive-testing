@@ -12,6 +12,7 @@ abstract class BaseGameSave
     public int $money;
     public int $fuel;
     public string $team;
+    public int $timeSpent;
     public string $currentPlanet;
     public string $targetPlanet;
     public string $missionId;

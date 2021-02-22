@@ -26,19 +26,18 @@ trait SaveHandler
 
     public function sortForGameSave(array $data): array
     {
-        $sortedData = [
+        return [
             "player" => $data["player"],
             "friend1" => $data["friend1"],
             "friend2" => $data["friend2"],
             "money" => $data["money"],
             "fuel" => $data["fuel"],
             "team" => $data["team"],
+            "timeSpent" => $data["timeSpent"],
             "currentPlanet" => $data["currentPlanet"],
             "targetPlanet" => $data["targetPlanet"],
             "missionId" => $data["missionId"],
             "stage" => $data["stage"]
         ];
-
-        return $sortedData;
     }
 }

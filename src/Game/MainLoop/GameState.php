@@ -12,6 +12,7 @@ class GameState
     public int $money = 0;
     public int $fuel = 0;
     public string $team = "";
+    public int $timeSpent = 0;
     public string $currentPlanet = "";
     public string $targetPlanet = "";
     public string $missionId = "";
