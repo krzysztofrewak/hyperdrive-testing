@@ -32,17 +32,24 @@ class GalaxyAtlasBuilder
 
     protected static function buildPlanets(GalaxyAtlas &$atlas, array $routes): void
     {
-        foreach ($routes as $planets) {
-            /** @var Planet|null $previous */
-            $previous = null;
+        $planets = $routes['galaxy'];
+        $planetsCount = sizeof($planets);
 
-            foreach ($planets as $planet) {
-                $planet = $atlas->createOrUpdatePlanet($planet);
-                if ($previous) {
-                    $previous->addNeighbour($planet);
-                    $planet->addNeighbour($previous);
+
+        for ($i = 0; $i < $planetsCount; $i += 2) {
+            $planet = &$planets[$i];
+            $neighbours = $planets[$i + 1]["neighbours"];
+
+            $planet = $atlas->createOrUpdatePlanet($planet);
+
+
+            foreach ($neighbours as $neighbour) {
+                $neighbour = $atlas->createOrUpdatePlanet($neighbour);
+
+                if (!$planet->getNeighbours()->contains($neighbour->getId())) {
+                    $planet->addNeighbour($neighbour);
+                    $neighbour->addNeighbour($planet);
                 }
-                $previous = $planet;
             }
         }
     }

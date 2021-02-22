@@ -4,23 +4,59 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\MainLoop;
 
+use Hyperdrive\GalaxyAtlas;
+use Hyperdrive\Game\Game;
 use Hyperdrive\Game\GameAssetsBuilder;
+use Hyperdrive\Game\Mission;
+use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Traits\YamlBuilder;
 
 class BaseGameLoop
 {
-    protected GameAssetsBuilder $builder;
+    use YamlBuilder;
 
-    protected function buildAssets(): void
+    protected Game $game;
+    private MainLoopPauseMenu $pauseMenu;
+    private Mission $mission;
+    private GalaxyAtlas $atlas;
+    private HyperdriveNavigator $hyperdrive;
+
+    private function buildAssets(): void
     {
-        $this->builder = new GameAssetsBuilder();
+        $builder = new GameAssetsBuilder();
+        $this->hyperdrive = $builder->getHyperdrive();
+        $this->atlas = $builder->getAtlas();
     }
 
-    protected function loadMission(): void
+    private function loadSave()
     {
+        $this->game->gameState = new GameState();
+        $gameSave = (array)($this->game->gameSave);
+
+        foreach ($this->game->gameState as &$record) {
+            $record = current($gameSave);
+            next($gameSave);
+        }
+    }
+
+    private function loadMission(): void
+    {
+        $mission = $this->loadMissionFromYamlFile($this->game->gameState->missionId);
+        $this->mission = new Mission($mission, $this->game->gameState->missionId);
     }
 
     protected function startGame(): void
     {
-        new MainLoopMenu();
+        $_SESSION['isMissionComplete'] = false;
+
+        // do wyjebania
+        $this->buildAssets();
+
+        $this->loadSave();
+        $this->loadMission();
+
+        while (!$_SESSION['isMissionComplete']) {
+            $this->game->play($this->mission);
+        }
     }
 }

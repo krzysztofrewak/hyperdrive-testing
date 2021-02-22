@@ -8,26 +8,16 @@ trait IntegrityController
 {
     public function toggleInGameState(): void
     {
-        $state = $_SESSION['isInGame'];
-        $_SESSION['isInGame'] = abs($state <=> 1);
+        $_SESSION['isInGame'] = !$_SESSION['isInGame'];
     }
 
     public function canStartGame(): bool
     {
-        if ($this->isSaveGameCorrect() && !$this->isGameRunning()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function isSaveGameCorrect(): bool
-    {
-        return true;
+        return !$this->isGameRunning();
     }
 
     private function isGameRunning(): bool
     {
-        return false;
+        return $_SESSION['isInGame'];
     }
 }

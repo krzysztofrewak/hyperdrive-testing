@@ -6,13 +6,15 @@ namespace Hyperdrive\GameSave;
 
 abstract class BaseGameSave
 {
-    public ?array $player = null;
-    public ?array $friend1 = null;
-    public ?array $friend2 = null;
-    public int $money = 30_000;
-    public int $fuel = 100;
-    public ?string $team = null;
-    public string $currentPlanet = "triton";
-    public string $targetPlanet = "target";
-    public string $missionId = "intro";
+    public array $player;
+    public array $friend1;
+    public array $friend2;
+    public int $money;
+    public int $fuel;
+    public string $team;
+    public int $timeSpent;
+    public string $currentPlanet;
+    public string $targetPlanet;
+    public string $missionId;
+    public int $stage;
 }

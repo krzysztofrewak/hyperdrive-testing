@@ -34,4 +34,9 @@ class GalaxyAtlas
     {
         return $this->planets[Str::slug($planet)];
     }
+
+    public function getPlanets(): array
+    {
+        return $this->planets;
+    }
 }

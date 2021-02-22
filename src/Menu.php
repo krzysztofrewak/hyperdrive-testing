@@ -16,6 +16,7 @@ abstract class Menu implements MenuInterface
     public function __construct()
     {
         $this->cli = new CLImate();
+        $this->cli->addArt('./src/GameData/Art');
     }
 
     public function displayMenu(): void

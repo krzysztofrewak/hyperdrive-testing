@@ -14,16 +14,15 @@ trait MainMenuMethods
     public function start(): void
     {
         echo "Starting new game" . PHP_EOL;
-        $gameState = new NewGame();
-        $game = new Game($gameState->getGameSave());
-        new GameLoop($game);
+        new NewGame();
+        $this->resume();
     }
 
     public function resume(): void
     {
         echo "Resuming game" . PHP_EOL;
         $gameState = new ResumeGame();
-        $game = new Game($gameState->getGameSave());
+        $game = new Game($gameState);
         new GameLoop($game);
     }
 
