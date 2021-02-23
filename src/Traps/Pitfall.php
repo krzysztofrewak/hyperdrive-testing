@@ -26,7 +26,7 @@ class Pitfall {
                 $trap->enemyOnWay($ship, $quest, $person,$player);
                 break;
             case 4:
-                $trap->quiz($ship);
+                $trap->quiz($ship, $player);
                 break;
         }
 

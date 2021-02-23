@@ -4,6 +4,8 @@
 namespace Hyperdrive\Entity;
 
 
+use Hyperdrive\Entity\Players\Player;
+
 class Task
 {
     public function itemToTransport($atlas,$ship,$cli,$planet,$trap){
@@ -20,10 +22,10 @@ class Task
         }
     }
 
-    public function questMissions($quest,$ship,$person,$planet){
-        $quest->getVisitPlanets()->missionStatement($ship,$person);
+    public function questMissions($quest,$ship,$person,$planet,Player $player){
+        $quest->getVisitPlanets()->missionStatement($ship,$person,$player);
         $quest->getVisitPlanets()->setCountPlanet(1);
-        $quest->getSpendTokens()->missionStatement($ship,$person);
+        $quest->getSpendTokens()->missionStatement($ship,$person,$player);
         $quest->getSpendTokens()->setTokenCount($planet->getPrice());
     }
 

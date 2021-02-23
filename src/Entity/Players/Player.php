@@ -4,7 +4,9 @@
 namespace Hyperdrive\Entity\Players;
 
 
-class Player
+use Hyperdrive\Interfaces\PlayerInterface as PlayerInterfaceAlias;
+
+class Player implements PlayerInterfaceAlias
 {
     private int $power = 0;
     private int $armor = 0;
@@ -32,7 +34,7 @@ class Player
 
     public function setPower(int $power): void
     {
-        $this->power = $power;
+        $this->power += $power;
     }
 
     public function getArmor(): int
@@ -42,7 +44,7 @@ class Player
 
     public function setArmor(int $armor): void
     {
-        $this->armor = $armor;
+        $this->armor += $armor;
     }
 
     public function getName(): string
@@ -62,10 +64,16 @@ class Player
 
     public function setExp(int $exp): void
     {
-        $this->exp = $exp;
+        $this->exp += $exp;
+    }
+
+    public function resetExp()
+    {
+        $this->exp = 0;
     }
 
     public function supperAttack(?int $enemyHp):int {}
 
+    public function levelUpgrade():void {}
 
 }

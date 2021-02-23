@@ -7,6 +7,7 @@ namespace Hyperdrive\Fight;
 
 use Hyperdrive\Entity\Enemy;
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Players\Capitan;
 use Hyperdrive\Entity\Players\Player;
 use Hyperdrive\Entity\Quest;
 use Hyperdrive\Ship\SpaceShip;
@@ -41,21 +42,35 @@ class Combat
         if($result === "bombs") {
             $this->getDamageInfo($enemy,$ship,0);
             $quest->getUseWeapon()->setWeaponCount(1);
+            echo "(exp +200)";
+            $player->setExp(200);
         } else if ($result === "fire"){
             $this->getDamageInfo($enemy,$ship,1);
             $quest->getUseWeapon()->setWeaponCount(1);
+            echo "(exp +300)";
+            $player->setExp(300);
         }else if($result === "laser"){
             $this->getDamageInfo($enemy,$ship,2);
             $quest->getUseWeapon()->setWeaponCount(1);
+            echo "(exp +200)";
+            $player->setExp(200);
         } else if($result === "superAttack"){
-            echo "You hit for ".$player->supperAttack()." damage";
-            $enemy->setCondition((int)$player->supperAttack($enemy->getCondition()));
+            if($player instanceof Capitan){
+                $capitanDamage = (int)$player->supperAttack($enemy->getCondition());
+                $enemy->setCondition($capitanDamage);
+                echo "You hit for ".$capitanDamage." damage (exp +400)";
+                $player->setExp(400);
+            }else {
+                echo "You hit for ".$player->supperAttack()." damage (exp +400)";
+                $player->setExp(200);
+                $enemy->setCondition((int)$player->supperAttack());
+            }
         } else {
             $enemy->setCondition($ship->getPower());
             echo "You hit for ".$ship->getPower()." damage";
         }
 
-        $quest->getUseWeapon()->missionStatement($ship, $person);
+        $quest->getUseWeapon()->missionStatement($ship, $person,$player);
     }
 
     private function getWeaponInfo(int $index,SpaceShip $ship): string {

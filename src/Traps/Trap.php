@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Traps;
 
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Players\Player;
 use Hyperdrive\Entity\Quest;
 use Hyperdrive\Fight\Combat;
 use Hyperdrive\HyperdriveNavigator;
@@ -52,7 +53,7 @@ class Trap {
         }
     }
 
-    public function enemyOnWay(SpaceShip $ship,Quest $quest, $person,$player){
+    public function enemyOnWay(SpaceShip $ship,Quest $quest, $person,Player $player){
         $combat = new Combat();
         $cli = new CLImate();
         $enemy = $combat->selectEnemy();
@@ -75,8 +76,8 @@ class Trap {
             }
             if($enemy->getCondition() <=0 ) {
                 $cli->info("\nYou have defeated the enemy!");
-
-                $quest->getDefeatEnemy()->missionStatement($ship, $person);
+                $player->setExp(500);
+                $quest->getDefeatEnemy()->missionStatement($ship, $person, $player);
                 break;
             }else {
                 $cli->info("\nEnemy has defeated you!");
@@ -109,7 +110,7 @@ class Trap {
         }
     }
 
-    public function quiz(SpaceShip $ship){
+    public function quiz(SpaceShip $ship, Player $player){
         $cli = new CLImate();
         $ch = curl_init();
         $url = 'https://opentdb.com/api.php?amount=1&type=multiple';
@@ -137,7 +138,8 @@ class Trap {
                 ];
             $result = $cli->radio("To advance to the next planet you must answer the question: \n".$question, $options)->prompt();
             if($result === $correctAnswer){
-                $cli->info("Good answer, you can move on !");
+                $cli->info("Good answer, you can move on (+400 exp)!");
+                $player->setExp(400);
             } else {
                 $damage = rand(5,10);
                 $ship->setCondition(-$damage);
@@ -149,8 +151,5 @@ class Trap {
         curl_close($ch);
     }
 
-    public function randomPitfall(){
-
-    }
 
 }

@@ -44,7 +44,7 @@ while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
     $pitfall->trap($hyperdrive,$spaceShip,$quest,$person,$player);
     $task->shipInformation($spaceShip,$cli);
-    $task->questMissions($quest,$spaceShip,$person,$planet);
+    $task->questMissions($quest,$spaceShip,$person,$planet,$player);
 
     echo "\nToken count: ".$person->getToken()."\n";
 

@@ -4,11 +4,18 @@
 namespace Hyperdrive\Entity\Players;
 
 
-class Samurai extends Player
+use Hyperdrive\Interfaces\PlayerInterface;
+
+class Samurai extends Player implements PlayerInterface
 {
+    private int $level;
+    private int $currentExp;
+
     public function __construct(int $power, int $armor, string $name, int $exp)
     {
         parent::__construct($power, $armor, $name, $exp);
+        $this->level = 1;
+        $this->currentExp = 0;
     }
 
     public function __toString():string
@@ -54,10 +61,42 @@ class Samurai extends Player
     public function setExp(int $exp): void
     {
         parent::setExp($exp);
+        $this->levelUpgrade();
     }
-    public function supperAttack(): int
+
+    public function resetExp()
+    {
+        parent::resetExp();
+    }
+
+
+    public function supperAttack(?int $enemyHp): int
     {
         return $this->getPower()*2;
     }
 
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(){
+        $this->level++;
+
+        $attributes = $this->getLevel()*2;
+        $this->setArmor($attributes);
+        $this->setPower($attributes);
+
+        echo "\n".$this->getName()." Level Up\n"."Armor: ".$this->getArmor()."\nPower: ".$this->getPower();
+    }
+
+    public function levelUpgrade():void
+    {
+        if( $this->getExp() >= 400){
+            $this->currentExp = 400 - $this->getExp();
+            $this->resetExp();
+            $this->setLevel();
+            echo "Level UP: ".$this->getLevel()." Lvl";
+        }
+    }
 }
