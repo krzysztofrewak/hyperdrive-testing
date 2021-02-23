@@ -52,7 +52,7 @@ class Trap {
         }
     }
 
-    public function enemyOnWay(SpaceShip $ship,Quest $quest, $person){
+    public function enemyOnWay(SpaceShip $ship,Quest $quest, $person,$player){
         $combat = new Combat();
         $cli = new CLImate();
         $enemy = $combat->selectEnemy();
@@ -64,7 +64,7 @@ class Trap {
                 echo $enemy;
                 echo "\n Round ".($i + 1)."\n";
                 if($i % 2 ==0) {
-                    $combat->attackEnemy($cli, $enemy, $ship, $quest, $person);
+                    $combat->attackEnemy($cli, $enemy, $ship, $quest, $person,$player);
                     if($enemy->getCondition() <=0 || $ship->getCondition() <= 0 ) break;
                 }
                 else {

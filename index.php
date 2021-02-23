@@ -8,6 +8,7 @@ use Hyperdrive\Entity\Person;
 use Hyperdrive\Entity\Quest;
 use Hyperdrive\Entity\Task;
 use Hyperdrive\GalaxyAtlasBuilder;
+use Hyperdrive\Game;
 use Hyperdrive\Traps\Pitfall;
 use Hyperdrive\Traps\Trap;
 use Hyperdrive\HyperdriveNavigator;
@@ -33,12 +34,15 @@ $trap = new Trap();
 $task = new Task();
 $quest = new Quest(new DefeatEnemy(),new SpendTokens(), new UseWeapon(), new VisitPlanets());
 $pitfall = new Pitfall();
+$game = new Game();
+$game->startGame();
+$player = $game->getPlayer();
 
 $task->itemToTransport($atlas,$spaceShip,$cli,$planet,$trap);
 
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
-    $pitfall->trap($hyperdrive,$spaceShip,$quest,$person);
+    $pitfall->trap($hyperdrive,$spaceShip,$quest,$person,$player);
     $task->shipInformation($spaceShip,$cli);
     $task->questMissions($quest,$spaceShip,$person,$planet);
 

@@ -7,7 +7,7 @@ namespace Hyperdrive\Traps;
 use Hyperdrive\Entity\Person;
 
 class Pitfall {
-    public function trap($hyperdriveNavigator, $ship, $quest,Person $person){
+    public function trap($hyperdriveNavigator, $ship, $quest,Person $person,$player){
 
         $trap = new Trap();
         $rand = rand(0,20);
@@ -23,7 +23,7 @@ class Pitfall {
                 $trap->goToRandomPlanet($hyperdriveNavigator);
                 break;
             case 3:
-                $trap->enemyOnWay($ship, $quest, $person);
+                $trap->enemyOnWay($ship, $quest, $person,$player);
                 break;
             case 4:
                 $trap->quiz($ship);

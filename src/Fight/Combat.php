@@ -7,6 +7,7 @@ namespace Hyperdrive\Fight;
 
 use Hyperdrive\Entity\Enemy;
 use Hyperdrive\Entity\Person;
+use Hyperdrive\Entity\Players\Player;
 use Hyperdrive\Entity\Quest;
 use Hyperdrive\Ship\SpaceShip;
 use Hyperdrive\Ship\Weapons\Bombs;
@@ -27,12 +28,13 @@ class Combat
         return $enemy;
     }
 
-    public function attackEnemy($cli, Enemy $enemy, SpaceShip $ship,Quest $quest, Person $person){
+    public function attackEnemy($cli, Enemy $enemy, SpaceShip $ship,Quest $quest, Person $person,Player $player){
         $options = [
             "bombs" => $this->getWeaponInfo(0,$ship),
             "fire" => $this->getWeaponInfo(1,$ship),
             "laser" => $this->getWeaponInfo(2,$ship),
             "attack" => "Normal attack (dmg: ".$ship->getPower().")",
+            "superAttack" => $player->getName()." Supper Attack"
         ];
         $result = $cli->radio("Select your weapon ?", $options)->prompt();
 
@@ -45,7 +47,10 @@ class Combat
         }else if($result === "laser"){
             $this->getDamageInfo($enemy,$ship,2);
             $quest->getUseWeapon()->setWeaponCount(1);
-        }else {
+        } else if($result === "superAttack"){
+            echo "You hit for ".$player->supperAttack()." damage";
+            $enemy->setCondition((int)$player->supperAttack($enemy->getCondition()));
+        } else {
             $enemy->setCondition($ship->getPower());
             echo "You hit for ".$ship->getPower()." damage";
         }
