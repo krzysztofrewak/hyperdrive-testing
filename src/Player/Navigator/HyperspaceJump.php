@@ -42,7 +42,7 @@ class HyperspaceJump
         ));
 
         return $collection->filter(function ($value): bool {
-            return $value !== null;
+            return !is_null($value);
         });
     }
 
