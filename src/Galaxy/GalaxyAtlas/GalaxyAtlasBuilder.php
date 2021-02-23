@@ -31,7 +31,7 @@ class GalaxyAtlasBuilder implements BuilderContract
         $previous = null;
 
         foreach ($data["planets"] as $planet) {
-            $planet = $route->createOrUpdatePlanet($planet);
+            $planet = $route->createPlanet($planet);
             if ($previous !== null) {
                 $previous->addNeighbour($planet);
                 $planet->addNeighbour($previous);

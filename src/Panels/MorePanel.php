@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Panels;
 
+use Hyperdrive\Contracts\PanelContract;
 use Hyperdrive\Panels\Options\MoreOptions;
 use Hyperdrive\Player\Player;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class MorePanel extends BasePanel
+class MorePanel extends BasePanel implements PanelContract
 {
     public function __construct(protected Player $player)
     {
@@ -40,6 +41,14 @@ class MorePanel extends BasePanel
                 break;
             case "map":
                 $this->cli->columns($this->player->getMap(), 6);
+                break;
+            case "jump":
+                try {
+                    $hyperspaceJumpPanel = new HyperspaceJumpPanel($this->player->hyperspaceJump());
+                    $hyperspaceJumpPanel->selectionSection();
+                } catch (Exception $exception) {
+                    $this->showException($exception);
+                }
                 break;
             case "quit":
                 throw new Exception("You left the game :(");

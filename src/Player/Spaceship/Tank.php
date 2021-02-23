@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Tank
 {
-    protected int $fuel = 0;
+    protected int $fuel;
     protected int $capacity;
     protected int $fuelConsumption;
     protected int $fillingRate = 100;
@@ -67,6 +67,7 @@ class Tank
 
     private function setTankData(array $tankData): void
     {
+        $this->fuel = 0;
         $this->capacity = $tankData["capacity"];
         $this->fuelConsumption = $tankData["fuelConsumption"];
     }

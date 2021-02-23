@@ -7,24 +7,26 @@ namespace Hyperdrive\Player;
 use Hyperdrive\Galaxy\Geography\Planet;
 use Hyperdrive\Player\Capital\Capital;
 use Hyperdrive\Player\Navigator\HyperdriveNavigator;
+use Hyperdrive\Player\Navigator\HyperspaceJump;
 use Hyperdrive\Player\Pilot\Pilot;
 use Hyperdrive\Player\Spaceship\Spaceship;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Player
 {
     protected Planet $targetPlanet;
-    protected ?Planet $currentPlanet;
 
     public function __construct(
         protected Capital $capital,
         protected Pilot $pilot,
         protected Spaceship $spaceship,
-        protected HyperdriveNavigator $hyperdriveNavigator
+        protected HyperdriveNavigator $hyperdriveNavigator,
     )
     {
         $this->targetPlanet = $this->hyperdriveNavigator->getRandomPlanet();
-        $this->currentPlanet = $this->hyperdriveNavigator->getRandomPlanet();
+        $this->hyperdriveNavigator->getRandomPlanet();
     }
 
     public function getTargetPlanet(): Planet
@@ -32,14 +34,16 @@ class Player
         return $this->targetPlanet;
     }
 
+    #[Pure]
     public function getCurrentPlanet(): ?Planet
     {
-        return $this->currentPlanet;
+        return $this->hyperdriveNavigator->getCurrentPlanet();
     }
 
+    #[Pure]
     public function isPlanetsEqual(): bool
     {
-        return $this->currentPlanet === $this->targetPlanet;
+        return $this->getCurrentPlanet() === $this->targetPlanet;
     }
 
     public function refuelingSpaceship(): void
@@ -51,7 +55,6 @@ class Player
     {
         $this->spaceship->fuelConsumption();
         $this->hyperdriveNavigator->jumpTo($planet);
-        $this->currentPlanet = $this->hyperdriveNavigator->getCurrentPlanet();
     }
 
     public function getSpaceshipData(): array
@@ -60,23 +63,33 @@ class Player
     }
 
     #[ArrayShape([
-        "name" => "string",
-        "capital" => "int",
-        "target planet" => "string",
-        "current planet" => "string",
+        "Name" => "string",
+        "Capital" => "int",
+        "Target Planet" => "string",
+        "Current Planet" => "string",
+        "Hyperspace Jumps Limit" => "int|null",
     ])]
     public function getPlayerData(): array
     {
         return [
-            "name" => $this->pilot->__toString(),
-            "capital" => $this->capital->getCapital(),
-            "target planet" => $this->targetPlanet->__toString(),
-            "current planet" => $this->currentPlanet->__toString(),
+            "Name" => $this->pilot->__toString(),
+            "Capital" => $this->capital->getCapital(),
+            "Target Planet" => $this->targetPlanet->__toString(),
+            "Current Planet" => $this->getCurrentPlanet()->__toString(),
+            "Hyperspace Jumps Limit" => $this->hyperdriveNavigator->getHyperspaceJumpsLimit(),
         ];
     }
 
     public function getMap(): array
     {
         return $this->hyperdriveNavigator->getMap();
+    }
+
+    public function hyperspaceJump(): HyperspaceJump
+    {
+        if ($this->hyperdriveNavigator->getHyperspaceJumpsLimit() <= 0) {
+            throw new Exception("Hyperspace jump limit exhausted");
+        }
+        return new HyperspaceJump($this->hyperdriveNavigator, $this->capital);
     }
 }

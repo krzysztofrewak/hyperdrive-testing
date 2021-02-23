@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Galaxy\Geography;
 
 use Illuminate\Support\Collection;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class Route
@@ -32,13 +33,14 @@ class Route
 
     public function addPlanet(Planet $planet): void
     {
+        $planet->setId($this->planets->count());
         $this->planets->add($planet);
     }
 
-    public function createOrUpdatePlanet(string $name): Planet
+    public function createPlanet(string $name): Planet
     {
         $planet = new Planet($name);
-        $this->planets->add($planet);
+        $this->addPlanet($planet);
         return $planet;
     }
 
@@ -47,12 +49,28 @@ class Route
         return $this->planets;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getPlanetByName(string $name): Planet
     {
+        /** @var Planet $planet */
         foreach ($this->planets as $planet) {
             if ($planet->__toString() === $name) {
                 return $planet;
             }
         }
+        throw new Exception("There is no planet with this name");
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getPlanetById(int $id): Planet
+    {
+        if ($id >= 0 && $id < $this->planets->count()) {
+            return $this->planets->get($id);
+        }
+        throw new Exception("There is no planet with this id");
     }
 }

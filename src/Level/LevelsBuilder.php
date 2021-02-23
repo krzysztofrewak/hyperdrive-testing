@@ -12,7 +12,7 @@ class LevelsBuilder implements BuilderContract
     public static function buildFromArray(array $data): LevelsCollection
     {
         $levelsCollection = new LevelsCollection();
-        self::buildSpaceship($levelsCollection, $data);
+        self::buildLevel($levelsCollection, $data);
 
         return $levelsCollection;
     }
@@ -21,12 +21,12 @@ class LevelsBuilder implements BuilderContract
     {
         $levelsCollection = new LevelsCollection();
         $data = Yaml::parseFile($filePath);
-        self::buildSpaceship($levelsCollection, $data);
+        self::buildLevel($levelsCollection, $data);
 
         return $levelsCollection;
     }
 
-    protected static function buildSpaceship(LevelsCollection &$levelsCollection, array $data): void
+    protected static function buildLevel(LevelsCollection &$levelsCollection, array $data): void
     {
         foreach ($data as $name => $levelData) {
             $levelsCollection->addLevel(new Level($levelData + [

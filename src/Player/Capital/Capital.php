@@ -22,9 +22,14 @@ class Capital
      */
     public function spendingMoney(int $charge): void
     {
+        $this->isThereEnoughMoney($charge);
+        $this->capital -= $charge;
+    }
+
+    public function isThereEnoughMoney(int $charge): void
+    {
         if ($this->capital - $charge < 0) {
             throw new Exception("You don't have enough money");
         }
-        $this->capital -= $charge;
     }
 }

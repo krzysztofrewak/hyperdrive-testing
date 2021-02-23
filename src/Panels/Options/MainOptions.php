@@ -11,7 +11,7 @@ class MainOptions
     public function __invoke(Player $player): array
     {
         return $player->getCurrentPlanet()->getNeighbours()->toArray() + [
-            "more" => "[show more option]",
+            "more" => "[Show more option]",
         ];
     }
 }

@@ -16,10 +16,10 @@ class ApplicationContext implements Context
     protected HyperdriveNavigator $navigator;
 
     /**
-     * @Given there's an route built from array:
+     * @Given there's a route built from array:
      * @param TableNode $table
      */
-    public function thereSAnRouteBuildFromArray(TableNode $table): void
+    public function thereSARouteBuildFromArray(TableNode $table): void
     {
         $data = collect($table->getHash())->mapWithKeys(fn(array $route): array => [
             "name" => $route["route"],
@@ -35,7 +35,7 @@ class ApplicationContext implements Context
      */
     public function givenRouteIsMountedInANavigatorInstance(): void
     {
-        $this->navigator = new HyperdriveNavigator($this->route);
+        $this->navigator = new HyperdriveNavigator($this->route, 10);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Galaxy\Geography;
 
+use Hyperdrive\Traits\Identifier;
 use Illuminate\Support\Collection;
 
 /**
@@ -13,6 +14,8 @@ use Illuminate\Support\Collection;
  */
 class Planet
 {
+    use Identifier;
+
     protected Collection $neighbours;
 
     public function __construct(protected string $name)

@@ -13,18 +13,20 @@ class MoreOptions
         "player" => "string",
         "refueling" => "string",
         "map" => "string",
+        "jump" => "string",
         "return" => "string",
         "quit" => "string",
     ])]
     public function __invoke(): array
     {
         return [
-            "spaceship" => "show spaceship details",
-            "player" => "show player details",
-            "refueling" => "refueling spaceship",
-            "map" => "show planets list",
-            "return" => "return",
-            "quit" => "quit application",
+            "spaceship" => "Spaceship details",
+            "player" => "Player details",
+            "refueling" => "Refueling spaceship",
+            "map" => "Planets list",
+            "jump" => "Hyperspace jumps",
+            "return" => "Return",
+            "quit" => "Quit application",
         ];
     }
 }

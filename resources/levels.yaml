@@ -1,9 +1,11 @@
 Easy:
   fuel: 10000
-  capital: 2000
+  capital: 20000
 Normal:
   fuel: 8000
-  capital: 1500
+  capital: 15000
+  hyperspace-jumps-limit: 5
 Hard:
   fuel: 6000
-  capital: 1000
+  capital: 10000
+  hyperspace-jumps-limit: 1

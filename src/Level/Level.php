@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Level;
 
-use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Level
 {
+    protected string $name;
     protected int $fuel;
     protected int $capital;
-    protected string $name;
+    protected int $hyperspaceJumpsLimit = 10;
 
     public function __construct(array $levelData)
     {
@@ -32,18 +33,15 @@ class Level
         return $this->capital;
     }
 
-    #[ArrayShape([
-        "name" => "string",
-        "capital" => "int",
-        "fuel" => "int",
-    ])]
+    public function getHyperspaceJumpsLimit(): int
+    {
+        return $this->hyperspaceJumpsLimit;
+    }
+
+    #[Pure]
     public function getLevelData(): array
     {
-        return [
-            "name" => $this->name,
-            "capital" => $this->capital,
-            "fuel" => $this->fuel,
-        ];
+        return get_object_vars($this);
     }
 
     private function setLevelData(array $levelData): void
@@ -51,5 +49,9 @@ class Level
         $this->name = $levelData["name"];
         $this->fuel = $levelData["fuel"];
         $this->capital = $levelData["capital"];
+
+        if (array_key_exists("hyperspace-jumps-limit", $levelData)) {
+            $this->hyperspaceJumpsLimit = $levelData["hyperspace-jumps-limit"];
+        }
     }
 }
