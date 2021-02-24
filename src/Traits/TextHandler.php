@@ -30,12 +30,15 @@ trait TextHandler
 
     public function drawBanner(string $id): void
     {
+        $this->climate = new CLImate();
+        $this->climate->addArt('./src/GameData/Art');
         $this->climate->animation($id)->speed('70')->enterFrom('bottom');
         //sleep(6);
     }
 
     public function loadingEffect(string $sentence, int $length = 3): void
     {
+        $this->climate = new CLImate();
         $this->climate->inline($sentence);
         for ($i = 0; $i <= $length; $i++) {
             $this->climate->inline(".");
