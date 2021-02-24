@@ -4,81 +4,99 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Traits;
 
-use Hyperdrive\Being;
 use Hyperdrive\Enemy;
 use Hyperdrive\Friendly;
 use Hyperdrive\Player;
+use Hyperdrive\Team;
 use Illuminate\Support\Collection;
 
-/**
- * @package Hyperdrive\GameModules
- * @var Being[] $friendlyTeam
- * @var Being[] $enemyTeam
- */
 trait Combat
 {
+    use TextHandler;
+
     private int $enemyStrengthLevel = 0;
     private bool $isPlayerAttacking;
     private int $coverBonus;
-    private Collection $friendlyTeam;
-    private Collection $enemyTeam;
+    private bool $hasPlayerWon;
+    private string $lastTeamTag = "";
+    private Team $friendlyTeam;
+    private Team $enemyTeam;
+    private Collection $turnOrder;
+    private Collection $playedTurn;
 
     public function setUpCombatEnvironment(int $coverHeight): void
     {
         if ($coverHeight <= 1) {
-            $this->coverBonus = 12;
+            $this->coverBonus = 2;
         }
 
         if ($coverHeight === 2) {
-            $this->coverBonus = 25;
+            $this->coverBonus = 3;
         }
 
         if ($coverHeight >= 3) {
-            $this->coverBonus = 33;
+            $this->coverBonus = 5;
         }
 
-        $this->friendlyTeam = collect();
-        $this->enemyTeam = collect();
+        $this->friendlyTeam = new Team();
+        $this->enemyTeam = new Team();
     }
 
     public function startCombat(): void
     {
-        print_r($this->friendlyTeam->all());
-        print_r($this->enemyTeam->all());
+        $this->displayShootoutInfo($this->friendlyTeam->getTeam(), $this->enemyTeam->getTeam());
         $this->begin();
     }
 
     private function begin(): void
     {
-        //while ($this->isCombatOver()) {
+        $this->playedTurn = collect();
+        while (!$this->isCombatOver()) {
             $this->simulateTurn();
-        //}
-        // AI
-        // draw not hiding enemy
-        // if has bullets in gun
-        // then shoot or use special ability
-        // else reload
-        // PLAYER
-        // use polymorph
-        // Choose enemy to shoot
-        // shoot or use special ability
-        // shuffle who gets action
+        }
+        $this->endCombat();
     }
 
     private function simulateTurn(): void
     {
-        $turnOrder = $this->friendlyTeam->merge($this->enemyTeam)->shuffle();
+        $t1 = $this->friendlyTeam->getTeam();
+        $t2 = $this->enemyTeam->getTeam();
+        $turnOrder = $t1->merge($t2)->shuffle();
+        $this->assignEnemies();
 
-        foreach ($turnOrder as $being) {
-
-            if ($being->getTag() === "Friend") {
-                $beingToShoot = $this->enemyTeam->random();
-            } else {
-                $beingToShoot = $this->friendlyTeam->random();
+        while ($turnOrder !== $this->playedTurn) {
+            $iterator = $turnOrder->getIterator();
+            while (true) {
+                $being = $iterator->current();
+                if ($this->playedTurn->contains($being)) {
+                    $iterator->next();
+                } else if (!$iterator->valid()) {
+                    $this->playedTurn = collect();
+                    break 2;
+                } else {
+                    break;
+                }
             }
 
-            $being->shoot($beingToShoot);
+            $this->lastTeamTag = $being->getTag();
+
+            if (!$this->playedTurn->contains($being)) {
+                if ($this->lastTeamTag === "Enemy") {
+                    $this->enemyTeam->startShooting($being);
+                } else {
+                    $this->friendlyTeam->startShooting($being);
+                }
+                $this->handleTeams();
+                $this->playedTurn->add($being);
+                break;
+            }
         }
+    }
+
+    public function handleTeams(): void
+    {
+        $this->enemyTeam->removeDead();
+        $this->friendlyTeam->removeDead();
     }
 
     private function setUpFriendlyTeam(array $main, array $friend1, array $friend2): void
@@ -119,11 +137,11 @@ trait Combat
 
     private function applyBonusToFriendlyTeam(): void
     {
-        $player = $this->friendlyTeam->get(0);
+        $player = $this->friendlyTeam->getCommander();
         $player->setBonus();
         $bonus = $player->getBonus();
         $specialization = $player->getSpecialization();
-        $this->applyBonus($this->friendlyTeam, $bonus, $specialization);
+        $this->applyBonus($this->friendlyTeam->getTeam(), $bonus, $specialization);
     }
 
     private function applyBonus(Collection $team, int $bonusValue, string $bonusClass): void
@@ -158,6 +176,30 @@ trait Combat
 
     private function isCombatOver(): bool
     {
-        return true;
+        return !$this->enemyTeam->isAlive() || !$this->friendlyTeam->isAlive();
+    }
+
+    private function assignEnemies(): void
+    {
+        $this->enemyTeam->removeDead();
+        $this->friendlyTeam->removeDead();
+        $this->enemyTeam->addEnemyTeam($this->friendlyTeam->getTeam());
+        $this->friendlyTeam->addEnemyTeam($this->enemyTeam->getTeam());
+    }
+
+    private function endCombat(): void
+    {
+        if ($this->lastTeamTag === "Enemy") {
+            $this->typewriterEffect("You are defeated. Try again.");
+            $this->hasPlayerWon = false;
+        } else {
+            $this->typewriterEffect("You managed to win.");
+            $this->hasPlayerWon = true;
+        }
+    }
+
+    public function hasPlayerWon(): bool
+    {
+        return $this->hasPlayerWon;
     }
 }

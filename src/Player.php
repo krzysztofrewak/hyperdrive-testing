@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
+use Hyperdrive\Traits\TextHandler;
+use Illuminate\Support\Collection;
+
 class Player extends Friendly
 {
+    use TextHandler;
+
     public function getBonus(): int
     {
         return $this->bonus;
@@ -15,7 +20,7 @@ class Player extends Friendly
     {
         if ($this->specialization === "Commander") {
             // Defence
-            $this->bonus = 10;
+            $this->bonus = 5;
             $this->weaponType = 1;
         }
 
@@ -36,8 +41,19 @@ class Player extends Friendly
         }
     }
 
-    public function shoot(Being $being): void
+    public function chooseEnemy(Collection $enemies): Enemy
     {
-        echo "HEHEHEHE";
+        $decisions = [];
+        $this->typewriterEffect("Choose who gets shot");
+        for ($i = 0; $i < sizeof($enemies); $i++) {
+            echo $i . ". ";
+            $enemy = $enemies->get($i);
+            $this->typewriterEffect($enemy->name ." health: $enemy->health");
+            array_push($decisions, $i);
+        }
+
+        $enemyId = $this->getInput($decisions, "enemy");
+
+        return $enemies->get($enemyId);
     }
 }

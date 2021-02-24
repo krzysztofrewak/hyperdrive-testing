@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
+use Hyperdrive\Traits\TextHandler;
+
 class Being implements CombatInterface
 {
-    protected string $name;
+    use TextHandler;
+
+    public string $name;
     protected int $health = 100;
     protected int $weaponType;
-    protected int $weaponStrength = 0;
-    protected int $accuracy = 50;
-    protected int $defence = 5;
+    protected int $weaponStrength = 10;
+    protected int $accuracy = 70;
+    protected int $defence = 3;
     protected string $tag;
     protected ?string $specialization;
     protected ?int $bonus = null;
@@ -22,30 +26,29 @@ class Being implements CombatInterface
         $this->defence += $coverBonus;
     }
 
-    public function shoot(Being $being): void
+    public function shoot(Being $enemy): void
     {
-        $accuracy = $this->accuracy + rand(-10, 25);
-        echo "Accuracy is $accuracy" . PHP_EOL;
-        $being->beShootAt($accuracy, $this->weaponStrength);
+        $accuracy = $this->accuracy + rand(5, 25);
+        $this->typewriterEffect("$this->name shoots with $accuracy% accuracy.");
+        $enemy->beShotAt($accuracy, $this->weaponStrength);
     }
 
-    private function beShootAt(int $accuracy, int $damageToReceive): void
+    private function beShotAt(int $accuracy, int $damageToReceive): void
     {
-        echo "$this->name is being shot at" . PHP_EOL;
-
         $doesShotLand = rand(1, 100) <= $accuracy;
 
         if ($doesShotLand) {
-            echo "Shot hits the target" . PHP_EOL;
+            $this->typewriterEffect("$this->name is shot!");
             $this->updateHealth($damageToReceive - $this->defence);
+        } else {
+            $this->typewriterEffect("Miss!");
         }
     }
 
     private function updateHealth(int $value): void
     {
-        echo "Damage to deal $value" . PHP_EOL;
         $this->health -= abs($value);
-        echo "$this->name has now $this->health";
+        $this->typewriterEffect("$this->name has now $this->health health points.");
     }
 
     protected function getWeaponType(int $strengthLevel): int
@@ -59,7 +62,7 @@ class Being implements CombatInterface
 
     protected function getWeaponStrength(): int
     {
-        return rand(1, 10) + $this->weaponType;
+        return $this->weaponType * 10;
     }
 
     protected function setTag(string $type): void
@@ -80,18 +83,22 @@ class Being implements CombatInterface
     public function applyBonus(int $value, string $type): void
     {
         if ($type === "defence") {
+            echo "Applying bonus $type with value $value" . PHP_EOL;
             $this->defence += $value;
         }
 
         if ($type === "accuracy") {
+            echo "Applying bonus $type with value $value" . PHP_EOL;
             $this->accuracy += $value;
         }
 
         if ($type === "strength") {
+            echo "Applying bonus $type with value $value" . PHP_EOL;
             $this->weaponStrength += $value;
         }
 
         if ($type === "strength") {
+            echo "Applying bonus $type with value $value" . PHP_EOL;
             $this->weaponStrength += $value;
         }
     }
@@ -99,6 +106,16 @@ class Being implements CombatInterface
     public function getTag(): string
     {
         return $this->tag;
+    }
+
+    public function isAlive(): bool
+    {
+        return $this->health > 0;
+    }
+
+    public function getDisplayInfo(): array
+    {
+        return [$this->name, $this->weaponStrength, $this->defence];
     }
 
 }
