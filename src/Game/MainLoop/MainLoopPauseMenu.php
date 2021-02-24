@@ -23,7 +23,7 @@ class MainLoopPauseMenu extends Menu
 
     public function handleMenu(): void
     {
-        $this->saveFlag = false;
+        $this->unsetGameSaveFlag();
 
         while (true) {
             if ($this->choice === "quit") {
@@ -50,7 +50,12 @@ class MainLoopPauseMenu extends Menu
         }
     }
 
-    private function toggleGameSaveFlag()
+    public function unsetGameSaveFlag(): void
+    {
+        $this->saveFlag = false;
+    }
+
+    private function toggleGameSaveFlag(): void
     {
         $this->saveFlag = !$this->saveFlag;
     }
