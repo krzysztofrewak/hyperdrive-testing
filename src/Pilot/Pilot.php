@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Pilot;
 
+use Hyperdrive\Output\OutputContract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use League\CLImate\CLImate;
@@ -16,6 +17,7 @@ class Pilot
     private int $skill;
     private int $credits;
     private int $exp;
+    protected OutputContract $output;
 
     /**
      * Pilot constructor.
@@ -24,24 +26,26 @@ class Pilot
      * @param int $skill
      * @param int $credits
      * @param int $exp
+     * @param OutputContract $output
      */
-    public function __construct(string $name, int $reputation, int $skill, int $credits, int $exp)
+    public function __construct(string $name, int $reputation, int $skill, int $credits, int $exp, OutputContract $output)
     {
         $this->name = $name;
         $this->reputation = $reputation;
         $this->skill = $skill;
         $this->credits = $credits;
         $this->exp = $exp;
+        $this->output = $output;
     }
 
-    public function showStats(CLImate $cli)
+    public function showStats()
     {
-        $cli->info("Your character:");
-        $cli->out("Name: ".$this->getName());
-        $cli->out("Reputation: ".$this->getReputation());
-        $cli->out("Skill: ".$this->getSkill());
+        $this->output->info("Your character:");
+        $this->output->write("Name: ".$this->getName());
+        $this->output->write("Reputation: ".$this->getReputation());
+        $this->output->write("Skill: ".$this->getSkill());
     }
-    public function checkForLevelUp(CLImate $cli): void
+    public function checkForLevelUp(): void
     {
 
         while($this->getExp() >= 5000)
@@ -49,15 +53,15 @@ class Pilot
 
             $this->setExp($this->getExp()-5000);
             $this->setSkill($this->getSkill()+1);
-            $cli->info("You leveled up!");
-            $cli->info("Your piloting skills have increased!");
-            $cli->out("Your current skill: ".$this->getSkill());
+            $this->output->info("You leveled up!");
+            $this->output->info("Your piloting skills have increased!");
+            $this->output->write("Your current skill: ".$this->getSkill());
             $rand = rand(1,3);
             if($rand==3)
             {
                 $this->setReputation($this->getReputation()+1);
-                $cli->info("Your reputation throughout the galaxy has increased!");
-                $cli->out("Your current reputation: ".$this->getReputation());
+                $this->output->info("Your reputation throughout the galaxy has increased!");
+                $this->output->write("Your current reputation: ".$this->getReputation());
             }
         }
     }

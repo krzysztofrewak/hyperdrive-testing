@@ -18,11 +18,11 @@ $cli = new Output(new CLImate());
 
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator(atlas: $atlas);
-$player = new Pilot(name: "placeholder", reputation: 0, skill: 0, credits: 0, exp: 0);
+$player = new Pilot(name: "placeholder", reputation: 0, skill: 0, credits: 0, exp: 0,output: $cli);
 $playerShip = new Ship(output: $cli, name: "placeholder", maxFuel: 0, maxHullIntegrity: 0, maxShields: 0, missileDamage: 0, laserDamage: 0);
-$selection = new CharacterSelection(cli: $cli);
+$selection = new CharacterSelection(output: $cli);
 $selection->characterSelection($player,$playerShip);
-$questlog = new QuestLog();
+$questlog = new QuestLog(output: $cli);
 $questlog->generateStartingQuests($hyperdrive);
 
 while (true) {
@@ -33,17 +33,18 @@ while (true) {
     $cli->info("Remaining fuel: ".$playerShip->getFuel());
 
     $options = $planet->getNeighbours()->toArray() + ["" => "[show more option]"];
-    $result = $cli->radio("Select a planet to jump to:", $options)->prompt();
+    $result = $cli->getCli()->radio("Select a planet to jump to:", $options)->prompt();
+
 
     if (!$result) {
         $options = ["return" => "return","quests" => "show quests","land" => "land on current planet", "quit" => "quit application"];
-        $result = $cli->radio("Select option", $options)->prompt();
+        $result = $cli->getCli()->radio("Select option", $options)->prompt();
 
         if ($result === "quests") {
-            $questlog->showQuests($cli);
+            $questlog->showQuests();
         }
         if ($result === "land") {
-            $surface = new PlanetSurface(cli: $cli);
+            $surface = new PlanetSurface(output: $cli);
             $surface->whatToDo(hyperdrive: $hyperdrive, playerShip: $playerShip,player: $player,questlog: $questlog);
         }
         if ($result === "quit") {
@@ -53,6 +54,6 @@ while (true) {
     }
 
     $hyperdrive->jumpTo($playerShip,$result);
-    $questlog->checkIfCompleted($player,$result,$cli);
+    $questlog->checkIfCompleted($player,$result);
 
 }

@@ -4,6 +4,7 @@ namespace Hyperdrive\Quest;
 
 use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
@@ -12,9 +13,11 @@ class QuestLog
 {
     private Collection $quests;
     private Collection $cargo;
+    protected OutputContract $output;
 
-    public function __construct()
+    public function __construct(OutputContract $output)
     {
+        $this->output = $output;
         $this->quests = collect();
         $this->cargo = collect();
         $this->generateCargo();
@@ -56,46 +59,46 @@ class QuestLog
         return $this->cargo->random();
     }
 
-    public function showQuests(CLImate $cli) :void
+    public function showQuests() :void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++)
         {
-            $cli->info("Quest #".$i.":");
-            $cli->out("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
-            $cli->out("Destination: ".$this->getQuests()->get($i)->getDestination());
-            $cli->out("Completed: ".$this->getQuests()->get($i)->completionToString());
-            $cli->out("Type: ".$this->getQuests()->get($i)->mainToString());
-            $cli->out("EXP: ".$this->getQuests()->get($i)->getExp());
-            $cli->out("Reward in Credits: ".$this->getQuests()->get($i)->getReward());
-            $cli->out("");
+            $this->output->info("Quest #".$i.":");
+            $this->output->write("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
+            $this->output->write("Destination: ".$this->getQuests()->get($i)->getDestination());
+            $this->output->write("Completed: ".$this->getQuests()->get($i)->completionToString());
+            $this->output->write("Type: ".$this->getQuests()->get($i)->mainToString());
+            $this->output->write("EXP: ".$this->getQuests()->get($i)->getExp());
+            $this->output->write("Reward in Credits: ".$this->getQuests()->get($i)->getReward());
+            $this->output->write("");
         }
     }
 
-    public function checkIfCompleted(Pilot $player,Planet $planet,CLImate $cli) :void
+    public function checkIfCompleted(Pilot $player,Planet $planet) :void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++)
         {
             if($this->getQuests()->get($i)->getDestination() === $planet)
             {
-                $this->questCompletion($this->getQuests()->get($i),$player,$cli);
+                $this->questCompletion($this->getQuests()->get($i),$player);
             }
         }
     }
 
-    public function questCompletion(Quest $quest,Pilot $player,CLImate $cli): void
+    public function questCompletion(Quest $quest,Pilot $player): void
     {
-        $cli->info("You completed a Quest!");
-        $cli->info("You delivered ".$quest->getCargo()->getName()." to ".$quest->getDestination());
+        $this->output->info("You completed a Quest!");
+        $this->output->info("You delivered ".$quest->getCargo()->getName()." to ".$quest->getDestination());
         $quest->setCompleted(true);
         $player->earnXP($quest->getExp());
         $player->earnCredits($quest->getReward());
-        $player->checkForLevelUp($cli);
+        $player->checkForLevelUp();
     }
 
-    private function finalQuestCompleted(CLImate $cli): void
+    private function finalQuestCompleted(): void
     {
-        $cli->info("You finished your last quest and finished the game!");
-        $cli->info("Thank you for playing!");
+        $this->output->info("You finished your last quest and finished the game!");
+        $this->output->info("Thank you for playing!");
         exit(0);
     }
 

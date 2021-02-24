@@ -137,15 +137,15 @@ class Ship
         }
     }
 
-    public function showStats(CLImate $cli)
+    public function showStats(): void
     {
-        $cli->info("Your ship:");
-        $cli->out("Name: " . $this->getName());
-        $cli->out("Max Fuel: " . $this->getMaxFuel());
-        $cli->out("Max Shields " . $this->getMaxShields());
-        $cli->out("Max Hull Integrity " . $this->getMaxHullIntegrity());
-        $cli->out("Missile Damage: " . $this->getMissileDamage());
-        $cli->out("Laser Damage " . $this->getLaserDamage());
+        $this->output->info("Your ship:");
+        $this->output->write("Name: " . $this->getName());
+        $this->output->write("Max Fuel: " . $this->getMaxFuel());
+        $this->output->write("Max Shields " . $this->getMaxShields());
+        $this->output->write("Max Hull Integrity " . $this->getMaxHullIntegrity());
+        $this->output->write("Missile Damage: " . $this->getMissileDamage());
+        $this->output->write("Laser Damage " . $this->getLaserDamage());
     }
 
     public function chooseShip(Ship $playerShip, Ship $choice): void
@@ -161,28 +161,28 @@ class Ship
         $playerShip->setLaserDamage($choice->getLaserDamage());
     }
 
-    public function TakeAction(CLImate $cli, Collection $enemies)
+    public function TakeAction(Collection $enemies)
     {
         for ($i = 0; $i < $enemies->count(); $i++) {
             if ($enemies->get($i)->getHullIntegrity() > 0) {
-                $cli->info("Enemy #" . $i);
-                $cli->info("Shields:" . $enemies->get($i)->getShields());
-                $cli->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
+                $this->output->info("Enemy #" . $i+1);
+                $this->output->info("Shields:" . $enemies->get($i)->getShields());
+                $this->output->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
             }
         }
 
-        $target = $cli->input("Which enemy do you want to target? (Please type the number)")->prompt();
+        $target = $this->output->input("Which enemy do you want to target? (Please type the number)");
 
 
         $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];
-        $result = $cli->radio("How do you want to attack him?", $options)->prompt();
+        $result = $this->output->getCli()->radio("How do you want to attack him?", $options)->prompt();
 
         if ($result === "Laser") {
-            $this->playerAttacksWithLaser($enemies->get($target));
+            $this->playerAttacksWithLaser($enemies->get($target-1));
 
         }
         if ($result === "Missile") {
-            $this->playerAttacksWithMissile($enemies->get($target));
+            $this->playerAttacksWithMissile($enemies->get($target-1));
         }
     }
 
@@ -221,16 +221,16 @@ class Ship
         $enemyShip->takeDamage($this->getLaserDamage(), true);
     }
 
-    public function enemyAttacksPlayer(Ship $playerShip, OutputContract $cli): void
+    public function enemyAttacksPlayer(Ship $playerShip): void
     {
         $result = rand(1, 2);
         if ($result == 1) {
             $playerShip->takeDamage($this->getLaserDamage(), true);
-            $cli->write("Player was attacked by " . $this->getName() . " for " . $this->getLaserDamage() . " laser damage!");
+            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getLaserDamage() . " laser damage!");
         }
         if ($result == 2) {
             $playerShip->takeDamage($this->getMissileDamage(), false);
-            $cli->write("Player was attacked by " . $this->getName() . " for " . $this->getMissileDamage() . " missile damage! (Damage halved against shields)");
+            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getMissileDamage() . " missile damage! (Damage halved against shields)");
         }
     }
 

@@ -6,6 +6,7 @@ namespace Hyperdrive\Geography;
 
 
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Quest\Quest;
 use Hyperdrive\Quest\QuestLog;
@@ -17,10 +18,11 @@ class PlanetSurface
 
     private CLImate $cli;
     private bool $jobFound;
+    protected OutputContract $output;
 
-    public function __construct(CLImate $cli)
+    public function __construct(OutputContract $output)
     {
-        $this->cli = $cli;
+        $this->output = $output;
     }
 
 
@@ -58,28 +60,28 @@ class PlanetSurface
     {
         $planet = $hyperdrive->getCurrentPlanet();
 
-        $this->cli->info("You're on the $planet. You can jump to:");
-        $this->cli->info("Remaining fuel: ".$playerShip->getFuel());
+        $this->output->info("You're on the $planet. You can jump to:");
+        $this->output->info("Remaining fuel: ".$playerShip->getFuel());
 
         $options = $planet->getNeighbours()->toArray();
-        $result = $this->cli->radio("Select a planet to jump to:", $options)->prompt();
+        $result = $this->output->getCli()->radio("Select a planet to jump to:", $options)->prompt();
         $hyperdrive->jumpTo($playerShip,$result);
     }
 
     private function shipUpgrades(Ship $playerShip, Pilot $player): void
     {
-        $this->cli->out("Welcome to the upgrade shop! Every upgrade costs 2000 Credits");
+        $this->output->write("Welcome to the upgrade shop! Every upgrade costs 2000 Credits");
         $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks"];
-        $result = $this->cli->radio("What do you want to upgrade?", $options)->prompt();
+        $result = $this->output->getCli()->radio("What do you want to upgrade?", $options)->prompt();
 
         if ($result === "Hull") {
-            $this->cli->out("Do want to upgrade your Hull Capacity from ".$playerShip->getMaxHullIntegrity()." to ".($playerShip->getMaxHullIntegrity()+20)."?");
+            $this->output->write("Do want to upgrade your Hull Capacity from ".$playerShip->getMaxHullIntegrity()." to ".($playerShip->getMaxHullIntegrity()+20)."?");
 
             if($this->yesOrNo($player))
             {
                 $playerShip->setMaxHullIntegrity($playerShip->getMaxHullIntegrity()+20);
                 $playerShip->setHullIntegrity($playerShip->getHullIntegrity()+20);
-                $playerShip->showStats($this->cli);
+                $playerShip->showStats();
             }
 
         }
@@ -87,44 +89,44 @@ class PlanetSurface
 
         if ($result === "Shields")
         {
-            $this->cli->out("Do want to upgrade your Shields from ".$playerShip->getMaxShields()." to ".($playerShip->getMaxShields()+10)."?");
+            $this->output->write("Do want to upgrade your Shields from ".$playerShip->getMaxShields()." to ".($playerShip->getMaxShields()+10)."?");
 
             if($this->yesOrNo($player))
             {
                     $playerShip->setMaxShields($playerShip->getMaxShields()+10);
                     $playerShip->setShields($playerShip->getShields()+10);
-                    $playerShip->showStats($this->cli);
+                    $playerShip->showStats();
             }
         }
 
 
         if ($result === "Missile") {
-            $this->cli->out("Do want to upgrade your Missile Damage from ".$playerShip->getMissileDamage()." to ".($playerShip->getMissileDamage()+10)."?");
+            $this->output->write("Do want to upgrade your Missile Damage from ".$playerShip->getMissileDamage()." to ".($playerShip->getMissileDamage()+10)."?");
 
             if($this->yesOrNo($player))
             {
                     $playerShip->setMissileDamage($playerShip->getMissileDamage()+10);
-                    $playerShip->showStats($this->cli);
+                    $playerShip->showStats();
             }
         }
 
         if ($result === "Laser") {
-            $this->cli->out("Do want to upgrade your Laser Damage from ".$playerShip->getLaserDamage()." to ".($playerShip->getLaserDamage()+10)."?");
+            $this->output->write("Do want to upgrade your Laser Damage from ".$playerShip->getLaserDamage()." to ".($playerShip->getLaserDamage()+10)."?");
 
             if($this->yesOrNo($player))
             {
                     $playerShip->setLaserDamage($playerShip->getLaserDamage()+10);
-                    $playerShip->showStats($this->cli);
+                    $playerShip->showStats();
             }
         }
 
         if ($result === "Fuel") {
-            $this->cli->out("Do want to upgrade your Fuel Capacity from ".$playerShip->getMaxFuel()." to ".($playerShip->getMaxFuel()+10)."?");
+            $this->output->write("Do want to upgrade your Fuel Capacity from ".$playerShip->getMaxFuel()." to ".($playerShip->getMaxFuel()+10)."?");
 
             if($this->yesOrNo($player))
             {
                     $playerShip->setMaxFuel($playerShip->getMaxFuel()+10);
-                    $playerShip->showStats($this->cli);
+                    $playerShip->showStats();
             }
         }
     }
@@ -132,19 +134,19 @@ class PlanetSurface
     private function yesOrNo(Pilot $player): bool
     {
         $options = ["Yes" => "Yes", "No" => "No"];
-        $result = $this->cli->radio("Proceed with the upgrade?", $options)->prompt();
+        $result = $this->output->getCli()->radio("Proceed with the upgrade?", $options)->prompt();
 
         if ($result === "Yes")
         {
             if($player->getCredits() >= 2000)
             {
-                $this->cli->out("Upgrade Successful!");
+                $this->output->write("Upgrade Successful!");
                 $player->payCredits(2000);
                 return true;
             }
             if($player->getCredits() < 2000)
             {
-                $this->cli->out("You lack sufficient funds for an upgrade");
+                $this->output->write("You lack sufficient funds for an upgrade");
                 return false;
             }
         }

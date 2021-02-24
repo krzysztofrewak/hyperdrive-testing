@@ -14,15 +14,22 @@ use League\CLImate\CLImate;
 
 class Combat
 {
+    protected OutputContract $output;
 
-    private function fight(Pilot $player,Ship $playerShip, Collection $enemies, CLImate $cli): void
+
+    public function __construct(OutputContract $output)
+    {
+        $this->output = $output;
+    }
+
+    private function fight(Pilot $player,Ship $playerShip, Collection $enemies): void
     {
         $aliveEnemies = $enemies->count();
 
         while ($aliveEnemies > 0) {
             $aliveEnemies = $enemies->count();
 
-            $playerShip->TakeAction($cli, $enemies);
+            $playerShip->TakeAction($this->output, $enemies);
 
             for ($i = 0; $i < $enemies->count(); $i++)
             {
@@ -30,18 +37,18 @@ class Combat
                     $aliveEnemies--;
                 }
                 if ($enemies->get($i)->getHullIntegrity() > 0) {
-                    $enemies->get($i)->enemyAttacksPlayer($playerShip, $cli);
-                    $cli->info("Current Ship stats:");
-                    $cli->out("Shields:" . $playerShip->getShields());
-                    $cli->out("Hull Integrity:" . $playerShip->getHullIntegrity());
+                    $enemies->get($i)->enemyAttacksPlayer($playerShip);
+                    $this->output->info("Current Ship stats:");
+                    $this->output->write("Shields:" . $playerShip->getShields());
+                    $this->output->write("Hull Integrity:" . $playerShip->getHullIntegrity());
                 }
             }
             if ($playerShip->getHullIntegrity() <= 0) {
-                $cli->info("Defeat! Your ship has been destroyed. Your journey has come to an end.");
+                $this->output->info("Defeat! Your ship has been destroyed. Your journey has come to an end.");
                 exit(0);
             }
             if ($aliveEnemies == 0) {
-                $cli->info("Victory! Combat finished.");
+                $this->output->info("Victory! Combat finished.");
                 $playerShip->setShields($playerShip->getMaxShields());
                 $exp = $enemies->count() * 1000;
                 $player->earnXP($exp);
@@ -53,7 +60,7 @@ class Combat
     public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,CLImate $cli,Planet $currentPlanet): void
     {
         $options = ["Land" => "I will try to escape combat and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
-        $result = $cli->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
+        $result = $this->output->getCli()->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
         if ($result === "Land")
         {
@@ -63,16 +70,16 @@ class Combat
 
             for ($i = 0; $i < $enemies->count(); $i++)
             {
-                $enemies->get($i)->enemyAttacksPlayer($playerShip, $cli);
-                $cli->info("Current Ship stats:");
-                $cli->out("Shields:" . $playerShip->getShields());
-                $cli->out("Hull Integrity:" . $playerShip->getHullIntegrity());
+                $enemies->get($i)->enemyAttacksPlayer($playerShip);
+                $this->output->info("Current Ship stats:");
+                $this->output->write("Shields:" . $playerShip->getShields());
+                $this->output->write("Hull Integrity:" . $playerShip->getHullIntegrity());
             }
             //lost enemies and landed successfully
         }
         if ($result === "Fight")
         {
-            $this->fight($player,$playerShip,$enemies,$cli);
+            $this->fight($player,$playerShip,$enemies);
         }
     }
 

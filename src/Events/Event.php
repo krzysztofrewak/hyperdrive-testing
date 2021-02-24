@@ -8,6 +8,7 @@ use Hyperdrive\Combat\Combat;
 use Hyperdrive\Combat\Enemies;
 use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Quest\Cargo;
 use Hyperdrive\Quest\Quest;
@@ -17,8 +18,19 @@ use League\CLImate\CLImate;
 
 class Event
 {
+    protected OutputContract $output;
 
-    public function randomSpaceEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
+    /**
+     * Event constructor.
+     * @param OutputContract $output
+     */
+    public function __construct(OutputContract $output)
+    {
+        $this->output = $output;
+    }
+
+
+    public function randomSpaceEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog): void
     {
         $random = rand(1,10);
 
@@ -30,17 +42,17 @@ class Event
         if($random == 8)
         {
             //oh no asteroids
-            $cli->info("You encountered an Asteroid belt! You lost some fuel while trying to maneuver through them.");
+            $this->output->info("You encountered an Asteroid belt! You lost some fuel while trying to maneuver through them.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
         }
         if($random == 9)
         {
-            $cli->info("You've been attacked!");
+            $this->output->info("You've been attacked!");
             //oh no you've been attacked
-            $enemies = new Enemies();
-            $combat = new Combat();
-            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
+            $enemies = new Enemies($this->output);
+            $combat = new Combat($this->output);
+            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$currentPlanet);
         }
         if($random == 10)
         {
@@ -49,7 +61,7 @@ class Event
 
     }
 
-    public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog, CLImate $cli): void
+    public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog): void
     {
         $random = rand(1,10);
 
@@ -63,14 +75,11 @@ class Event
         }
         if($random == 9)
         {
-            //oh no you've been attacked
-            $enemies = new Enemies();
-            $combat = new Combat();
-            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$cli,$currentPlanet);
+
         }
         if($random == 10)
         {
-            //greater events
+
         }
         //fight
         //gambling

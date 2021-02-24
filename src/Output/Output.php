@@ -24,4 +24,24 @@ class Output implements OutputContract
     {
         $this->cli->info($message);
     }
+
+    public function input(string $message): int
+    {
+        return $this->cli->input($message)->prompt();
+    }
+
+    /**
+     * @return CLImate
+     */
+    public function getCli(): CLImate
+    {
+        return $this->cli;
+    }
+
+
+
+//    public function radio(string $message, array $options ): string
+//    {
+//        return $this->cli->radio($message, $options)->prompt();
+//    }
 }
