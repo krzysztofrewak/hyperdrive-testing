@@ -5,6 +5,7 @@ namespace Hyperdrive\MiniJobs\Poker;
 
 
 use Hyperdrive\Traits\TextHandler;
+use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 
 class PokerPlayerHuman extends PokerPlayer
@@ -34,5 +35,14 @@ class PokerPlayerHuman extends PokerPlayer
             }
         }
         return $cardsIdToRemove;
+    }
+
+    public function giveCards(Collection $cards): void
+    {
+        $this->typewriterEffect("You received: ");
+        print_r($cards);
+
+        $this->cards = $this->cards->merge($cards);
+        print_r($this->cards);
     }
 }

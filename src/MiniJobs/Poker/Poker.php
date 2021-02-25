@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 class Poker
 {
     use TextHandler;
+    use PokerRankingsCalculator;
 
     private Deck $deck;
     private PokerPlayer $p1;
@@ -100,7 +101,7 @@ class Poker
         $players = $this->players;
         foreach ($players as $player) {
             $playerCards = $player->getCards();
-            $score = $this->calculateScore($playerCards);
+            $score = $this->getScore($playerCards);
             if ($score > $winningPlayer[1]) {
                 $winningPlayer = [$player, $score];
             }
@@ -113,8 +114,13 @@ class Poker
         }
     }
 
-    protected function calculateScore(): int
+    protected function getScore(Collection $cards): int
     {
+        $this->setCards($cards);
+        $this->calculateScore();
 
     }
+
+
+
 }
