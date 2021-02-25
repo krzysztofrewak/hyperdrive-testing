@@ -1,0 +1,12 @@
+Fuel:
+  price: 50
+  capacity: 100
+Map:
+  price: 1000
+Hyperspace-jump:
+  Short:
+    distance: 5
+    price: 1000
+  Long:
+    distance: 10
+    price: 1800

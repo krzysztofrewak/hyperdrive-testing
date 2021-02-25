@@ -11,7 +11,6 @@ class Tank
     protected int $fuel;
     protected int $capacity;
     protected int $fuelConsumption;
-    protected int $fillingRate = 100;
 
     public function __construct(array $tankData)
     {
@@ -31,12 +30,12 @@ class Tank
     /**
      * @throws Exception
      */
-    public function refueling(): void
+    public function refueling(int $fillingRate): void
     {
         if ($this->fuel === $this->capacity) {
             throw new Exception("You have a full tank");
         }
-        $this->fuel += $this->fillingRate;
+        $this->fuel += $fillingRate;
     }
 
     /**

@@ -6,16 +6,22 @@ namespace Hyperdrive\Player\Navigator;
 
 use Hyperdrive\Galaxy\Geography\Planet;
 use Hyperdrive\Galaxy\Geography\Route;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class HyperdriveNavigator
 {
     protected ?Planet $currentPlanet;
 
-    public function __construct(protected Route $route, protected ?int $hyperspaceJumpsLimit)
+    public function __construct(protected Route $route, protected int $hyperspaceJumpsLimit, protected bool $unlockedMap)
     {
     }
 
-    public function getHyperspaceJumpsLimit(): ?int
+    public function unlockMap(): void
+    {
+        $this->unlockedMap = true;
+    }
+
+    public function getHyperspaceJumpsLimit(): int
     {
         return $this->hyperspaceJumpsLimit;
     }
@@ -42,8 +48,14 @@ class HyperdriveNavigator
         return $this->currentPlanet;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getMap(): array
     {
+        if (!$this->unlockedMap) {
+            throw new Exception("You don't have a map");
+        }
         return $this->route->getPlanets()->toArray();
     }
 

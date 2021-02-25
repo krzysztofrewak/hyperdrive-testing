@@ -35,7 +35,7 @@ class ApplicationContext implements Context
      */
     public function givenRouteIsMountedInANavigatorInstance(): void
     {
-        $this->navigator = new HyperdriveNavigator($this->route, 10);
+        $this->navigator = new HyperdriveNavigator($this->route, 10, false);
     }
 
     /**

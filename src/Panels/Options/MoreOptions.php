@@ -9,6 +9,7 @@ use JetBrains\PhpStorm\ArrayShape;
 class MoreOptions
 {
     #[ArrayShape([
+        "price-list" => "string",
         "spaceship" => "string",
         "player" => "string",
         "refueling" => "string",
@@ -20,6 +21,7 @@ class MoreOptions
     public function __invoke(): array
     {
         return [
+            "price-list" => "Price list",
             "spaceship" => "Spaceship details",
             "player" => "Player details",
             "refueling" => "Refueling spaceship",

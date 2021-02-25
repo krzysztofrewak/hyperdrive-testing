@@ -20,7 +20,11 @@ class CreatePlayer
         $spaceship->setFuel($level->getFuel());
         $route = $startPanel->selectRoute();
         $capital = new Capital($level->getCapital());
-        $hyperdriveNavigator = new HyperdriveNavigator($route, $level->getHyperspaceJumpsLimit());
+        $hyperdriveNavigator = new HyperdriveNavigator(
+            $route,
+            $level->getHyperspaceJumpsLimit(),
+            $level->isUnlockedMap()
+        );
 
         return new Player(
             $capital,

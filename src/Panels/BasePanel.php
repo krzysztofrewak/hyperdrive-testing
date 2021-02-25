@@ -11,7 +11,7 @@ abstract class BasePanel
 {
     protected CLImate $cli;
 
-    public function __construct()
+    protected function __construct()
     {
         $this->cli = new CLImate();
     }

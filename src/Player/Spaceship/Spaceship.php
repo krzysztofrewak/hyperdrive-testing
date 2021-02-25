@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Hyperdrive\Player\Spaceship;
 
 use Hyperdrive\Player\Capital\Capital;
+use Hyperdrive\PriceList\PriceList;
 
 class Spaceship
 {
     protected Tank $tank;
     protected string $name;
-    protected int $fuelPrice = 50;
+    protected array $fuelValues;
 
     public function __construct(array $spaceshipData)
     {
         $this->setSpaceshipData($spaceshipData);
+        $this->fuelValues = PriceList::getFuelValues();
     }
 
     public function __toString(): string
@@ -35,8 +37,8 @@ class Spaceship
     public function fullRefueling(Capital $capital): void
     {
         while (!$this->tank->isItFull()) {
-            $capital->spendingMoney($this->fuelPrice);
-            $this->tank->refueling();
+            $capital->spendingMoney($this->fuelValues["price"]);
+            $this->tank->refueling($this->fuelValues["capacity"]);
         }
     }
 

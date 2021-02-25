@@ -23,9 +23,16 @@ class MorePanel extends BasePanel implements PanelContract
         $this->checkResult($result);
     }
 
+    /**
+     * @throws Exception
+     */
     private function checkResult(string $result): void
     {
         switch ($result) {
+            case "price-list":
+                $priceListPanel = new PriceListPanel();
+                $priceListPanel->show();
+                break;
             case "spaceship":
                 $this->cli->table([$this->player->getSpaceshipData()]);
                 break;
@@ -40,7 +47,12 @@ class MorePanel extends BasePanel implements PanelContract
                 }
                 break;
             case "map":
-                $this->cli->columns($this->player->getMap(), 6);
+                try {
+                    $mapPanel = new MapPanel($this->player);
+                    $mapPanel->showMap();
+                } catch (Exception $exception) {
+                    $this->showException($exception);
+                }
                 break;
             case "jump":
                 try {

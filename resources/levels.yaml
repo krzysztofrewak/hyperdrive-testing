@@ -1,6 +1,7 @@
 Easy:
   fuel: 10000
   capital: 20000
+  unlocked-map: true
 Normal:
   fuel: 8000
   capital: 15000

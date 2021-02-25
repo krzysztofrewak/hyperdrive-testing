@@ -17,15 +17,15 @@ class Capital
         return $this->capital;
     }
 
-    /**
-     * @throws Exception
-     */
     public function spendingMoney(int $charge): void
     {
         $this->isThereEnoughMoney($charge);
         $this->capital -= $charge;
     }
 
+    /**
+     * @throws Exception
+     */
     public function isThereEnoughMoney(int $charge): void
     {
         if ($this->capital - $charge < 0) {

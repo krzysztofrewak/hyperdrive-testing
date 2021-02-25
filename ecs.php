@@ -7,7 +7,6 @@ use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer;
-use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
@@ -25,7 +24,6 @@ $sets = [
 
 $skipped = [
     StandaloneLinePromotedPropertyFixer::class,
-    IsNullFixer::class,
     BracesFixer::class,
     SingleQuoteFixer::class,
     ClassAttributesSeparationFixer::class,
