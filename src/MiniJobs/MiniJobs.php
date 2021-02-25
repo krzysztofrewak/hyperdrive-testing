@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Hyperdrive\MiniJobs;
+
+use Hyperdrive\MiniJobs\Poker\Poker;
+use League\CLImate\CLImate;
+
+trait MiniJobs
+{
+    private string $job;
+
+    public function displayJobsMenu()
+    {
+        $climate = new CLImate();
+        $options = [
+            "poker" => "5 card poker",
+            "foraging" => "Collect whatever you find in the forest and sell it by the highway.",
+            "return" => "Return to your duties"
+        ];
+        $this->job = $climate->radio("How do you want to make money", $options)->prompt();
+        $this->handleJobsMenu();
+    }
+
+    protected function handleJobsMenu(): void
+    {
+        $decision = $this->job;
+
+        while (true) {
+            if ($decision === "return") {
+                break;
+            }
+
+            if ($decision === "poker") {
+                new Poker();
+                break;
+            }
+
+            if ($decision === "foraging") {
+                echo "collecting" . PHP_EOL;
+                break;
+                //new Foraging();
+            }
+        }
+    }
+}

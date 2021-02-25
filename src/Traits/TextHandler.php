@@ -47,9 +47,9 @@ trait TextHandler
         echo PHP_EOL;
     }
 
-    public function getInput(array $decisions, string $optionName): int
+    public function getInput(array $decisions, string $message = "Select option")
     {
-        return $this->climate->radio("Select $optionName", $decisions)->prompt();
+        return $this->climate->radio($message, $decisions)->prompt();
     }
 
     public function displayShootoutInfo(Collection $team1, Collection $team2): void

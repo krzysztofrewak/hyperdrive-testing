@@ -6,6 +6,7 @@ namespace Hyperdrive\Game;
 
 use Hyperdrive\GameData\Missions\Intro;
 use Hyperdrive\GameData\Missions\Mission1;
+use Hyperdrive\GameData\Missions\Mission2;
 
 class DecisionHandler
 {
