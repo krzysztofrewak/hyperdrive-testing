@@ -37,11 +37,15 @@ while (true) {
 
 
     if (!$result) {
-        $options = ["return" => "return","quests" => "show quests","land" => "land on current planet", "quit" => "quit application"];
+        $options = ["return" => "return","stats" => "show pilot and ship stats","quests" => "show quests","land" => "land on current planet", "quit" => "quit application"];
         $result = $cli->getCli()->radio("Select option", $options)->prompt();
 
         if ($result === "quests") {
             $questlog->showQuests();
+        }
+        if ($result === "stats") {
+            $player->showStats();
+            $playerShip->showStats();
         }
         if ($result === "land") {
             $surface = new PlanetSurface(output: $cli);

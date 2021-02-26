@@ -30,11 +30,18 @@ class PlanetSurface
     {
         while(true)
         {
-            $options = ["Ship" => "Buy Ship Upgrades", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
+            $options = ["Ship" => "Buy Ship Upgrades","stats" => "show pilot and ship stats","quests" => "show quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
             $result = $this->cli->radio("Select option", $options)->prompt();
 
             if ($result === "Ship") {
                 $this->shipUpgrades($playerShip,$player);
+            }
+            if ($result === "stats") {
+                $player->showStats();
+                $playerShip->showStats();
+            }
+            if ($result === "quests") {
+                $questlog->showQuests();
             }
             if ($result === "Repair") {
                 $this->repairShip($playerShip,$player);
@@ -46,7 +53,7 @@ class PlanetSurface
                 $this->searchForJob($questlog,$hyperdrive);
             }
             if ($result === "Questlog") {
-                $questlog->showQuests($this->cli);
+                $questlog->showQuests();
             }
             if ($result === "Leave") {
                 $this->leavePlanet($hyperdrive,$playerShip);

@@ -45,6 +45,9 @@ class Pilot
         $this->output->write("Name: ".$this->getName());
         $this->output->write("Reputation: ".$this->getReputation());
         $this->output->write("Skill: ".$this->getSkill());
+        $this->output->write("Credits: ".$this->getCredits());
+        $this->output->write("EXP: ".$this->getExp());
+
     }
     public function checkForLevelUp(): void
     {
