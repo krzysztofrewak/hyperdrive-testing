@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
+use Hyperdrive\Panels\FinalScorePanel;
 use Hyperdrive\Panels\MainPanel;
 use Hyperdrive\Player\CreatePlayer;
 use Hyperdrive\Player\Player;
@@ -27,6 +28,8 @@ class Game
             }
         } catch (Exception $exception) {
             $mainPanel->showException($exception);
+            $finalScorePanel = new FinalScorePanel($this->player);
+            $finalScorePanel->show();
         }
     }
 }

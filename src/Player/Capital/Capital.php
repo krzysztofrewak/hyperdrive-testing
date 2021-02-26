@@ -8,19 +8,26 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Capital
 {
+    protected int $capitalSpent = 0;
+
     public function __construct(protected int $capital)
     {
     }
 
-    public function getCapital(): int
+    public function getCapitalSpent(): int
     {
-        return $this->capital;
+        return $this->capitalSpent;
+    }
+
+    public function getCurrentCapital(): int
+    {
+        return $this->capital - $this->capitalSpent;
     }
 
     public function spendingMoney(int $charge): void
     {
         $this->isThereEnoughMoney($charge);
-        $this->capital -= $charge;
+        $this->capitalSpent += $charge;
     }
 
     /**
@@ -28,7 +35,7 @@ class Capital
      */
     public function isThereEnoughMoney(int $charge): void
     {
-        if ($this->capital - $charge < 0) {
+        if ($this->getCurrentCapital() - $charge < 0) {
             throw new Exception("You don't have enough money");
         }
     }

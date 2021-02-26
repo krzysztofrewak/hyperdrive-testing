@@ -6,6 +6,7 @@ namespace Hyperdrive\Player\Spaceship;
 
 use Hyperdrive\Player\Capital\Capital;
 use Hyperdrive\PriceList\PriceList;
+use JetBrains\PhpStorm\Pure;
 
 class Spaceship
 {
@@ -22,6 +23,12 @@ class Spaceship
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    #[Pure]
+    public function getFuelConsumed(): int
+    {
+        return $this->tank->getFuelConsumed();
     }
 
     public function setFuel(int $fuel): void

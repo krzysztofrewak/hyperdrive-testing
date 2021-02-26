@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class HyperdriveNavigator
 {
     protected ?Planet $currentPlanet;
+    protected int $visitedPlanets = 0;
+    protected int $completedHyperspaceJumps = 0;
 
     public function __construct(protected Route $route, protected int $hyperspaceJumpsLimit, protected bool $unlockedMap)
     {
@@ -21,14 +23,24 @@ class HyperdriveNavigator
         $this->unlockedMap = true;
     }
 
-    public function getHyperspaceJumpsLimit(): int
+    public function getVisitedPlanets(): int
     {
-        return $this->hyperspaceJumpsLimit;
+        return $this->visitedPlanets;
+    }
+
+    public function getCompletedHyperspaceJumps(): int
+    {
+        return $this->completedHyperspaceJumps;
+    }
+
+    public function getRemainingJumpsInHyperspace(): int
+    {
+        return $this->hyperspaceJumpsLimit - $this->completedHyperspaceJumps;
     }
 
     public function hyperspaceJumpTo(Planet $planet): void
     {
-        --$this->hyperspaceJumpsLimit;
+        $this->completedHyperspaceJumps++;
         $this->jumpTo($planet);
     }
 
@@ -39,6 +51,7 @@ class HyperdriveNavigator
 
     public function jumpTo(Planet $planet): void
     {
+        $this->visitedPlanets++;
         $this->currentPlanet = $planet;
     }
 

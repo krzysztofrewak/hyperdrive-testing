@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Panels;
 
-use Hyperdrive\Panels\PriceListResources\FuelResource;
-use Hyperdrive\Panels\PriceListResources\HyperspaceJumpResource;
-use Hyperdrive\Panels\PriceListResources\MapResource;
 use Hyperdrive\PriceList\PriceList;
+use Hyperdrive\Resources\PriceList\FuelResource;
+use Hyperdrive\Resources\PriceList\HyperspaceJumpResource;
+use Hyperdrive\Resources\PriceList\MapResource;
 
 class PriceListPanel extends BasePanel
 {

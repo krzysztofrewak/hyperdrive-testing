@@ -6,6 +6,7 @@ namespace Hyperdrive\Player;
 
 use Hyperdrive\Galaxy\Geography\Planet;
 use Hyperdrive\Player\Capital\Capital;
+use Hyperdrive\Player\FinalScore\FinalScore;
 use Hyperdrive\Player\Navigator\HyperdriveNavigator;
 use Hyperdrive\Player\Navigator\HyperspaceJump;
 use Hyperdrive\Player\Pilot\Pilot;
@@ -70,16 +71,16 @@ class Player
         "Capital" => "int",
         "Target Planet" => "string",
         "Current Planet" => "string",
-        "Hyperspace Jumps Limit" => "int|null",
+        "Hyperspace Jumps Limit" => "int",
     ])]
     public function getPlayerData(): array
     {
         return [
             "Name" => $this->pilot->__toString(),
-            "Capital" => $this->capital->getCapital(),
+            "Capital" => $this->capital->getCurrentCapital(),
             "Target Planet" => $this->targetPlanet->__toString(),
             "Current Planet" => $this->getCurrentPlanet()->__toString(),
-            "Hyperspace Jumps Limit" => $this->hyperdriveNavigator->getHyperspaceJumpsLimit(),
+            "Hyperspace Jumps Limit" => $this->hyperdriveNavigator->getRemainingJumpsInHyperspace(),
         ];
     }
 
@@ -99,9 +100,15 @@ class Player
      */
     public function hyperspaceJump(): HyperspaceJump
     {
-        if ($this->hyperdriveNavigator->getHyperspaceJumpsLimit() <= 0) {
+        if ($this->hyperdriveNavigator->getRemainingJumpsInHyperspace() <= 0) {
             throw new Exception("Hyperspace jump limit exhausted");
         }
         return new HyperspaceJump($this->hyperdriveNavigator, $this->capital);
+    }
+
+    #[Pure]
+    public function getFinalScore(): FinalScore
+    {
+        return new FinalScore($this->capital, $this->hyperdriveNavigator, $this->spaceship);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Panels\PriceListResources;
+namespace Hyperdrive\Resources\PriceList;
 
 use JetBrains\PhpStorm\ArrayShape;
 

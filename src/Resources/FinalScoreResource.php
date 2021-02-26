@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Panels\PriceListResources;
+namespace Hyperdrive\Resources;
 
 use JetBrains\PhpStorm\ArrayShape;
 
-abstract class BaseResource
+class FinalScoreResource
 {
     #[ArrayShape([
         "Name" => "string",
-        "Price" => "int",
+        "Value" => "int",
     ])]
-    protected function toArray(string $name, int $price): array
+    public function __invoke(string $name, int $value): array
     {
         return [
             "Name" => $name,
-            "Price" => $price,
+            "Value" => $value,
         ];
     }
 }
