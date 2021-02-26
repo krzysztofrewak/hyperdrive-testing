@@ -8,6 +8,7 @@ use Hyperdrive\Output\OutputContract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use League\CLImate\CLImate;
+use phpDocumentor\Reflection\Types\This;
 
 
 class Pilot
@@ -87,6 +88,15 @@ class Pilot
     public function payCredits(Int $payment): void
     {
         $this->setCredits($this->getCredits() - $payment);
+        if($this->getCredits()<0)
+        {
+            $this->setCredits(0);
+        }
+    }
+
+    public function calculateBounty(): int
+    {
+        return ($this->getSkill()+$this->getReputation()) * 100;
     }
     /**
      * @return string

@@ -40,8 +40,8 @@ class CharacterSelection
     public function addPilots(): void
     {
         $this->addPilot(new Pilot(name: "Atton Rand", reputation: 5, skill: 5, credits: 3000, exp: 0,output: $this->output));
-        $this->addPilot(new Pilot(name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 2500, exp: 0,output: $this->output));
-        $this->addPilot(new Pilot(name: "Garfinn Newdor", reputation: 0, skill: 2, credits: 2000, exp: 0,output: $this->output));
+        $this->addPilot(new Pilot(name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 2000, exp: 0,output: $this->output));
+        $this->addPilot(new Pilot(name: "Garfinn Newdor", reputation: 1, skill: 2, credits: 1000, exp: 0,output: $this->output));
     }
 
     public function characterSelection(Pilot $player,Ship $playerShip): void

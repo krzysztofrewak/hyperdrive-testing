@@ -29,7 +29,7 @@ class Combat
         while ($aliveEnemies > 0) {
             $aliveEnemies = $enemies->count();
 
-            $playerShip->TakeAction($this->output, $enemies);
+            $playerShip->TakeAction($enemies);
 
             for ($i = 0; $i < $enemies->count(); $i++)
             {
@@ -57,16 +57,17 @@ class Combat
         }
     }
 
-    public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,CLImate $cli,Planet $currentPlanet): void
+    public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,Planet $currentPlanet): void
     {
         $options = ["Land" => "I will try to escape combat and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
         $result = $this->output->getCli()->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
         if ($result === "Land")
         {
-            //lose fuel, take damage, land on planet
+            $this->output->write("You decided to escape to planet's surface. You lost some fuel while using thrusters.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
+            $this->output->write("While escaping you were attacked by enemy ships!");
 
             for ($i = 0; $i < $enemies->count(); $i++)
             {
@@ -75,7 +76,8 @@ class Combat
                 $this->output->write("Shields:" . $playerShip->getShields());
                 $this->output->write("Hull Integrity:" . $playerShip->getHullIntegrity());
             }
-            //lost enemies and landed successfully
+
+
         }
         if ($result === "Fight")
         {
