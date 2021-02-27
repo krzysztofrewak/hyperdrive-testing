@@ -41,7 +41,8 @@ trait MiniJobs
 
             if ($decision === "foraging") {
                 $foraging = new Foraging($this->state->player[0], $this->state->money);
-                $this->state->money = $foraging->getPlayerEarnings();
+                $this->state->money += $foraging->getPlayerEarnings();
+                break;
             }
         }
     }

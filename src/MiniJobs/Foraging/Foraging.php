@@ -12,6 +12,7 @@ class Foraging extends BaseMiniJob
     use TextHandler;
 
     private Forest $forest;
+    private int $earnedMoney = 0;
 
     protected function prepareEnvironment(): void
     {
@@ -25,7 +26,24 @@ class Foraging extends BaseMiniJob
 
     protected function play(): void
     {
-        $this->forest->find("berries");
-        $this->sell();
+        $foundFood = $this->forest->find("berries");
+        $this->sell($foundFood);
+    }
+
+    private function sell(int $foodAmount): void
+    {
+        $this->loadingEffect("Selling $foodAmount jars at the highway", 1);
+        for ($i = 0; $i < $foodAmount; $i++) {
+            $chanceToSell = rand(30, 100);
+            if ($chanceToSell >= 70) {
+                $this->earnedMoney += 1000;
+            }
+        }
+        $this->typewriterEffect("You have managed to earn $this->earnedMoney");
+    }
+
+    public function getPlayerEarnings(): int
+    {
+        return $this->earnedMoney;
     }
 }
