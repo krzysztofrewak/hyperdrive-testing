@@ -16,11 +16,8 @@ class Poker
     use CardHandler;
 
     private Deck $deck;
-    private PokerPlayer $p1;
-    private PokerPlayer $p2;
-    private PokerPlayer $p3;
-    private PokerPlayer $p4;
     private Collection $players;
+    private Collection $winners;
     private int $moneyPool;
     protected int $stake = 2000;
 
@@ -32,22 +29,20 @@ class Poker
         for ($i = 1; $i <= 3; $i++) {
             $this->players->add(new PokerPlayer((string)$i));
         }
-        $this->play();
+        $this->setUpTable();
     }
 
-    public function play(): void
+    public function setUpTable(): void
     {
         if ($this->doesPlayerWantToPlay()) {
-            $this->moneyPool = 0;
-            $this->deck->generateDeck();
-            $this->placeBets();
-            foreach ($this->players as $player) {
-                $player->addCards($this->deck->getCardsFromDeck(5));
+            if ($this->areEnoughPlayers()) {
+                $this->deck->generateDeck();
+                $this->play();
+                $this->calculateOutcome();
+                $this->payout();
+                $this->increaseStake();
+                $this->setUpTable();
             }
-            $this->exchangeCards();
-            $this->outcome();
-            $this->increaseStake();
-            $this->play();
         }
     }
 
@@ -69,36 +64,56 @@ class Poker
         return false;
     }
 
-    private function placeBets(): void
+    private function areEnoughPlayers(): bool
     {
-        $players = $this->players;
-        foreach ($players as $player) {
+        $suitablePlayers = collect();
+        foreach ($this->players as $player) {
             if ($player->hasMoney($this->stake)) {
-                $this->moneyPool += $player->bet();
-            } else {
-                $id = $this->players->search($player);
-                $this->typewriterEffect("Player $id was kicked out.");
-                $this->players->forget($id);
+                $suitablePlayers->add($player);
             }
         }
-    }
 
-    private function exchangeCards(): void
-    {
-        $players = $this->players;
-        foreach ($players as $player) {
-            $ids = $player->selectCardsToRemove();
-            $removedCount = sizeof($ids);
-            $player->removeCardsById($ids);
-            $player->giveCards($this->deck->getCardsFromDeck($removedCount));
+        if (sizeof($suitablePlayers) > 1) {
+            $this->players = $suitablePlayers;
+            return true;
+        } else {
+            $this->typewriterEffect("There aren't enough players");
+            return false;
         }
     }
 
-    private function outcome(): void
+    private function play(): void
+    {
+        $this->moneyPool = 0;
+        $this->placeBets();
+        foreach ($this->players as $player) {
+            $player->addCards($this->deck->getCardsFromDeck(5));
+            $this->exchangeCards($player);
+        }
+    }
+
+    private function placeBets(): void
+    {
+        foreach ($this->players as $player) {
+            $this->moneyPool += $player->bet($this->stake);
+        }
+    }
+
+
+    private function exchangeCards(PokerPlayer $player): void
+    {
+        $ids = $player->selectCardsToRemove();
+        $removedCount = sizeof($ids);
+        $player->removeCardsById($ids);
+        $player->giveCards($this->deck->getCardsFromDeck($removedCount));
+    }
+
+    private function calculateOutcome(): void
     {
         $winningPlayers = collect();
         $highestScore = 0;
         $players = $this->players;
+        $this->typewriterEffect("Money in pot $this->moneyPool");
         foreach ($players as $player) {
             $playerCards = $player->getCards();
             $this->typewriterEffect("Player $player->name has these cards.");
@@ -118,17 +133,21 @@ class Poker
                 $highestScore = $currentScore;
             }
         }
+        $this->winners = $winningPlayers;
+    }
 
-        $winnersNumber = sizeof($winningPlayers);
+    private function payout(): void
+    {
+        $winnersNumber = sizeof($this->winners);
         $payout = (int)(($this->moneyPool) / $winnersNumber);
         if ($winnersNumber === 1) {
-            $player = $this->players->where("name", $winningPlayers->first())->first();
+            $player = $this->players->where("name", $this->winners->first())->first();
             $this->typewriterEffect("Player $player->name won $payout credits");
             $player->payOut($payout);
         } else {
-            foreach ($winningPlayers as $player) {
-                $player = $this->players->where("name", $winningPlayers->first())->first();
-                $this->typewriterEffect("$winningPlayers won $payout credits");
+            foreach ($this->winners as $player) {
+                $player = $this->players->where("name", $player)->first();
+                $this->typewriterEffect("$player->name won $payout credits");
                 $player->payOut($payout);
             }
         }

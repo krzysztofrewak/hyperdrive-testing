@@ -37,11 +37,10 @@ class PokerPlayer
         $this->cards = $this->cards->merge($cards);
     }
 
-    public function bet(): int
+    public function bet(int $stake): int
     {
-        $amount = 2000;
-        $this->money -= $amount;
-        return $amount;
+        $this->money -= $stake;
+        return $stake;
     }
 
     public function selectCardsToRemove(): array
