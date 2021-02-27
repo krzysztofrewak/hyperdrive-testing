@@ -4,44 +4,47 @@ declare(strict_types=1);
 
 namespace Hyperdrive\MiniJobs\Poker;
 
+use Hyperdrive\MiniJobs\BaseMiniJob;
 use Hyperdrive\MiniJobs\Poker\Helpers\CardHandler;
 use Hyperdrive\MiniJobs\Poker\Helpers\PokerRankingsCalculator;
 use Hyperdrive\Traits\TextHandler;
 use Illuminate\Support\Collection;
 
-class Poker
+class Poker extends BaseMiniJob
 {
     use TextHandler;
     use PokerRankingsCalculator;
     use CardHandler;
 
     private Deck $deck;
-    private Collection $players;
     private Collection $winners;
     private int $moneyPool;
-    protected int $stake = 2000;
+    private int $stake = 2000;
 
-    public function __construct(string $playerName, int $money)
+    protected function prepareEnvironment(): void
     {
         $this->deck = new Deck();
+    }
+
+    protected function setupActors(): void
+    {
         $this->players = collect();
-        $this->players->add(new PokerPlayerHuman($playerName, $money));
+        $this->players->add(new PokerPlayerHuman($this->playerName, $this->playerMoney));
         for ($i = 1; $i <= 3; $i++) {
             $this->players->add(new PokerPlayer((string)$i));
         }
-        $this->setUpTable();
     }
 
-    public function setUpTable(): void
+    protected function play(): void
     {
         if ($this->doesPlayerWantToPlay()) {
             if ($this->areEnoughPlayers()) {
                 $this->deck->generateDeck();
-                $this->play();
+                $this->executeMainLoop();
                 $this->calculateOutcome();
                 $this->payout();
                 $this->increaseStake();
-                $this->setUpTable();
+                $this->play();
             }
         }
     }
@@ -82,7 +85,7 @@ class Poker
         }
     }
 
-    private function play(): void
+    private function executeMainLoop(): void
     {
         $this->moneyPool = 0;
         $this->placeBets();
@@ -153,18 +156,13 @@ class Poker
         }
     }
 
-    protected function getScore(Collection $cards): int
+    private function getScore(Collection $cards): int
     {
         $this->setCards($cards);
         return $this->calculateScore();
     }
 
-    public function getPlayerEarnings(): int
-    {
-        return $this->players->get(0)->getPlayerMoney();
-    }
-
-    public function increaseStake(): void
+    private function increaseStake(): void
     {
         $this->stake += 1000;
     }

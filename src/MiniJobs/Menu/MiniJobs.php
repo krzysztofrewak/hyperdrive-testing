@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\MiniJobs;
+namespace Hyperdrive\MiniJobs\Menu;
 
+use Hyperdrive\MiniJobs\Foraging\Foraging;
 use Hyperdrive\MiniJobs\Poker\Poker;
 use League\CLImate\CLImate;
 
@@ -39,9 +40,8 @@ trait MiniJobs
             }
 
             if ($decision === "foraging") {
-                echo "collecting" . PHP_EOL;
-                break;
-                //new Foraging();
+                $foraging = new Foraging($this->state->player[0], $this->state->money);
+                $this->state->money = $foraging->getPlayerEarnings();
             }
         }
     }
