@@ -33,7 +33,8 @@ trait MiniJobs
             }
 
             if ($decision === "poker") {
-                new Poker();
+                $poker = new Poker($this->state->player[0], $this->state->money);
+                $this->state->money = $poker->getPlayerEarnings();
                 break;
             }
 

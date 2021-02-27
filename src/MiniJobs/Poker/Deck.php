@@ -21,7 +21,7 @@ class Deck
     {
         $deck = collect();
         $suits = ["spade", "heart", "diamond", "club"];
-        for ($i = 2; $i <= 13; $i++) {
+        for ($i = 2; $i <= 14; $i++) {
             foreach ($suits as $suit) {
                 $card = new Card((string)$i, $suit);
                 $deck->add($card->getCard());

@@ -4,13 +4,28 @@ declare(strict_types=1);
 
 namespace Hyperdrive\MiniJobs\Poker;
 
+use Hyperdrive\Traits\TextHandler;
 use Illuminate\Support\Collection;
 
 class PokerPlayer
 {
-    private int $money = 10000;
+    use TextHandler;
+
+    public string $name;
+    private int $money;
     protected Collection $cards;
     protected int $suit;
+
+    public function __construct(string $name, int $money = 10000)
+    {
+        $this->name = $name;
+        $this->money = $money;
+    }
+
+    public function payOut(int $wonMoney): void
+    {
+        $this->money += $wonMoney;
+    }
 
     public function addCards(Collection $cards): void
     {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hyperdrive\MiniJobs\Poker;
 
+use Hyperdrive\MiniJobs\Poker\Helpers\CardHandler;
+use Hyperdrive\MiniJobs\Poker\Helpers\PokerRankingsCalculator;
 use Hyperdrive\Traits\TextHandler;
 use Illuminate\Support\Collection;
 
@@ -11,6 +13,7 @@ class Poker
 {
     use TextHandler;
     use PokerRankingsCalculator;
+    use CardHandler;
 
     private Deck $deck;
     private PokerPlayer $p1;
@@ -21,15 +24,14 @@ class Poker
     private int $moneyPool;
     protected int $stake = 2000;
 
-    public function __construct()
+    public function __construct(string $playerName, int $money)
     {
         $this->deck = new Deck();
-        $this->p1 = new PokerPlayerHuman();
-        $this->p2 = new PokerPlayer();
-        $this->p3 = new PokerPlayer();
-        $this->p4 = new PokerPlayer();
         $this->players = collect();
-        $this->players->add($this->p1)->add($this->p2)->add($this->p3)->add($this->p4);
+        $this->players->add(new PokerPlayerHuman($playerName, $money));
+        for ($i = 1; $i <= 3; $i++) {
+            $this->players->add(new PokerPlayer((string)$i));
+        }
         $this->play();
     }
 
@@ -39,13 +41,12 @@ class Poker
             $this->moneyPool = 0;
             $this->deck->generateDeck();
             $this->placeBets();
-            $this->p1->addCards($this->deck->getCardsFromDeck(5));
-            $this->p2->addCards($this->deck->getCardsFromDeck(5));
-            $this->p3->addCards($this->deck->getCardsFromDeck(5));
-            $this->p4->addCards($this->deck->getCardsFromDeck(5));
+            foreach ($this->players as $player) {
+                $player->addCards($this->deck->getCardsFromDeck(5));
+            }
             $this->exchangeCards();
             $this->outcome();
-            //$this->increaseStake();
+            $this->increaseStake();
             $this->play();
         }
     }
@@ -53,21 +54,19 @@ class Poker
     private function doesPlayerWantToPlay(): bool
     {
         $options = ["1" => "Yes", "" => "No"];
+        $player = $this->players->get(0);
+        $money = $player->getPlayerMoney();
+        $this->typewriterEffect("You currently have $money.");
         $this->typewriterEffect("Current bet amount is $this->stake.");
         $decision = (bool)$this->getInput($options, "Do you wish to proceed?");
 
         if ($decision) {
-            if ($this->p1->hasMoney($this->stake)) {
+            if ($player->hasMoney($this->stake)) {
                 return true;
             }
             $this->typewriterEffect("You don't have enough money to cover the bet.");
         }
         return false;
-    }
-
-    public function getPlayerEarnings(): int
-    {
-        return $this->p1->getPlayerMoney();
     }
 
     private function placeBets(): void
@@ -97,19 +96,40 @@ class Poker
 
     private function outcome(): void
     {
-        $winningPlayer = [];
+        $winningPlayers = collect();
+        $highestScore = 0;
         $players = $this->players;
         foreach ($players as $player) {
             $playerCards = $player->getCards();
-            $score = $this->getScore($playerCards);
-            if ($score > $winningPlayer[1]) {
-                $winningPlayer = [$player, $score];
+            $this->typewriterEffect("Player $player->name has these cards.");
+            $this->displayCards($playerCards);
+            $currentScore = $this->getScore($playerCards);
+            $this->typewriterEffect("$player->name has scored $currentScore points.");
+            sleep(2);
+
+            if ($currentScore === $highestScore) {
+                $winningPlayers->add($player->name);
             }
-            // remake
-            if ($score === $winningPlayer[1]) {
-                $player->givePrize($this->moneyPool / 2);
-                $winningPlayer[0]->givePrize($this->moneyPool / 2);
-                break;
+
+            if ($currentScore > $highestScore) {
+                $winningPlayers = collect();
+                $winningPlayers->add($player->name);
+                $this->typewriterEffect("$player->name is currently a winner with score $currentScore.");
+                $highestScore = $currentScore;
+            }
+        }
+
+        $winnersNumber = sizeof($winningPlayers);
+        $payout = (int)(($this->moneyPool) / $winnersNumber);
+        if ($winnersNumber === 1) {
+            $player = $this->players->where("name", $winningPlayers->first())->first();
+            $this->typewriterEffect("Player $player->name won $payout credits");
+            $player->payOut($payout);
+        } else {
+            foreach ($winningPlayers as $player) {
+                $player = $this->players->where("name", $winningPlayers->first())->first();
+                $this->typewriterEffect("$winningPlayers won $payout credits");
+                $player->payOut($payout);
             }
         }
     }
@@ -117,10 +137,16 @@ class Poker
     protected function getScore(Collection $cards): int
     {
         $this->setCards($cards);
-        $this->calculateScore();
-
+        return $this->calculateScore();
     }
 
+    public function getPlayerEarnings(): int
+    {
+        return $this->players->get(0)->getPlayerMoney();
+    }
 
-
+    public function increaseStake(): void
+    {
+        $this->stake += 1000;
+    }
 }

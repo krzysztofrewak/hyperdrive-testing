@@ -7,10 +7,12 @@ namespace Hyperdrive\MiniJobs\Poker;
 use Hyperdrive\Traits\TextHandler;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
+use Hyperdrive\MiniJobs\Poker\Helpers\CardHandler;
 
 class PokerPlayerHuman extends PokerPlayer
 {
     use TextHandler;
+    use CardHandler;
 
     public function selectCardsToRemove(): array
     {
@@ -22,15 +24,29 @@ class PokerPlayerHuman extends PokerPlayer
         foreach ($this->cards as $cardInfo) {
             $id = $this->cards->search($cardInfo);
             $card = $cardInfo[0] . " " . $cardInfo[1];
-            $cardsToSelect[$id] = $card;
+            $cardTranslated = $this->translateCard($cardInfo);
+            $cardsToSelect[$id] = "$cardTranslated[0] $cardTranslated[1]";
             array_push($options, [$id, $card]);
         }
-        $cardsToRemove =  $cli->checkboxes("Select cards you wish to change.", $cardsToSelect)->prompt();
+
+        $cardsToRemove = $cli->checkboxes("Select cards you wish to change.", $cardsToSelect)->prompt();
+
+        $cardToRemoveTr = collect();
+        foreach ($cardsToRemove as $card) {
+            $cardToRemoveTr->add(explode(" ", $card));
+        }
+
+        $cardsToRemove = collect();
+        foreach ($cardToRemoveTr as $card) {
+            $cardsToRemove->add($this->translateCard($card));
+        }
 
         foreach ($options as $option) {
             foreach ($cardsToRemove as $cardToRemove) {
-                if (array_search($cardToRemove, $option)) {
+                $card = "$cardToRemove[0] $cardToRemove[1]";
+                if ($card === $option[1]) {
                     array_push($cardsIdToRemove, $option[0]);
+                    break;
                 }
             }
         }
@@ -40,9 +56,8 @@ class PokerPlayerHuman extends PokerPlayer
     public function giveCards(Collection $cards): void
     {
         $this->typewriterEffect("You received: ");
-        print_r($cards);
+        $this->displayCards($cards);
 
         $this->cards = $this->cards->merge($cards);
-        print_r($this->cards);
     }
 }
