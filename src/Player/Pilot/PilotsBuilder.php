@@ -31,10 +31,10 @@ class PilotsBuilder implements BuilderContract
         return $pilots;
     }
 
-    protected static function buildPilots(Collection &$collection, array $data): void
+    protected static function buildPilots(Collection &$pilots, array $data): void
     {
         foreach ($data as $name) {
-            $collection->add(new Pilot($name));
+            $pilots->add(new Pilot($name));
         }
     }
 }

@@ -9,20 +9,20 @@ use Hyperdrive\Galaxy\GalaxyAtlas\GalaxyAtlasBuilder;
 use Hyperdrive\Galaxy\Geography\Route;
 use Hyperdrive\Level\Level;
 use Hyperdrive\Level\LevelsBuilder;
-use Hyperdrive\Level\LevelsCollection;
 use Hyperdrive\Player\Pilot\Pilot;
 use Hyperdrive\Player\Pilot\PilotsBuilder;
 use Hyperdrive\Player\Spaceship\Spaceship;
 use Hyperdrive\Player\Spaceship\SpaceshipsBuilder;
-use Hyperdrive\Player\Spaceship\SpaceshipsCollection;
+use Hyperdrive\Resources\Level\LevelCollectionResource;
+use Hyperdrive\Resources\Spaceship\SpaceshipCollectionResource;
 use Illuminate\Support\Collection;
 
 class StartPanel extends BasePanel
 {
     protected Collection $pilots;
     protected GalaxyAtlas $atlas;
-    protected SpaceshipsCollection $spaceships;
-    protected LevelsCollection $levels;
+    protected Collection $spaceships;
+    protected Collection $levels;
 
     public function __construct()
     {
@@ -35,7 +35,9 @@ class StartPanel extends BasePanel
 
     public function selectDifficultyLevel(): Level
     {
-        $this->cli->table($this->levels->getLevelsData());
+        $levelCollectionResource = new LevelCollectionResource();
+        $this->cli->table($levelCollectionResource($this->levels));
+
         $this->cli->info("Select Your Difficulty Level");
         $level = $this->cli->radio("Select Difficulty Level", $this->levels->toArray())->prompt();
         $this->cli->info("Your Select {$level}.");
@@ -54,7 +56,9 @@ class StartPanel extends BasePanel
 
     public function selectSpaceship(): Spaceship
     {
-        $this->cli->table($this->spaceships->getSpaceshipsData());
+        $spaceshipCollectionResource = new SpaceshipCollectionResource();
+        $this->cli->table($spaceshipCollectionResource($this->spaceships));
+
         $this->cli->info("Select Your Spaceship");
         $spaceship = $this->cli->radio("Select Spaceship", $this->spaceships->toArray())->prompt();
         $this->cli->info("Your Select {$spaceship}.");

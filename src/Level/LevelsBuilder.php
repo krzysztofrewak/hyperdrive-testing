@@ -5,31 +5,36 @@ declare(strict_types=1);
 namespace Hyperdrive\Level;
 
 use Hyperdrive\Contracts\BuilderContract;
+use Illuminate\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 class LevelsBuilder implements BuilderContract
 {
-    public static function buildFromArray(array $data): LevelsCollection
+    protected function __construct()
     {
-        $levelsCollection = new LevelsCollection();
-        self::buildLevel($levelsCollection, $data);
-
-        return $levelsCollection;
     }
 
-    public static function buildFromYaml(string $filePath): LevelsCollection
+    public static function buildFromArray(array $data): Collection
     {
-        $levelsCollection = new LevelsCollection();
+        $levels = collect();
+        self::buildLevel($levels, $data);
+
+        return $levels;
+    }
+
+    public static function buildFromYaml(string $filePath): Collection
+    {
+        $levels = collect();
         $data = Yaml::parseFile($filePath);
-        self::buildLevel($levelsCollection, $data);
+        self::buildLevel($levels, $data);
 
-        return $levelsCollection;
+        return $levels;
     }
 
-    protected static function buildLevel(LevelsCollection &$levelsCollection, array $data): void
+    protected static function buildLevel(Collection &$levels, array $data): void
     {
         foreach ($data as $name => $levelData) {
-            $levelsCollection->addLevel(new Level($levelData + [
+            $levels->add(new Level($levelData + [
                 "name" => $name,
             ]));
         }

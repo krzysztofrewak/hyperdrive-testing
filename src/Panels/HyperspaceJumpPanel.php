@@ -6,8 +6,8 @@ namespace Hyperdrive\Panels;
 
 use Hyperdrive\Contracts\PanelContract;
 use Hyperdrive\Galaxy\Geography\Planet;
+use Hyperdrive\Panels\Options\HyperspaceJumpOptions;
 use Hyperdrive\Player\Navigator\HyperspaceJump;
-use Hyperdrive\PriceList\PriceList;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class HyperspaceJumpPanel extends BasePanel implements PanelContract
@@ -22,10 +22,8 @@ class HyperspaceJumpPanel extends BasePanel implements PanelContract
      */
     public function selectionSection(): void
     {
-        $hyperspaceJumpOptions = PriceList::getHyperspaceJumpOptions();
-        $result = $this->cli->radio("Select option", $hyperspaceJumpOptions + [
-            "quit" => "Quit",
-        ])->prompt();
+        $hyperspaceJumpOptions = new HyperspaceJumpOptions();
+        $result = $this->cli->radio("Select option", $hyperspaceJumpOptions())->prompt();
 
         if ($result === "quit") {
             throw new Exception("Hyperspace jump was canceled");
@@ -41,13 +39,15 @@ class HyperspaceJumpPanel extends BasePanel implements PanelContract
      */
     private function selectPlanet(): Planet
     {
-        $collection = $this->hyperspaceJump->getMatchingPlanets();
+        $matchingPlanets = $this->hyperspaceJump->getMatchingPlanets();
 
-        if ($collection->count() !== 1) {
-            return $this->cli->radio("Select planet to hyperspace jump", $collection->toArray())->prompt();
+        if ($matchingPlanets->count() !== 1) {
+            return $this->cli->radio("Select planet to hyperspace jump", $matchingPlanets->toArray())->prompt();
         }
 
-        $planet = $collection->get(0);
+        /** @var Planet $planet */
+        $planet = $matchingPlanets->get(0);
+
         $this->cli->error("Only one planet meets the requirements for a hyperspace jump");
         $result = $this->cli->radio("Do you want to jump to {$planet}", ["Yes", "No"])->prompt();
 

@@ -20,13 +20,13 @@ class PriceList
     public static function getHyperspaceJumpOptions(): array
     {
         $data = Yaml::parseFile(self::FilePath);
-        $collection = collect();
+        $hyperspaceJumpOptions = collect();
 
         foreach ($data["Hyperspace-jump"] as $name => $values) {
-            $collection->add(new HyperspaceJumpOption($name, $values["distance"], $values["price"]));
+            $hyperspaceJumpOptions->add(new HyperspaceJumpOption($name, $values["distance"], $values["price"]));
         }
 
-        return $collection->toArray();
+        return $hyperspaceJumpOptions->toArray();
     }
 
     public static function getMapPrice(): int

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\Player\Spaceship;
 
 use Hyperdrive\Contracts\BuilderContract;
+use Illuminate\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 class SpaceshipsBuilder implements BuilderContract
@@ -13,27 +14,27 @@ class SpaceshipsBuilder implements BuilderContract
     {
     }
 
-    public static function buildFromArray(array $data): SpaceshipsCollection
+    public static function buildFromArray(array $data): Collection
     {
-        $spaceshipsCollection = new SpaceshipsCollection();
-        self::buildSpaceship($spaceshipsCollection, $data);
+        $spaceships = collect();
+        self::buildSpaceship($spaceships, $data);
 
-        return $spaceshipsCollection;
+        return $spaceships;
     }
 
-    public static function buildFromYaml(string $filePath): SpaceshipsCollection
+    public static function buildFromYaml(string $filePath): Collection
     {
-        $spaceshipsCollection = new SpaceshipsCollection();
+        $spaceships = collect();
         $data = Yaml::parseFile($filePath);
-        self::buildSpaceship($spaceshipsCollection, $data);
+        self::buildSpaceship($spaceships, $data);
 
-        return $spaceshipsCollection;
+        return $spaceships;
     }
 
-    protected static function buildSpaceship(SpaceshipsCollection &$spaceshipsCollection, array $data): void
+    protected static function buildSpaceship(Collection &$spaceships, array $data): void
     {
         foreach ($data as $name => $spaceshipData) {
-            $spaceshipsCollection->addSpaceship(new Spaceship($spaceshipData + [
+            $spaceships->add(new Spaceship($spaceshipData + [
                 "name" => $name,
             ]));
         }

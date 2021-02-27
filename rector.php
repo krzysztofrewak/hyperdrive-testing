@@ -21,7 +21,6 @@ $sets = [
     SetList::DEAD_CODE,
     SetList::CODE_QUALITY,
     SetList::DEAD_DOC_BLOCK,
-    SetList::NAMING,
     SetList::TYPE_DECLARATION,
     SetList::PHP_80,
 ];

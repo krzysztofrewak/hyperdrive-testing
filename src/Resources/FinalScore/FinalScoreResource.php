@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Resources;
+namespace Hyperdrive\Resources\FinalScore;
 
 use JetBrains\PhpStorm\ArrayShape;
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Level;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 class Level
 {
     protected string $name;
@@ -42,24 +40,6 @@ class Level
     public function isUnlockedMap(): bool
     {
         return $this->unlockedMap;
-    }
-
-    #[ArrayShape([
-        "Difficulty Level" => "string",
-        "Fuel" => "int",
-        "Capital" => "int",
-        "Hyperspace jumps limit" => "int",
-        "Unlocked Map" => "string",
-    ])]
-    public function getLevelData(): array
-    {
-        return [
-            "Difficulty Level" => $this->name,
-            "Fuel" => $this->fuel,
-            "Capital" => $this->capital,
-            "Hyperspace jumps limit" => $this->hyperspaceJumpsLimit,
-            "Unlocked Map" => $this->unlockedMap ? "true" : "false",
-        ];
     }
 
     private function setLevelData(array $levelData): void

@@ -12,7 +12,6 @@ use Hyperdrive\Player\Navigator\HyperspaceJump;
 use Hyperdrive\Player\Pilot\Pilot;
 use Hyperdrive\Player\Spaceship\Spaceship;
 use Hyperdrive\PriceList\PriceList;
-use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -33,6 +32,11 @@ class Player
         $this->mapPrice = PriceList::getMapPrice();
     }
 
+    public function getMap(): array
+    {
+        return $this->hyperdriveNavigator->getMap();
+    }
+
     public function getTargetPlanet(): Planet
     {
         return $this->targetPlanet;
@@ -42,6 +46,29 @@ class Player
     public function getCurrentPlanet(): ?Planet
     {
         return $this->hyperdriveNavigator->getCurrentPlanet();
+    }
+
+    #[Pure]
+    public function getPilot(): Pilot
+    {
+        return $this->pilot;
+    }
+
+    public function getSpaceship(): Spaceship
+    {
+        return $this->spaceship;
+    }
+
+    #[Pure]
+    public function getCurrentCapital(): int
+    {
+        return $this->capital->getCurrentCapital();
+    }
+
+    #[Pure]
+    public function getRemainingJumpsInHyperspace(): int
+    {
+        return $this->hyperdriveNavigator->getRemainingJumpsInHyperspace();
     }
 
     #[Pure]
@@ -61,38 +88,10 @@ class Player
         $this->hyperdriveNavigator->jumpTo($planet);
     }
 
-    public function getSpaceshipData(): array
-    {
-        return $this->spaceship->getSpaceshipData();
-    }
-
-    #[ArrayShape([
-        "Name" => "string",
-        "Capital" => "int",
-        "Target Planet" => "string",
-        "Current Planet" => "string",
-        "Hyperspace Jumps Limit" => "int",
-    ])]
-    public function getPlayerData(): array
-    {
-        return [
-            "Name" => $this->pilot->__toString(),
-            "Capital" => $this->capital->getCurrentCapital(),
-            "Target Planet" => $this->targetPlanet->__toString(),
-            "Current Planet" => $this->getCurrentPlanet()->__toString(),
-            "Hyperspace Jumps Limit" => $this->hyperdriveNavigator->getRemainingJumpsInHyperspace(),
-        ];
-    }
-
     public function buyAccessToTheMap(): void
     {
         $this->capital->spendingMoney($this->mapPrice);
         $this->hyperdriveNavigator->unlockMap();
-    }
-
-    public function getMap(): array
-    {
-        return $this->hyperdriveNavigator->getMap();
     }
 
     /**
@@ -107,7 +106,7 @@ class Player
     }
 
     #[Pure]
-    public function getFinalScore(): FinalScore
+    public function generateFinalScore(): FinalScore
     {
         return new FinalScore($this->capital, $this->hyperdriveNavigator, $this->spaceship);
     }

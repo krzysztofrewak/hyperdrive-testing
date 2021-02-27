@@ -25,6 +25,11 @@ class Spaceship
         return $this->name;
     }
 
+    public function getTank(): Tank
+    {
+        return $this->tank;
+    }
+
     #[Pure]
     public function getFuelConsumed(): int
     {
@@ -47,13 +52,6 @@ class Spaceship
             $capital->spendingMoney($this->fuelValues["price"]);
             $this->tank->refueling($this->fuelValues["capacity"]);
         }
-    }
-
-    public function getSpaceshipData(): array
-    {
-        return [
-            "name" => $this->name,
-        ] + $this->tank->getTankData();
     }
 
     private function setSpaceshipData(array $spaceshipData): void
