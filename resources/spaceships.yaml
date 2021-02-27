@@ -1,0 +1,24 @@
+U-wing:
+  tank:
+    capacity: 31000
+    fuelConsumption: 800
+TIE Interceptor:
+  tank:
+    capacity: 28000
+    fuelConsumption: 720
+X-wing:
+  tank:
+    capacity: 29500
+    fuelConsumption: 750
+TIE Advanced:
+  tank:
+    capacity: 26000
+    fuelConsumption: 670
+Naboo N-1:
+  tank:
+    capacity: 32000
+    fuelConsumption: 850
+Millennium Falcon:
+  tank:
+    capacity: 35000
+    fuelConsumption: 880

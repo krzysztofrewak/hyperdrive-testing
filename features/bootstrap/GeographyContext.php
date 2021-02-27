@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Hyperdrive\Geography\Planet;
-use Hyperdrive\Geography\Route;
+use Hyperdrive\Galaxy\Geography\Planet;
+use Hyperdrive\Galaxy\Geography\Route;
 use PHPUnit\Framework\Assert;
 
 class GeographyContext implements Context
@@ -23,12 +23,12 @@ class GeographyContext implements Context
     }
 
     /**
-     * @Then its id should be :id
-     * @param string $id
+     * @Then its name should be :name
+     * @param string $name
      */
-    public function itsIdShouldBe(string $id): void
+    public function itsNameShouldBe(string $name): void
     {
-        Assert::assertEquals($id, $this->planet->getId());
+        Assert::assertEquals($name, $this->planet);
     }
 
     /**

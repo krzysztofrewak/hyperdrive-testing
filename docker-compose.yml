@@ -4,13 +4,13 @@ services:
   php:
     container_name: hyperdrive-php
     working_dir: /application
-    image: php:7.4.12-alpine
+    image: php:8.0.2-fpm-alpine
     volumes:
       - .:/application
 
   composer:
     container_name: hyperdrive-composer
     working_dir: /application
-    image: composer:2.0.7
+    image: composer:2.0.9
     volumes:
       - .:/application

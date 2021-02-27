@@ -19,9 +19,29 @@ To run ECS check, run:
 docker-compose run --rm php ./vendor/bin/ecs check
 ```
 
+To make the changes, add --fix:
+```bash
+docker-compose run --rm php ./vendor/bin/ecs check --fix
+```
+
+To run Rector check, run:
+```bash
+docker-compose run --rm php vendor/bin/rector process src --dry-run
+```
+
+To make the changes, drop --dry-run:
+```bash
+docker-compose run --rm php vendor/bin/rector process src
+```
+
 ![CLI example](https://i.imgur.com/1mQFStj.png)
 
-## The reason behind
-I just wanted to check out PHP 7.4 (especially new arrow functions and typed properties), League's CLImate library, Behat testing and running entire console PHP project from Docker. It was fun.
+## What's new:
+_The game_ has been upgraded to PHP 8 and I checked what's new in this PHP version. While developing the application, I wanted to check out Github flow, Github Action and dependabot for myself. _The game_ has new features such as:
+* Hyperspace Jumps - You can choose jump distance and then the exact planet
+* Refueling a spaceship - Now you can refuel the spaceship to full
+* Selection of the spaceship, difficulty level etc. - all editable in `.yaml` files
+* Route map - Now you can view a list of planets
+* Capital - Don't lose all your money
 
-Someday probably I'll extend _the game_ itself, just for the fun.
+And more...
