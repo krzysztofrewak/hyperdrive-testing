@@ -4,40 +4,47 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Traits;
 
-use Hyperdrive\GameSave\IntegrityController;
+use Hyperdrive\Game\Game;
+use Hyperdrive\Game\MainLoop\GameLoop;
+use Hyperdrive\Game\NewGame\NewGame;
+use Hyperdrive\Game\Resume\ResumeGame;
 
 trait MainMenuHandler
 {
-    use MainMenuMethods, IntegrityController;
+    use TextHandler;
 
-    public function handleMenu(): void
+    public function start(): void
     {
-        while (True) {
-            if ($this->choice === "quit") {
-                break;
-            }
+        $this->typewriterEffect("Starting new game.");
+        new NewGame();
+        $this->resume();
+    }
 
-            if ($this->choice === "startNewGame") {
-                $this->start();
-                $this->toggleInGameState();
-            }
-
-            if ($this->choice === "resume") {
-                $this->resume();
-                $this->toggleInGameState();
-            }
-
-            if ($this->choice === "achieve") {
-                $this->achievements();
-            }
-
-            if ($this->choice === "options") {
-                $this->options();
-            }
-
-            $this->displayMenu();
-
-            continue;
+    public function resume(): void
+    {
+        if ($this->ifSaveExists()) {
+            $this->typewriterEffect("Resuming game.");
+            $gameState = new ResumeGame();
+            $game = new Game($gameState);
+            new GameLoop($game);
+        } else {
+            $this->typewriterEffect("Couldn't locate save file.");
         }
+    }
+
+    public function achievements(): void
+    {
+        $this->typewriterEffect("Displaying achievements.");
+    }
+
+    public function options(): void
+    {
+        $this->typewriterEffect("Displaying options.");
+    }
+
+    private function ifSaveExists(): bool
+    {
+        $dir = scandir('/application');
+        return (bool)array_search("gamesave", $dir);
     }
 }

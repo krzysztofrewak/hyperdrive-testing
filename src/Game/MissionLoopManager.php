@@ -18,16 +18,7 @@ trait MissionLoopManager
     public function startMissionLoop(): void
     {
         $this->createUniqueMissionHandler();
-
         $this->startLoop();
-
-        $this->gameState->missionId = $_SESSION['nextMission'];
-        $this->gameState->stage = 0;
-        $this->saveGame();
-    }
-
-    protected function updateGameState(): void
-    {
-        $this->gameState->stage = $this->stageIndex + 1;
+        $this->endMission();
     }
 }

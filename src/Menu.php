@@ -9,7 +9,7 @@ use League\CLImate\CLImate;
 
 abstract class Menu implements MenuInterface
 {
-    public CLImate $cli;
+    protected CLImate $cli;
     public array $options;
     public string $choice;
 

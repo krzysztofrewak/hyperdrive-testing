@@ -29,7 +29,6 @@ class NewGame extends BaseGameType
 
     private function parseYamlFiles(): void
     {
-        // consider loop when gamedata folder is structured
         $this->buildFromYamlFile('/application/src/GameData/teams.yaml', $this->teams);
         $this->buildFromYamlFile('/application/src/GameData/specializations.yaml', $this->specializations);
     }

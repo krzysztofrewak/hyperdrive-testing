@@ -6,4 +6,4 @@ use Hyperdrive\GameInitialization\GameEnvironmentInit;
 
 require "./vendor/autoload.php";
 
-$gameInstance = new GameEnvironmentInit();
+new GameEnvironmentInit();
