@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use Hyperdrive\GameData\Missions\DecisionHandlerInterface;
+use Hyperdrive\GameData\Missions\BaseDecisionHandler;
 use Hyperdrive\Traits\MusicHandler;
 use Hyperdrive\Traits\SaveHandler;
 use Hyperdrive\Traits\TextHandler;
@@ -18,7 +18,7 @@ trait MissionLoopHandler
     private int $lineIndex = 1;
     private int $stageIndex = 0;
     private array $currentStage;
-    private DecisionHandlerInterface $uniqueHandler;
+    private BaseDecisionHandler $uniqueHandler;
 
     private function createUniqueMissionHandler(): void
     {
