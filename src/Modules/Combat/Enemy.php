@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Modules\Combat;
 
 class Enemy extends Being
 {

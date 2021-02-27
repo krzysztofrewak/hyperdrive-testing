@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use Hyperdrive\GameData\Missions\DecisionHandlerInterface;
-use Hyperdrive\Traits\MusicHandler;
-use Hyperdrive\Traits\SaveHandler;
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\GameData\MissionUniqueDecisionHandlers\BaseDecisionHandler;
+use Hyperdrive\Handlers\MusicHandler;
+use Hyperdrive\Handlers\SaveHandler;
+use Hyperdrive\Handlers\TextHandler;
 
 trait MissionLoopHandler
 {
@@ -18,15 +18,15 @@ trait MissionLoopHandler
     private int $lineIndex = 1;
     private int $stageIndex = 0;
     private array $currentStage;
-    private DecisionHandlerInterface $uniqueHandler;
+    private BaseDecisionHandler $uniqueHandler;
 
-    public function createUniqueMissionHandler(): void
+    private function createUniqueMissionHandler(): void
     {
         $this->uniqueHandler = $this->mission->getDecisionHandler();
         $this->uniqueHandler->setGameState($this->gameState);
     }
 
-    public function printText(): void
+    private function printText(): void
     {
         $stage = $this->currentStage;
         $condition = $stage[0]["linesCount"];
@@ -37,7 +37,7 @@ trait MissionLoopHandler
         }
     }
 
-    public function mapOptionsToDecisions(): void
+    private function mapOptionsToDecisions(): void
     {
         $this->uniqueHandler->clearOptions();
         $stage = $this->currentStage;
@@ -51,17 +51,17 @@ trait MissionLoopHandler
         }
     }
 
-    public function displayOptions(): void
+    private function displayOptions(): void
     {
         $this->uniqueHandler->displayMenu();
     }
 
-    public function setCurrentStage(): void
+    private function setCurrentStage(): void
     {
         $this->currentStage = $this->mission->data[$this->stageIndex];
     }
 
-    public function handleDecision(): void
+    private function handleDecision(): void
     {
         $decision = $this->uniqueHandler->getResult();
         $this->uniqueHandler->handleDecision($decision);
@@ -101,5 +101,17 @@ trait MissionLoopHandler
             $this->uniqueHandler->toggleProgress();
             $this->updateGameState();
         }
+    }
+
+    private function endMission(): void
+    {
+        $this->gameState->missionId = $_SESSION['nextMission'];
+        $this->gameState->stage = 0;
+        $this->saveGame();
+    }
+
+    private function updateGameState(): void
+    {
+        $this->gameState->stage = $this->stageIndex + 1;
     }
 }

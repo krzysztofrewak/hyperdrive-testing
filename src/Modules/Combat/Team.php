@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Modules\Combat;
 
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
 
 class Team
@@ -66,7 +66,7 @@ class Team
     public function startShooting(Being $friend): void
     {
         if ($this->enemyTeam->isNotEmpty()) {
-            if (explode("\\", get_class($friend))[1] === "Player") {
+            if (explode("\\", get_class($friend))[3] === "Player") {
                 $enemy = $friend->chooseEnemy($this->enemyTeam);
             } else {
                 $enemy = $this->enemyTeam->random();

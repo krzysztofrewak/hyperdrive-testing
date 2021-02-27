@@ -9,7 +9,7 @@ use Hyperdrive\Game\Game;
 use Hyperdrive\Game\GameAssetsBuilder;
 use Hyperdrive\Game\Mission;
 use Hyperdrive\HyperdriveNavigator;
-use Hyperdrive\Traits\YamlBuilder;
+use Hyperdrive\Helpers\YamlBuilder;
 
 class BaseGameLoop
 {
@@ -18,15 +18,6 @@ class BaseGameLoop
     protected Game $game;
     private MainLoopPauseMenu $pauseMenu;
     private Mission $mission;
-    private GalaxyAtlas $atlas;
-    private HyperdriveNavigator $hyperdrive;
-
-    private function buildAssets(): void
-    {
-        $builder = new GameAssetsBuilder();
-        $this->hyperdrive = $builder->getHyperdrive();
-        $this->atlas = $builder->getAtlas();
-    }
 
     private function loadSave()
     {
@@ -48,9 +39,6 @@ class BaseGameLoop
     protected function startGame(): void
     {
         $_SESSION['isMissionComplete'] = false;
-
-        // do wyjebania
-        $this->buildAssets();
 
         $this->loadSave();
         $this->loadMission();

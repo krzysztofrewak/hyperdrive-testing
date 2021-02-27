@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\NewGame;
 
-use Hyperdrive\BaseGameType;
+use Hyperdrive\Game\BaseGameType;
 use League\CLImate\CLImate;
-use Hyperdrive\GameSave;
-use Hyperdrive\Traits\YamlBuilder;
+use Hyperdrive\GameSave\GameSave;
+use Hyperdrive\Helpers\YamlBuilder;
 
 class NewGame extends BaseGameType
 {
@@ -29,7 +29,6 @@ class NewGame extends BaseGameType
 
     private function parseYamlFiles(): void
     {
-        // consider loop when gamedata folder is structured
         $this->buildFromYamlFile('/application/src/GameData/teams.yaml', $this->teams);
         $this->buildFromYamlFile('/application/src/GameData/specializations.yaml', $this->specializations);
     }

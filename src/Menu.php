@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
-use Hyperdrive\Interfaces\MenuInterface;
 use League\CLImate\CLImate;
 
-abstract class Menu implements MenuInterface
+abstract class Menu
 {
-    public CLImate $cli;
+    protected CLImate $cli;
     public array $options;
     public string $choice;
 

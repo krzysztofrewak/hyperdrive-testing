@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\GameSave;
 
-use Hyperdrive\GameSave\BaseGameSave;
-use Hyperdrive\Traits\SaveHandler;
+use Hyperdrive\Handlers\SaveHandler;
 
 class GameSave extends BaseGameSave
 {

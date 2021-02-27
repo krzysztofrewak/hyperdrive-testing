@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use Hyperdrive\BaseGameType;
 use Hyperdrive\Game\MainLoop\GameState;
-use Hyperdrive\GameSave;
+use Hyperdrive\GameSave\GameSave;
 use Hyperdrive\GameSave\IntegrityController;
 
 class Game

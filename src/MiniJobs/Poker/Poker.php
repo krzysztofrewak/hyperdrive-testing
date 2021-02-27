@@ -7,7 +7,7 @@ namespace Hyperdrive\MiniJobs\Poker;
 use Hyperdrive\MiniJobs\BaseMiniJob;
 use Hyperdrive\MiniJobs\Poker\Helpers\CardHandler;
 use Hyperdrive\MiniJobs\Poker\Helpers\PokerRankingsCalculator;
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
 
 class Poker extends BaseMiniJob
