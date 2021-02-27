@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Game;
+
+use Hyperdrive\GameSave\GameSave;
 
 abstract class BaseGameType
 {

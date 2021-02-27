@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use Hyperdrive\GalaxyAtlas;
-use Hyperdrive\GalaxyAtlasBuilder;
-use Hyperdrive\HyperdriveNavigator;
+use Hyperdrive\Assets\GalaxyAtlas;
+use Hyperdrive\Assets\GalaxyAtlasBuilder;
+use Hyperdrive\Assets\HyperdriveNavigator;
 
 class GameAssetsBuilder
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\NewGame;
 
-use Hyperdrive\BaseGameType;
+use Hyperdrive\Game\BaseGameType;
 use League\CLImate\CLImate;
-use Hyperdrive\GameSave;
+use Hyperdrive\GameSave\GameSave;
 use Hyperdrive\Helpers\YamlBuilder;
 
 class NewGame extends BaseGameType

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game\Resume;
 
-use Hyperdrive\BaseGameType;
-use Hyperdrive\GameSave;
+use Hyperdrive\Game\BaseGameType;
+use Hyperdrive\GameSave\GameSave;
 
 class ResumeGame extends BaseGameType
 {
