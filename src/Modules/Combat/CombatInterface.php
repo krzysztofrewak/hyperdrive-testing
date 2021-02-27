@@ -1,6 +1,6 @@
 <?php
 
-namespace Hyperdrive;
+namespace Hyperdrive\Modules\Combat;
 
 interface CombatInterface
 {

@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Modules;
+namespace Hyperdrive\Modules\Combat;
 
-use Hyperdrive\Enemy;
-use Hyperdrive\Friendly;
 use Hyperdrive\Handlers\TextHandler;
-use Hyperdrive\Player;
-use Hyperdrive\Team;
 use Illuminate\Support\Collection;
 
 trait Combat

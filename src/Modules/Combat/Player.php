@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Modules\Combat;
 
 use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
@@ -44,9 +44,8 @@ class Player extends Friendly
     public function chooseEnemy(Collection $enemies): Enemy
     {
         $decisions = [];
-        $this->typewriterEffect("Choose who gets shot");
+        $this->typewriterEffect("Choose who gets shot.");
         for ($i = 0; $i < sizeof($enemies); $i++) {
-            echo $i . ". ";
             $enemy = $enemies->get($i);
             $this->typewriterEffect($enemy->name ." health: $enemy->health");
             array_push($decisions, $i);
