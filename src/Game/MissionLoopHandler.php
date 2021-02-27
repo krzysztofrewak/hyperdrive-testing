@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Game;
 
-use Hyperdrive\GameData\Missions\BaseDecisionHandler;
-use Hyperdrive\Traits\MusicHandler;
-use Hyperdrive\Traits\SaveHandler;
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\GameData\MissionUniqueDecisionHandlers\BaseDecisionHandler;
+use Hyperdrive\Handlers\MusicHandler;
+use Hyperdrive\Handlers\SaveHandler;
+use Hyperdrive\Handlers\TextHandler;
 
 trait MissionLoopHandler
 {

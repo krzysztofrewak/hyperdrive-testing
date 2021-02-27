@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\MiniJobs\Foraging;
 
 use Hyperdrive\MiniJobs\Foraging\Helpers\Forester;
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
 
 class Forest

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hyperdrive;
 
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
 
 class Team

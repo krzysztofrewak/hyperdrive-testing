@@ -6,7 +6,7 @@ namespace Hyperdrive\GameInitialization;
 
 use Hyperdrive\GameSave\IntegrityController;
 use Hyperdrive\Menu;
-use Hyperdrive\Traits\MainMenuHandler;
+use Hyperdrive\Handlers\MainMenuHandler;
 
 class MainMenu extends Menu
 {

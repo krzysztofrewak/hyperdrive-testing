@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hyperdrive\MiniJobs\Foraging;
 
 use Hyperdrive\MiniJobs\BaseMiniJob;
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 
 class Foraging extends BaseMiniJob
 {

@@ -4,7 +4,7 @@
 namespace Hyperdrive\MiniJobs\Poker;
 
 
-use Hyperdrive\Traits\TextHandler;
+use Hyperdrive\Handlers\TextHandler;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
 use Hyperdrive\MiniJobs\Poker\Helpers\CardHandler;

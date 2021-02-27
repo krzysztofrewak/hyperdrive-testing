@@ -9,7 +9,7 @@ use Hyperdrive\Game\Game;
 use Hyperdrive\Game\GameAssetsBuilder;
 use Hyperdrive\Game\Mission;
 use Hyperdrive\HyperdriveNavigator;
-use Hyperdrive\Traits\YamlBuilder;
+use Hyperdrive\Helpers\YamlBuilder;
 
 class BaseGameLoop
 {

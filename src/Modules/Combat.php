@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive\Traits;
+namespace Hyperdrive\Modules;
 
 use Hyperdrive\Enemy;
 use Hyperdrive\Friendly;
+use Hyperdrive\Handlers\TextHandler;
 use Hyperdrive\Player;
 use Hyperdrive\Team;
 use Illuminate\Support\Collection;
