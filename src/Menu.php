@@ -19,9 +19,9 @@ abstract class Menu implements MenuInterface
         $this->cli->addArt('./src/GameData/Art');
     }
 
-    public function displayMenu(): void
+    public function displayMenu(string $sentence = "Select option"): void
     {
-        $this->choice = $this->cli->radio("Select option", $this->options)->prompt();
+        $this->choice = $this->cli->radio($sentence, $this->options)->prompt();
     }
 
     public function getResult(): string
