@@ -49,7 +49,8 @@ class CharacterSelection
         $cli = new CLImate();
         for ($i = 0; $i < $this->getPilots()->count(); $i++)
         {
-            $this->output->info("Pilot #".$i.":");
+            $this->output->write("");
+            $this->output->info("Pilot #$i+1");
             $this->output->write("Name: ".$this->getPilots()->get($i)->getName());
             $this->output->write("Reputation: ".$this->getPilots()->get($i)->getReputation()." (More reputation = More difficulties)");
             $this->output->write("Skill: ".$this->getPilots()->get($i)->getSkill()." (More skill = Easier Navigation)");
@@ -73,13 +74,15 @@ class CharacterSelection
 
         for ($i = 0; $i < $this->getShips()->count(); $i++)
         {
-            $this->output->info("Ship #".$i.":");
+            $this->output->write("");
+            $this->output->info("Ship #$i+1:");
             $this->output->write("Name: ".$this->getShips()->get($i)->getName());
             $this->output->write("Max Fuel: ".$this->getShips()->get($i)->getMaxFuel());
             $this->output->write("Max Shields ".$this->getShips()->get($i)->getMaxShields());
             $this->output->write("Max Hull Integrity ".$this->getShips()->get($i)->getMaxHullIntegrity());
             $this->output->write("Missile Damage: ".$this->getShips()->get($i)->getMissileDamage());
             $this->output->write("Laser Damage ".$this->getShips()->get($i)->getLaserDamage());
+            $this->output->write("");
         }
 
         $options = ["EbonHawk" => "I'm choosing Ebon Hawk", "Typhoon" => "I'm choosing Typhoon", "Cyclone" => "I'm choosing Cyclone"];

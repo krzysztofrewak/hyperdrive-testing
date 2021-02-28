@@ -6,7 +6,6 @@ namespace Hyperdrive\Ship;
 
 use Hyperdrive\Output\OutputContract;
 use Illuminate\Support\Collection;
-use League\CLImate\CLImate;
 
 class Ship
 {
@@ -128,17 +127,21 @@ class Ship
     public function checkFuel(): void
     {
         if ($this->getFuel() <= 10) {
+            $this->output->write("");
             $this->output->write("Fuel levels low! Refuel at the earliest convenience!");
         }
         if ($this->getFuel() <= 0) {
+            $this->output->write("");
             $this->output->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
             $this->output->info("Now you are destined to float through the space without an end... ");
             $this->output->info("Your journey has come to an end.");
+            exit(0);
         }
     }
 
     public function showStats(): void
     {
+        $this->output->write("");
         $this->output->info("Your ship:");
         $this->output->write("Name: " . $this->getName());
         $this->output->write("Max Fuel: " . $this->getMaxFuel());
@@ -146,6 +149,7 @@ class Ship
         $this->output->write("Max Hull Integrity " . $this->getMaxHullIntegrity());
         $this->output->write("Missile Damage: " . $this->getMissileDamage());
         $this->output->write("Laser Damage " . $this->getLaserDamage());
+        $this->output->write("");
     }
 
     public function chooseShip(Ship $playerShip, Ship $choice): void
@@ -165,6 +169,7 @@ class Ship
     {
         for ($i = 0; $i < $enemies->count(); $i++) {
             if ($enemies->get($i)->getHullIntegrity() > 0) {
+                $this->output->write("");
                 $this->output->info("Enemy #" . $i+1);
                 $this->output->info("Shields:" . $enemies->get($i)->getShields());
                 $this->output->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());

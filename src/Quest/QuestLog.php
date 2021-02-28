@@ -6,21 +6,26 @@ use Hyperdrive\Geography\Planet;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
+use Hyperdrive\Story\Story;
 use Illuminate\Support\Collection;
-use League\CLImate\CLImate;
 
 class QuestLog
 {
     private Collection $quests;
     private Collection $cargo;
     protected OutputContract $output;
+    private Story $story;
+    private int $mainQuestsCompleted;
 
-    public function __construct(OutputContract $output)
+
+    public function __construct(OutputContract $output,Story $story)
     {
         $this->output = $output;
         $this->quests = collect();
         $this->cargo = collect();
         $this->generateCargo();
+        $this->mainQuestsCompleted = 0;
+        $this->story = $story;
     }
 
     private function generateCargo(): void
@@ -43,6 +48,8 @@ class QuestLog
 
     public function generateStartingQuests(HyperdriveNavigator $hyperdrive)
     {
+        $this->addQuest(new Quest(cargo: new Cargo(name: "Mysterious Box"), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $this->generateReward()));
+
         for ($i = 0; $i < 2; $i++)
         {
             $this->addQuest(new Quest(cargo: $this->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $this->generateReward()));
@@ -63,6 +70,7 @@ class QuestLog
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++)
         {
+            $this->output->write("");
             $this->output->info("Quest #".$i.":");
             $this->output->write("Cargo: ".$this->getQuests()->get($i)->getCargo()->getName());
             $this->output->write("Destination: ".$this->getQuests()->get($i)->getDestination());
@@ -87,19 +95,18 @@ class QuestLog
 
     public function questCompletion(Quest $quest,Pilot $player): void
     {
+        $this->output->write("");
         $this->output->info("You completed a Quest!");
         $this->output->info("You delivered ".$quest->getCargo()->getName()." to ".$quest->getDestination());
         $quest->setCompleted(true);
         $player->earnXP($quest->getExp());
         $player->earnCredits($quest->getReward());
         $player->checkForLevelUp();
-    }
-
-    private function finalQuestCompleted(): void
-    {
-        $this->output->info("You finished your last quest and finished the game!");
-        $this->output->info("Thank you for playing!");
-        exit(0);
+        if($quest->isMain())
+        {
+            $this->mainQuestsCompleted++;
+            $this->story->mainQuests($this->mainQuestsCompleted);
+        }
     }
 
     /**

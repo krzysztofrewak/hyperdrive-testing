@@ -41,12 +41,14 @@ class Pilot
 
     public function showStats()
     {
+        $this->output->write("");
         $this->output->info("Your character:");
         $this->output->write("Name: ".$this->getName());
         $this->output->write("Reputation: ".$this->getReputation());
         $this->output->write("Skill: ".$this->getSkill());
         $this->output->write("Credits: ".$this->getCredits());
         $this->output->write("EXP: ".$this->getExp());
+        $this->output->write("");
 
     }
     public function checkForLevelUp(): void
@@ -54,7 +56,7 @@ class Pilot
 
         while($this->getExp() >= 5000)
         {
-
+            $this->output->write("");
             $this->setExp($this->getExp()-5000);
             $this->setSkill($this->getSkill()+1);
             $this->output->info("You leveled up!");

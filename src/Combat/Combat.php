@@ -37,6 +37,7 @@ class Combat
                     $aliveEnemies--;
                 }
                 if ($enemies->get($i)->getHullIntegrity() > 0) {
+                    $this->output->write("");
                     $enemies->get($i)->enemyAttacksPlayer($playerShip);
                     $this->output->info("Current Ship stats:");
                     $this->output->write("Shields:" . $playerShip->getShields());
@@ -44,10 +45,12 @@ class Combat
                 }
             }
             if ($playerShip->getHullIntegrity() <= 0) {
+                $this->output->write("");
                 $this->output->info("Defeat! Your ship has been destroyed. Your journey has come to an end.");
                 exit(0);
             }
             if ($aliveEnemies == 0) {
+                $this->output->write("");
                 $this->output->info("Victory! Combat finished.");
                 $playerShip->setShields($playerShip->getMaxShields());
                 $exp = $enemies->count() * 1000;
@@ -59,11 +62,13 @@ class Combat
 
     public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,Planet $currentPlanet): void
     {
+        $this->output->write("");
         $options = ["Land" => "I will try to escape combat and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
         $result = $this->output->getCli()->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
         if ($result === "Land")
         {
+            $this->output->write("");
             $this->output->write("You decided to escape to planet's surface. You lost some fuel while using thrusters.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
@@ -71,6 +76,7 @@ class Combat
 
             for ($i = 0; $i < $enemies->count(); $i++)
             {
+                $this->output->write("");
                 $enemies->get($i)->enemyAttacksPlayer($playerShip);
                 $this->output->info("Current Ship stats:");
                 $this->output->write("Shields:" . $playerShip->getShields());

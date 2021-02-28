@@ -36,29 +36,36 @@ class Event
 
         if($random == 8)
         {
+            $this->output->write("");
             $this->output->write("You encountered a merchant's ship in need of repairs. They ask of you to deliver their cargo and you will be rewarded with half of their payment.");
             $options = ["Yes" => "Yes", "No" => "No"];
             $result = $this->output->getCli()->radio("Do you agree to help them and deliver their cargo?", $options)->prompt();
-
+            $this->output->write("");
             if ($result === "Yes")
             {
+                $this->output->write("");
                 $this->output->write("You agreed to deliver their cargo.");
+                $this->output->write("");
                 $questlog->addQuest(new Quest(cargo: $questlog->getRandomCargo(), destination: $randomPlanet, completed: false, main: false, exp: 2500, reward: $questlog->generateReward()));
             }
             if ($result === "No")
             {
+                $this->output->write("");
                 $this->output->write("The merchant wasn't happy with your reply but you decided it's not your problem that he has a broken ship. You decide to leave him alone.");
+                $this->output->write("");
             }
 
         }
         if($random == 9)
         {
+            $this->output->write("");
             $this->output->info("You encountered an Asteroid belt! You lost some fuel while trying to maneuver through them.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
         }
         if($random == 10)
         {
+            $this->output->write("");
             $this->output->info("You've been attacked!");
             $enemies = new Enemies($this->output);
             $combat = new Combat($this->output);
@@ -74,6 +81,7 @@ class Event
         if($random == 7)
         {
             $creditsLost = rand(0,200)+1000;
+            $this->output->write("");
             $this->output->write("You were attacked while walking through the city");
             $this->output->info("You lost $creditsLost credits");
             $player->payCredits($creditsLost);
@@ -85,6 +93,7 @@ class Event
             $bounty = $player->calculateBounty();
             if($player->getReputation()>$reputationCheck)
             {
+                $this->output->write("");
                 $this->output->write("Your reputation has caught up to you.");
                 if($event==1)
                 {
@@ -128,6 +137,7 @@ class Event
             $options = ["Yes" => "Yes", "No" => "No"];
             $result = $this->output->getCli()->radio("Do you want to play some cards?", $options)->prompt();
 
+            $this->output->write("");
             if ($result === "Yes")
             {
                 $this->output->write("You decide to gamble some money");
@@ -135,17 +145,20 @@ class Event
                 $win = rand(1,2);
                 if($win == 1)
                 {
+                    $this->output->write("");
                     $this->output->info("You won! You earned $credits");
                     $player->earnCredits($credits);
                 }
                 if($win == 2)
                 {
+                    $this->output->write("");
                     $this->output->info("You lost! You lost $credits");
                     $player->payCredits($credits);
                 }
             }
             if ($result === "No")
             {
+                $this->output->write("");
                 $this->output->write("You decide to leave the players alone. You are above gambling.");
             }
 
@@ -154,18 +167,21 @@ class Event
         }
         if($random == 10)
         {
+            $this->output->write("");
             $this->output->info("You spotted an ad for pod racing.");
             $this->output->info("You decide to compete in the race.");
             $bestPilot = rand(1,10);
 
             if($player->getSkill() > $bestPilot)
             {
+                $this->output->write("");
                 $this->output->info("You won the race by beating all other racers.");
                 $this->output->info("You earned 1000 credits.");
                 $player->earnCredits(1000);
             }
             if($player->getSkill() < $bestPilot)
             {
+                $this->output->write("");
                 $this->output->info("You lost the race.");
                 $this->output->info("You didn't lose anything other than time.");
             }

@@ -11,12 +11,10 @@ use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Quest\Quest;
 use Hyperdrive\Quest\QuestLog;
 use Hyperdrive\Ship\Ship;
-use League\CLImate\CLImate;
 
 class PlanetSurface
 {
 
-    private CLImate $cli;
     private bool $jobFound;
     protected OutputContract $output;
 
@@ -30,8 +28,8 @@ class PlanetSurface
     {
         while(true)
         {
-            $options = ["Ship" => "Buy Ship Upgrades","stats" => "show pilot and ship stats","quests" => "show quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
-            $result = $this->cli->radio("Select option", $options)->prompt();
+            $options = ["Ship" => "Buy Ship Upgrades","stats" => "Show Pilot and Ship Stats","quests" => "Show Quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
+            $result = $this->output->getCli()->radio("Select option", $options)->prompt();
 
             if ($result === "Ship") {
                 $this->shipUpgrades($playerShip,$player);
@@ -66,7 +64,7 @@ class PlanetSurface
     private function leavePlanet(HyperdriveNavigator $hyperdrive,Ship $playerShip): void
     {
         $planet = $hyperdrive->getCurrentPlanet();
-
+        $this->output->write("");
         $this->output->info("You're on the $planet. You can jump to:");
         $this->output->info("Remaining fuel: ".$playerShip->getFuel());
 
@@ -77,6 +75,7 @@ class PlanetSurface
 
     private function shipUpgrades(Ship $playerShip, Pilot $player): void
     {
+        $this->output->write("");
         $this->output->write("Welcome to the upgrade shop! Every upgrade costs 2000 Credits");
         $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks"];
         $result = $this->output->getCli()->radio("What do you want to upgrade?", $options)->prompt();
