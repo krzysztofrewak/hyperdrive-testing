@@ -41,6 +41,7 @@ if ($result === "quit") {
 $selection->characterSelection($player, $playerShip);
 $story->intro();
 $questlog->generateStartingQuests($hyperdrive);
+$hyperdrive->getRandomPlanet();
 
 while (true) {
     $planet = $hyperdrive->getCurrentPlanet();
@@ -66,6 +67,7 @@ while (true) {
         }
         if ($result === "land") {
             $surface = new PlanetSurface(output: $cli);
+            $surface->payToll($player);
             $event->randomLandEvents(player: $player, playerShip: $playerShip);
             $surface->whatToDo(player: $player, playerShip: $playerShip, hyperdrive: $hyperdrive, questlog: $questlog);
         }

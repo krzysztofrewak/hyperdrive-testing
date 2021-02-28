@@ -88,7 +88,7 @@ class Event
             $this->robberyEvent($player);
         }
         if ($random == 8) {
-            $this->reputationEvents($player,$playerShip);
+            $this->reputationEvents($player, $playerShip);
         }
         if ($random == 9) {
             $this->gamblingEvent($player);
@@ -117,6 +117,7 @@ class Event
         $this->output->write("");
         if ($result === "Yes") {
             $this->output->write("You decide to gamble some money");
+            $this->output->write("You have " . $player->getCredits() . " credits.");
             $credits = $this->output->input("How much do you want to gamble?", $player->getCredits());
             $win = rand(1, 2);
             if ($win == 1) {

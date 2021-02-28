@@ -58,7 +58,7 @@ class QuestLog
 
     public function generateReward(): int
     {
-        return $reward = rand(100, 500) + 1000;
+        return rand(100, 500) + 1000;
     }
 
     public function showQuests(): void
@@ -80,7 +80,7 @@ class QuestLog
     public function checkIfCompleted(Pilot $player, Planet $planet,HyperdriveNavigator $hyperdrive): void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++) {
-            if ($this->getQuests()->get($i)->getDestination() === $planet) {
+            if ($this->getQuests()->get($i)->getDestination() === $planet && !$this->getQuests()->get($i)->isCompleted()) {
                 $this->questCompletion($this->getQuests()->get($i), $player,$hyperdrive);
             }
         }

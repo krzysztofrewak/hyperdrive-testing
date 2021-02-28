@@ -23,13 +23,15 @@ class PlanetSurface
         $this->output = $output;
     }
 
-
-    public function whatToDo(Pilot $player, Ship $playerShip, HyperdriveNavigator $hyperdrive, QuestLog $questlog): void
+    public function payToll(Pilot $player):void
     {
-
         $toll = $player->calculateToll();
         $this->output->info("You had to pay $toll credits in order to land on the planet");
         $player->payCredits($toll);
+    }
+
+    public function whatToDo(Pilot $player, Ship $playerShip, HyperdriveNavigator $hyperdrive, QuestLog $questlog): void
+    {
 
         while (true) {
             $options = ["Ship" => "Buy Ship Upgrades", "stats" => "Show Pilot and Ship Stats", "quests" => "Show Quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
@@ -54,9 +56,6 @@ class PlanetSurface
             if ($result === "Quest") {
                 $this->searchForJob($questlog, $hyperdrive);
             }
-            if ($result === "Questlog") {
-                $questlog->showQuests();
-            }
             if ($result === "Leave") {
                 $this->leavePlanet($hyperdrive, $playerShip);
                 break;
@@ -80,8 +79,9 @@ class PlanetSurface
     private function shipUpgrades(Ship $playerShip, Pilot $player): void
     {
         $this->output->write("");
-        $this->output->write("Welcome to the upgrade shop! Every upgrade costs 2000 Credits");
-        $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks"];
+        $this->output->write("Welcome to the upgrade shop! Each upgrade costs 2000 Credits");
+        $player->showCredits();
+        $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks","Return" => "Return"];
         $result = $this->output->getCli()->radio("What do you want to upgrade?", $options)->prompt();
 
         if ($result === "Hull") {
@@ -150,6 +150,8 @@ class PlanetSurface
                 $this->output->write("You lack sufficient funds for an upgrade");
                 return false;
             }
+        } else{
+            return false;
         }
     }
 
@@ -157,16 +159,29 @@ class PlanetSurface
     {
         $repair = $playerShip->getMaxHullIntegrity() - $playerShip->getHullIntegrity();
         $repair = $repair * 10;
-        $player->payCredits($repair);
-        $playerShip->setHullIntegrity($playerShip->getMaxHullIntegrity());
+        if($player->getCredits()>=$repair){
+            $player->payCredits($repair);
+            $playerShip->setHullIntegrity($playerShip->getMaxHullIntegrity());
+            $this->output->write("Ship has been repaired for $repair credits.");
+            $player->showCredits();
+        } else{
+            $this->output->write("You lack sufficient funds for a repair.");
+        }
+
     }
 
     private function refuelShip(Ship $playerShip, Pilot $player)
     {
         $refuel = $playerShip->getMaxFuel() - $playerShip->getFuel();
         $refuel = $refuel * 5;
+        if($player->getCredits()>=$refuel){
         $player->payCredits($refuel);
         $playerShip->setFuel($playerShip->getMaxFuel());
+        $this->output->write("Ship has been refueled for $refuel credits.");
+        $player->showCredits();
+        } else{
+            $this->output->write("You lack sufficient funds for a refuel.");
+        }
     }
 
     private function searchForJob(QuestLog $questLog, HyperdriveNavigator $hyperdrive)

@@ -7,7 +7,6 @@ namespace Hyperdrive\Pilot;
 use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Ship\Ship;
 use Illuminate\Support\Collection;
-use League\CLImate\CLImate;
 
 
 class CharacterSelection
@@ -38,8 +37,8 @@ class CharacterSelection
     public function addPilots(): void
     {
         $this->addPilot(new Pilot(output: $this->output, name: "Atton Rand", reputation: 5, skill: 5, credits: 3000, exp: 0));
-        $this->addPilot(new Pilot(output: $this->output, name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 2000, exp: 0));
-        $this->addPilot(new Pilot(output: $this->output, name: "Garfinn Newdor", reputation: 1, skill: 2, credits: 1000, exp: 0));
+        $this->addPilot(new Pilot(output: $this->output, name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 3000, exp: 0));
+        $this->addPilot(new Pilot(output: $this->output, name: "Garfinn Newdor", reputation: 1, skill: 2, credits: 3000, exp: 0));
     }
 
     private function addShip(Ship $ship)

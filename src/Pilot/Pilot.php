@@ -65,6 +65,13 @@ class Pilot
         $player->setReputation($choice->getReputation());
         $player->setSkill($choice->getSkill());
         $player->setCredits($choice->getCredits());
+
+        $this->showStats();
+    }
+
+    public function showCredits(): void
+    {
+        $this->output->write("You have " . $this->getCredits() . " credits.");
     }
 
     public function earnCredits($payment): void
