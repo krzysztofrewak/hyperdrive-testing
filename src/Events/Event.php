@@ -7,6 +7,7 @@ namespace Hyperdrive\Events;
 use Hyperdrive\Combat\Combat;
 use Hyperdrive\Combat\Enemies;
 use Hyperdrive\Geography\Planet;
+use Hyperdrive\Geography\PlanetSurface;
 use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
@@ -30,7 +31,7 @@ class Event
     }
 
 
-    public function randomSpaceEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog): void
+    public function randomSpaceEvents(Pilot $player,Ship $playerShip, HyperdriveNavigator $hyperdrive,QuestLog $questlog,PlanetSurface $surface, Event $event): void
     {
         $random = rand(1,10);
 
@@ -46,7 +47,7 @@ class Event
                 $this->output->write("");
                 $this->output->write("You agreed to deliver their cargo.");
                 $this->output->write("");
-                $questlog->addQuest(new Quest(cargo: $questlog->getRandomCargo(), destination: $randomPlanet, completed: false, main: false, exp: 2500, reward: $questlog->generateReward()));
+                $questlog->addQuest(new Quest(cargo: $questlog->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $questlog->generateReward()));
             }
             if ($result === "No")
             {
@@ -69,12 +70,12 @@ class Event
             $this->output->info("You've been attacked!");
             $enemies = new Enemies($this->output);
             $combat = new Combat($this->output);
-            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$currentPlanet);
+            $combat->landingOrFighting($player,$playerShip,$enemies->getEnemyShips(),$surface,$event,$questlog,$hyperdrive);
         }
 
     }
 
-    public function randomLandEvents(Pilot $player,Ship $playerShip, Planet $currentPlanet,Planet $randomPlanet,QuestLog $questlog): void
+    public function randomLandEvents(Pilot $player,Ship $playerShip): void
     {
         $random = rand(1,10);
 

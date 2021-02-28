@@ -18,12 +18,11 @@ class Story
     public function __construct(OutputContract $output)
     {
         $this->output = $output;
-        $this->intro();
     }
 
-    private function intro(): void
+    public function intro(): void
     {
-        $this->output->info("");
+        $this->output->write("");
         $this->output->info("You were on your way to deliver the two remaining cargos across the galaxy.");
         $this->output->info("You were about to leave the spaceport and travel to your next destination.");
         $this->output->info("But as you were about to leave you've been contacted over the comms by a calm yet somehow familiar voice.");
@@ -38,7 +37,8 @@ class Story
         $this->output->info("You had a lot of questions. But the young man vanished as soon as you received the box.");
         $this->output->info("You were asking yourself all kinds of questions. But the most important thing was: 'Why is this box worth 10000 credits?'");
         $this->output->info("Could it be a trap? Does this 'Jedi Master' even exist?");
-        $this->output->info("");
+        $this->output->write("");
+
     }
 
     public function mainQuests($mainQuestsCompleted): void

@@ -44,6 +44,7 @@ class QuestLog
     public function addQuest(Quest $quest)
     {
         $this->quests->add($quest);
+        $this->output->info("NEW QUEST ADDED - Deliver ".$quest->getCargo()->getName()." to ".$quest->getDestination());
     }
 
     public function generateStartingQuests(HyperdriveNavigator $hyperdrive)

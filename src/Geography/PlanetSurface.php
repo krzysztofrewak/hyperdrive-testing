@@ -24,7 +24,7 @@ class PlanetSurface
     }
 
 
-    public function whatToDo(HyperdriveNavigator $hyperdrive, Ship $playerShip, Pilot $player, QuestLog $questlog): void
+    public function whatToDo(Pilot $player, Ship $playerShip,HyperdriveNavigator $hyperdrive, QuestLog $questlog): void
     {
         while(true)
         {

@@ -176,7 +176,7 @@ class Ship
             }
         }
 
-        $target = $this->output->getCli()->input("Which enemy do you want to target? (Please type the number)");
+        $target = $this->output->getCli()->input("Which enemy do you want to target? (Please type the number)")->prompt();
 
 
         $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];

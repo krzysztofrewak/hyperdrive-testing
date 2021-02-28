@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Hyperdrive\Combat;
 
+use Hyperdrive\Events\Event;
 use Hyperdrive\Geography\Planet;
+use Hyperdrive\Geography\PlanetSurface;
+use Hyperdrive\HyperdriveNavigator;
 use Hyperdrive\Output\Output;
 use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
+use Hyperdrive\Quest\QuestLog;
 use Hyperdrive\Ship\Ship;
 use Illuminate\Support\Collection;
 use League\CLImate\CLImate;
@@ -22,7 +26,7 @@ class Combat
         $this->output = $output;
     }
 
-    private function fight(Pilot $player,Ship $playerShip, Collection $enemies): void
+    public function fight(Pilot $player,Ship $playerShip, Collection $enemies): void
     {
         $aliveEnemies = $enemies->count();
 
@@ -60,10 +64,10 @@ class Combat
         }
     }
 
-    public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,Planet $currentPlanet): void
+    public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,PlanetSurface $surface, Event $event, QuestLog $questlog, HyperdriveNavigator $hyperdrive): void
     {
         $this->output->write("");
-        $options = ["Land" => "I will try to escape combat and land on ".$currentPlanet->getName(), "Fight" => "I'm going to fight the enemy ships"];
+        $options = ["Land" => "I will try to escape combat and land on ".$hyperdrive->getCurrentPlanet()->getName(), "Fight" => "I'm going to fight the enemy ships"];
         $result = $this->output->getCli()->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
         if ($result === "Land")
@@ -82,7 +86,9 @@ class Combat
                 $this->output->write("Shields:" . $playerShip->getShields());
                 $this->output->write("Hull Integrity:" . $playerShip->getHullIntegrity());
             }
-
+            $playerShip->setShields($playerShip->getMaxShields());
+            $event->randomLandEvents(player: $player, playerShip: $playerShip);
+            $surface->whatToDo(player: $player, playerShip: $playerShip, hyperdrive: $hyperdrive, questlog: $questlog);
 
         }
         if ($result === "Fight")
