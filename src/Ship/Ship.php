@@ -54,8 +54,11 @@ class Ship
         $this->output->write("");
         $this->output->info("Your ship:");
         $this->output->write("Name: " . $this->getName());
+        $this->output->write("Current Fuel: " . $this->getFuel());
         $this->output->write("Max Fuel: " . $this->getMaxFuel());
+        $this->output->write("Current Shields " . $this->getShields());
         $this->output->write("Max Shields " . $this->getMaxShields());
+        $this->output->write("Current Hull Integrity " . $this->getHullIntegrity());
         $this->output->write("Max Hull Integrity " . $this->getMaxHullIntegrity());
         $this->output->write("Missile Damage: " . $this->getMissileDamage());
         $this->output->write("Laser Damage " . $this->getLaserDamage());
@@ -77,11 +80,10 @@ class Ship
 
     public function TakeAction(Collection $enemies)
     {
-        $limit = 0;
+        $limit = $enemies->count();
 
         for ($i = 0; $i < $enemies->count(); $i++) {
             if ($enemies->get($i)->getHullIntegrity() > 0) {
-                $limit++;
                 $this->output->write("");
                 $this->output->info("Enemy #" . $i + 1 . " " . $enemies->get($i)->getName());
                 $this->output->info("Shields:" . $enemies->get($i)->getShields());
@@ -90,7 +92,12 @@ class Ship
 
         }
 
-        $target = $this->output->input("Which enemy do you want to target? (Please type the number)", $limit);
+        while(true){
+            $target = $this->output->input("Which enemy do you want to target? (Please type the number)", $limit);
+            if($enemies->get($target-1)->getHullIntegrity() > 0){
+                break;
+            }
+        }
 
         $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];
         $result = $this->output->getCli()->radio("How do you want to attack him?", $options)->prompt();
