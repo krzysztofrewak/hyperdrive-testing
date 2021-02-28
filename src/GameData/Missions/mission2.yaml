@@ -1,0 +1,7 @@
+1stStage:
+  - linesCount: 1
+  - Find out where the documents are.
+  - options:
+    - Find out.
+  - decisions:
+    - proceed

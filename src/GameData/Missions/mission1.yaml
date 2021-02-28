@@ -1,0 +1,102 @@
+1stStage:
+  - linesCount: 4
+  - Get to the hangar. If the thief has the documents he must be making a run for it.
+  - Decide.
+  - Do you take the closest elevator to you and walk the rest of the way on the ground floor?
+  - Or do you walk most of the way on the on this floor and then take the closest elevator to the hangar?
+  - options:
+    - Take the closest elevator to you.
+    - Take the closest elevator to the hangar.
+  - decisions:
+    - elevatorClose
+    - elevatorFar
+2ndStage:
+  - linesCount: 6
+  - You are finally on the ground floor.
+  - Security is put on high alert and doesn't allow anyone to leave the planet.
+  - Luckily most of them were deployed on the main floor to prevent any escalation.
+  - Decide.
+  - Do you run as fast as you can to the hangar?
+  - Or do you sneak to the hangar and evade any encountered patrols?
+  - options:
+    - Run.
+    - Sneak.
+  - decisions:
+    - run
+    - sneak
+3rdStage:
+  - linesCount: 4
+  - You haven't encountered any patrols.
+  - When you enter the hangar, you realize why.
+  - Security seems to be expecting you.
+  - If you want these documents you must fight your way through.
+  - options:
+    - Engage
+  - decisions:
+    - engage
+4th:
+  - linesCount: 3
+  - As you were fighting, some ships could be heard and seen leaving the planet.
+  - You know the way they were going.
+  - Get on the ship and travel to the Ghorman.
+  - options:
+    - Go to the Ghorman
+  - decisions:
+    - ghorman
+5th:
+  - linesCount: 6
+  - Ghorman is not a subject of Vanik.
+  - Remember your mission is secret and you musn't tell of it to just anyone.
+  - Every ship entering and leaving any planet is tracked.
+  - Get the information if the ship was here.
+  - Do you contact the planet's space agency and bribe one of the employees.
+  - Or do you contact local forces and ask them to cooperate.
+  - options:
+    - Contact space agency and bribe someone. (20 000 credits)
+    - Cooperate with local forces. (Waste small amount of time)
+  - decisions:
+    - bribe
+    - coop
+6th:
+  - linesCount: 2
+  - They went to the Giju. If they are already there, they might be preparing to leave the galaxy.
+  - You have reached your destination.
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+7th:
+  - linesCount: 3
+  - After talking to the space agency you realize you were lied to and they didn't come here.
+  - Since Dentaal belongs to your nation, they must be in Thyferra.
+  - We must go back.
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+8th:
+  - linesCount: 9
+  - As you arrive you immediately know that they were here.
+  - Local space station is completely destroyed.
+  - Local planet's space agency is refusing to talk to anyone because local forces are investigating the attack.
+  - Entering the planet is currently prohibited.
+  - You can't be sure whether they entered the planet before the attack or went forward.
+  - Explain your mission to the force's chief and ask for logs of the space traffic.
+  - Decide.
+  - Do you ask the local chief to share the logs. (Waste moderate amount of time)
+  - Or do you hack into the space agency and get the logs yourself. (Engineer needed in team)
+  - options:
+    - Ask for the logs
+    - Hack into the system
+  - decisions:
+    - ask
+    - hack
+final:
+  - linesCount: 3
+  - Now you know, they went to Tauber.
+  - You are not allowed to let them escape.
+  - You must carry on.
+  - options:
+    - Continue
+  - decisions:
+    - endMission

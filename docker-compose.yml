@@ -5,6 +5,8 @@ services:
     container_name: hyperdrive-php
     working_dir: /application
     image: php:7.4.12-alpine
+    logging:
+        driver: none
     volumes:
       - .:/application
 

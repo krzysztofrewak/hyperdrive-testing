@@ -1,0 +1,46 @@
+introduction:
+  - linesCount: 4
+  - This day marks the 420th anniversary of the invention of the hyperdrive.
+  - Great party is being held on the planet Vanik.
+  - Everyone is welcome and equal on the biggest planet in the local area.
+  - It seems like everyone enjoys the party and peace between the nations.....
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+1stStage:
+  - linesCount: 4
+  - You are also here.
+  - You are a proud heir to one of the most successful hyperdrive company.
+  - Everybody is awaiting your presentation on the newest engine.
+  - What they don't know is, why you are really here.
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+2ndStage:
+  - linesCount: 4
+  - You are a commander of a special unit and have been assigned secret mission.
+  - You must steal special documents.
+  - You aren't really sure what they contain but orders are orders.
+  - Time passes by as you keep waiting for the sign and information where the documents are.
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+3rdStage:
+  - linesCount: 3
+  - Huge explosion in one of the closed wings suggests that someone beat you to it.
+  - Head chief contacts you personally.
+  - You must get to the hangar and stop them, otherwise the documents will be gone forever.
+  - options:
+    - Continue
+  - decisions:
+    - proceed
+final:
+  - linesCount: 1
+  - You have to act now.
+  - options:
+    - Begin
+  - decisions:
+    - endMission

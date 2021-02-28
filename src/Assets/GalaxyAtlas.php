@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hyperdrive;
+namespace Hyperdrive\Assets;
 
 use Hyperdrive\Geography\Planet;
 use Illuminate\Support\Str;
@@ -33,5 +33,10 @@ class GalaxyAtlas
     public function getPlanet(string $planet): Planet
     {
         return $this->planets[Str::slug($planet)];
+    }
+
+    public function getPlanets(): array
+    {
+        return $this->planets;
     }
 }
