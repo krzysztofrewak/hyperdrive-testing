@@ -34,6 +34,137 @@ class Ship
         $this->laserDamage = $laserDamage;
     }
 
+    public function checkFuel(): void
+    {
+        if ($this->getFuel() <= 10) {
+            $this->output->write("");
+            $this->output->write("Fuel levels low! Refuel at the earliest convenience!");
+        }
+        if ($this->getFuel() <= 0) {
+            $this->output->write("");
+            $this->output->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
+            $this->output->info("Now you are destined to float through the space without an end... ");
+            $this->output->info("Your journey has come to an end.");
+            exit(0);
+        }
+    }
+
+    public function showStats(): void
+    {
+        $this->output->write("");
+        $this->output->info("Your ship:");
+        $this->output->write("Name: " . $this->getName());
+        $this->output->write("Max Fuel: " . $this->getMaxFuel());
+        $this->output->write("Max Shields " . $this->getMaxShields());
+        $this->output->write("Max Hull Integrity " . $this->getMaxHullIntegrity());
+        $this->output->write("Missile Damage: " . $this->getMissileDamage());
+        $this->output->write("Laser Damage " . $this->getLaserDamage());
+        $this->output->write("");
+    }
+
+    public function chooseShip(Ship $playerShip, Ship $choice): void
+    {
+        $playerShip->setName($choice->getName());
+        $playerShip->setFuel($choice->getFuel());
+        $playerShip->setMaxFuel($choice->getMaxFuel());
+        $playerShip->setHullIntegrity($choice->getHullIntegrity());
+        $playerShip->setMaxHullIntegrity($choice->getMaxHullIntegrity());
+        $playerShip->setShields($choice->getShields());
+        $playerShip->setMaxShields($choice->getMaxShields());
+        $playerShip->setMissileDamage($choice->getMissileDamage());
+        $playerShip->setLaserDamage($choice->getLaserDamage());
+    }
+
+    public function TakeAction(Collection $enemies)
+    {
+        $limit = 0;
+
+        for ($i = 0; $i < $enemies->count(); $i++) {
+            if ($enemies->get($i)->getHullIntegrity() > 0) {
+                $limit++;
+                $this->output->write("");
+                $this->output->info("Enemy #" . $i + 1 . " " . $enemies->get($i)->getName());
+                $this->output->info("Shields:" . $enemies->get($i)->getShields());
+                $this->output->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
+            }
+
+        }
+
+        $target = $this->output->input("Which enemy do you want to target? (Please type the number)", $limit);
+
+        $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];
+        $result = $this->output->getCli()->radio("How do you want to attack him?", $options)->prompt();
+
+        if ($result === "Laser") {
+            $this->playerAttacksWithLaser($enemies->get($target - 1));
+
+        }
+        if ($result === "Missile") {
+            $this->playerAttacksWithMissile($enemies->get($target - 1));
+        }
+    }
+
+    public function takeDamage(int $damage, bool $isLaser)
+    {
+        if ($this->getShields() == 0) {
+            $this->setHullIntegrity(($this->getHullIntegrity() - $damage));
+        }
+
+        if ($this->getShields() > 0) {
+            if (!$isLaser) {
+                $damage = $damage / 2;
+            }
+
+            if ($damage > $this->getShields()) {
+                $damageToHull = $damage - $this->getShields();
+                $this->setHullIntegrity(($this->getHullIntegrity() - $damageToHull));
+            }
+
+            $this->setShields(($this->getShields() - $damage));
+        }
+
+        if ($this->getShields() < 0) {
+            $this->setShields(0);
+        }
+    }
+
+
+    public function playerAttacksWithMissile(Ship $enemyShip)
+    {
+        $enemyShip->takeDamage($this->getMissileDamage(), false);
+    }
+
+    public function playerAttacksWithLaser(Ship $enemyShip)
+    {
+        $enemyShip->takeDamage($this->getLaserDamage(), true);
+    }
+
+    public function enemyAttacksPlayer(Ship $playerShip): void
+    {
+        $result = rand(1, 2);
+        if ($result == 1) {
+            $playerShip->takeDamage($this->getLaserDamage(), true);
+            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getLaserDamage() . " laser damage!");
+        }
+        if ($result == 2) {
+            $playerShip->takeDamage($this->getMissileDamage(), false);
+            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getMissileDamage() . " missile damage! (Damage halved against shields)");
+        }
+    }
+
+    public function loseFuel(int $fuelLost)
+    {
+        if ($fuelLost < 0) {
+            $fuelLost = 0;
+        }
+
+        $this->setFuel($this->getFuel() - $fuelLost);
+
+        if ($this->getFuel() < 0) {
+            $this->setFuel(0);
+        }
+    }
+
     public function getMaxFuel(): int
     {
         return $this->maxFuel;
@@ -122,129 +253,6 @@ class Ship
     public function setLaserDamage(int $laserDamage): void
     {
         $this->laserDamage = $laserDamage;
-    }
-
-    public function checkFuel(): void
-    {
-        if ($this->getFuel() <= 10) {
-            $this->output->write("");
-            $this->output->write("Fuel levels low! Refuel at the earliest convenience!");
-        }
-        if ($this->getFuel() <= 0) {
-            $this->output->write("");
-            $this->output->info("Fuel depleted! If only you haven't forgot to refuel the ship...");
-            $this->output->info("Now you are destined to float through the space without an end... ");
-            $this->output->info("Your journey has come to an end.");
-            exit(0);
-        }
-    }
-
-    public function showStats(): void
-    {
-        $this->output->write("");
-        $this->output->info("Your ship:");
-        $this->output->write("Name: " . $this->getName());
-        $this->output->write("Max Fuel: " . $this->getMaxFuel());
-        $this->output->write("Max Shields " . $this->getMaxShields());
-        $this->output->write("Max Hull Integrity " . $this->getMaxHullIntegrity());
-        $this->output->write("Missile Damage: " . $this->getMissileDamage());
-        $this->output->write("Laser Damage " . $this->getLaserDamage());
-        $this->output->write("");
-    }
-
-    public function chooseShip(Ship $playerShip, Ship $choice): void
-    {
-        $playerShip->setName($choice->getName());
-        $playerShip->setFuel($choice->getFuel());
-        $playerShip->setMaxFuel($choice->getMaxFuel());
-        $playerShip->setHullIntegrity($choice->getHullIntegrity());
-        $playerShip->setMaxHullIntegrity($choice->getMaxHullIntegrity());
-        $playerShip->setShields($choice->getShields());
-        $playerShip->setMaxShields($choice->getMaxShields());
-        $playerShip->setMissileDamage($choice->getMissileDamage());
-        $playerShip->setLaserDamage($choice->getLaserDamage());
-    }
-
-    public function TakeAction(Collection $enemies)
-    {
-        for ($i = 0; $i < $enemies->count(); $i++) {
-            if ($enemies->get($i)->getHullIntegrity() > 0) {
-                $this->output->write("");
-                $this->output->info("Enemy #" . $i+1);
-                $this->output->info("Shields:" . $enemies->get($i)->getShields());
-                $this->output->info("Hull Integrity:" . $enemies->get($i)->getHullIntegrity());
-            }
-        }
-
-        $target = $this->output->getCli()->input("Which enemy do you want to target? (Please type the number)")->prompt();
-
-
-        $options = ["Laser" => "Attack with lasers! (Deals " . $this->getLaserDamage() . " damage)", "Missile" => "Attack with missiles! (Deals " . $this->getMissileDamage() . " damage)"];
-        $result = $this->output->getCli()->radio("How do you want to attack him?", $options)->prompt();
-
-        if ($result === "Laser") {
-            $this->playerAttacksWithLaser($enemies->get($target-1));
-
-        }
-        if ($result === "Missile") {
-            $this->playerAttacksWithMissile($enemies->get($target-1));
-        }
-    }
-
-    public function takeDamage(int $damage, bool $isLaser)
-    {
-        if ($this->getShields() == 0) {
-            $this->setHullIntegrity(($this->getHullIntegrity() - $damage));
-        }
-
-        if ($this->getShields() > 0) {
-            if (!$isLaser) {
-                $damage = $damage / 2;
-            }
-
-            if ($damage > $this->getShields()) {
-                $damageToHull = $damage - $this->getShields();
-                $this->setHullIntegrity(($this->getHullIntegrity() - $damageToHull));
-            }
-
-            $this->setShields(($this->getShields() - $damage));
-        }
-
-        if ($this->getShields() < 0) {
-            $this->setShields(0);
-        }
-    }
-
-
-    public function playerAttacksWithMissile(Ship $enemyShip)
-    {
-        $enemyShip->takeDamage($this->getMissileDamage(), false);
-    }
-
-    public function playerAttacksWithLaser(Ship $enemyShip)
-    {
-        $enemyShip->takeDamage($this->getLaserDamage(), true);
-    }
-
-    public function enemyAttacksPlayer(Ship $playerShip): void
-    {
-        $result = rand(1, 2);
-        if ($result == 1) {
-            $playerShip->takeDamage($this->getLaserDamage(), true);
-            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getLaserDamage() . " laser damage!");
-        }
-        if ($result == 2) {
-            $playerShip->takeDamage($this->getMissileDamage(), false);
-            $this->output->write("Player was attacked by " . $this->getName() . " for " . $this->getMissileDamage() . " missile damage! (Damage halved against shields)");
-        }
-    }
-
-    public function loseFuel(int $fuelLost)
-    {
-        if ($fuelLost < 0) {
-            $fuelLost = 0;
-        }
-        $this->setFuel($this->getFuel() - $fuelLost);
     }
 
 }

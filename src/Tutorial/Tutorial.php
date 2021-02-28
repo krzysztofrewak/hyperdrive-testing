@@ -17,12 +17,6 @@ class Tutorial
     private Pilot $player;
     private Ship $playerShip;
 
-    /**
-     * Tutorial constructor.
-     * @param OutputContract $output
-     * @param Pilot $player
-     * @param Ship $playerShip
-     */
     public function __construct(OutputContract $output, Pilot $player, Ship $playerShip)
     {
         $this->output = $output;
@@ -45,13 +39,11 @@ class Tutorial
         $this->output->info("In order to do that you will need to land on planets and choose an appropriate option.");
         $this->output->info("Lets try it!");
 
-        while (true)
-        {
-            $options = ["one" => "Option Number 1","two" => "Option Number 2","three" => "Option Number 3"];
+        while (true) {
+            $options = ["one" => "Option Number 1", "two" => "Option Number 2", "three" => "Option Number 3"];
             $result = $this->output->getCli()->radio("Select option number 2 to proceed:", $options)->prompt();
 
-            if ($result === "two")
-            {
+            if ($result === "two") {
                 break;
             }
         }
@@ -78,7 +70,7 @@ class Tutorial
 
         $enemies = new Enemies($this->output);
         $combat = new Combat($this->output);
-        $combat->fight(player: $this->player,playerShip: $this->playerShip,enemies: $enemies->getEnemyShips());
+        $combat->fight(player: $this->player, playerShip: $this->playerShip, enemies: $enemies->getEnemyShips());
         $this->output->info("Great job! Now that you've finished the tutorial, you are ready to play the game.");
         $this->output->info("Good luck and have fun!");
 

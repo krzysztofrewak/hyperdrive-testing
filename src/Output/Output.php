@@ -15,7 +15,7 @@ class Output implements OutputContract
         $this->cli = $cli;
     }
 
-    public function write(String $message): void
+    public function write(string $message): void
     {
         $this->cli->out($message);
     }
@@ -25,23 +25,23 @@ class Output implements OutputContract
         $this->cli->info($message);
     }
 
-    public function input(string $message): int
+    public function input(string $message, int $limit): string
     {
-        return $this->cli->input($message)->prompt();
+
+        while (true) {
+            $scan = $this->cli->input($message)->prompt();
+
+            if ($scan >= 1 && $scan <= $limit) {
+                return $scan;
+            } else {
+                $this->write("Something went wrong, please enter a number that is greater than or equal to 1 and equal or less than or equal to $limit");
+            }
+        }
     }
 
-    /**
-     * @return CLImate
-     */
     public function getCli(): CLImate
     {
         return $this->cli;
     }
 
-
-
-//    public function radio(string $message, array $options ): string
-//    {
-//        return $this->cli->radio($message, $options)->prompt();
-//    }
 }

@@ -15,7 +15,7 @@ use Hyperdrive\Ship\Ship;
 class PlanetSurface
 {
 
-    private bool $jobFound;
+    private bool $jobFound = false;
     protected OutputContract $output;
 
     public function __construct(OutputContract $output)
@@ -24,15 +24,19 @@ class PlanetSurface
     }
 
 
-    public function whatToDo(Pilot $player, Ship $playerShip,HyperdriveNavigator $hyperdrive, QuestLog $questlog): void
+    public function whatToDo(Pilot $player, Ship $playerShip, HyperdriveNavigator $hyperdrive, QuestLog $questlog): void
     {
-        while(true)
-        {
-            $options = ["Ship" => "Buy Ship Upgrades","stats" => "Show Pilot and Ship Stats","quests" => "Show Quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
+
+        $toll = $player->calculateToll();
+        $this->output->info("You had to pay $toll credits in order to land on the planet");
+        $player->payCredits($toll);
+
+        while (true) {
+            $options = ["Ship" => "Buy Ship Upgrades", "stats" => "Show Pilot and Ship Stats", "quests" => "Show Quests", "Repair" => "Repair Ship", "Fuel" => "Refuel the Ship", "Quest" => "Search for a new Job", "Questlog" => "Show Quests", "Leave" => "Leave Planet"];
             $result = $this->output->getCli()->radio("Select option", $options)->prompt();
 
             if ($result === "Ship") {
-                $this->shipUpgrades($playerShip,$player);
+                $this->shipUpgrades($playerShip, $player);
             }
             if ($result === "stats") {
                 $player->showStats();
@@ -42,35 +46,35 @@ class PlanetSurface
                 $questlog->showQuests();
             }
             if ($result === "Repair") {
-                $this->repairShip($playerShip,$player);
+                $this->repairShip($playerShip, $player);
             }
             if ($result === "Fuel") {
-                $this->refuelShip($playerShip,$player);
+                $this->refuelShip($playerShip, $player);
             }
             if ($result === "Quest") {
-                $this->searchForJob($questlog,$hyperdrive);
+                $this->searchForJob($questlog, $hyperdrive);
             }
             if ($result === "Questlog") {
                 $questlog->showQuests();
             }
             if ($result === "Leave") {
-                $this->leavePlanet($hyperdrive,$playerShip);
+                $this->leavePlanet($hyperdrive, $playerShip);
                 break;
             }
         }
 
     }
 
-    private function leavePlanet(HyperdriveNavigator $hyperdrive,Ship $playerShip): void
+    private function leavePlanet(HyperdriveNavigator $hyperdrive, Ship $playerShip): void
     {
         $planet = $hyperdrive->getCurrentPlanet();
         $this->output->write("");
         $this->output->info("You're on the $planet. You can jump to:");
-        $this->output->info("Remaining fuel: ".$playerShip->getFuel());
+        $this->output->info("Remaining fuel: " . $playerShip->getFuel());
 
         $options = $planet->getNeighbours()->toArray();
         $result = $this->output->getCli()->radio("Select a planet to jump to:", $options)->prompt();
-        $hyperdrive->jumpTo($playerShip,$result);
+        $hyperdrive->jumpTo($playerShip, $result);
     }
 
     private function shipUpgrades(Ship $playerShip, Pilot $player): void
@@ -81,58 +85,52 @@ class PlanetSurface
         $result = $this->output->getCli()->radio("What do you want to upgrade?", $options)->prompt();
 
         if ($result === "Hull") {
-            $this->output->write("Do want to upgrade your Hull Capacity from ".$playerShip->getMaxHullIntegrity()." to ".($playerShip->getMaxHullIntegrity()+20)."?");
+            $this->output->write("Do want to upgrade your Hull Capacity from " . $playerShip->getMaxHullIntegrity() . " to " . ($playerShip->getMaxHullIntegrity() + 20) . "?");
 
-            if($this->yesOrNo($player))
-            {
-                $playerShip->setMaxHullIntegrity($playerShip->getMaxHullIntegrity()+20);
-                $playerShip->setHullIntegrity($playerShip->getHullIntegrity()+20);
+            if ($this->yesOrNo($player)) {
+                $playerShip->setMaxHullIntegrity($playerShip->getMaxHullIntegrity() + 20);
+                $playerShip->setHullIntegrity($playerShip->getHullIntegrity() + 20);
                 $playerShip->showStats();
             }
 
         }
 
 
-        if ($result === "Shields")
-        {
-            $this->output->write("Do want to upgrade your Shields from ".$playerShip->getMaxShields()." to ".($playerShip->getMaxShields()+10)."?");
+        if ($result === "Shields") {
+            $this->output->write("Do want to upgrade your Shields from " . $playerShip->getMaxShields() . " to " . ($playerShip->getMaxShields() + 10) . "?");
 
-            if($this->yesOrNo($player))
-            {
-                    $playerShip->setMaxShields($playerShip->getMaxShields()+10);
-                    $playerShip->setShields($playerShip->getShields()+10);
-                    $playerShip->showStats();
+            if ($this->yesOrNo($player)) {
+                $playerShip->setMaxShields($playerShip->getMaxShields() + 10);
+                $playerShip->setShields($playerShip->getShields() + 10);
+                $playerShip->showStats();
             }
         }
 
 
         if ($result === "Missile") {
-            $this->output->write("Do want to upgrade your Missile Damage from ".$playerShip->getMissileDamage()." to ".($playerShip->getMissileDamage()+10)."?");
+            $this->output->write("Do want to upgrade your Missile Damage from " . $playerShip->getMissileDamage() . " to " . ($playerShip->getMissileDamage() + 10) . "?");
 
-            if($this->yesOrNo($player))
-            {
-                    $playerShip->setMissileDamage($playerShip->getMissileDamage()+10);
-                    $playerShip->showStats();
+            if ($this->yesOrNo($player)) {
+                $playerShip->setMissileDamage($playerShip->getMissileDamage() + 10);
+                $playerShip->showStats();
             }
         }
 
         if ($result === "Laser") {
-            $this->output->write("Do want to upgrade your Laser Damage from ".$playerShip->getLaserDamage()." to ".($playerShip->getLaserDamage()+10)."?");
+            $this->output->write("Do want to upgrade your Laser Damage from " . $playerShip->getLaserDamage() . " to " . ($playerShip->getLaserDamage() + 10) . "?");
 
-            if($this->yesOrNo($player))
-            {
-                    $playerShip->setLaserDamage($playerShip->getLaserDamage()+10);
-                    $playerShip->showStats();
+            if ($this->yesOrNo($player)) {
+                $playerShip->setLaserDamage($playerShip->getLaserDamage() + 10);
+                $playerShip->showStats();
             }
         }
 
         if ($result === "Fuel") {
-            $this->output->write("Do want to upgrade your Fuel Capacity from ".$playerShip->getMaxFuel()." to ".($playerShip->getMaxFuel()+10)."?");
+            $this->output->write("Do want to upgrade your Fuel Capacity from " . $playerShip->getMaxFuel() . " to " . ($playerShip->getMaxFuel() + 10) . "?");
 
-            if($this->yesOrNo($player))
-            {
-                    $playerShip->setMaxFuel($playerShip->getMaxFuel()+10);
-                    $playerShip->showStats();
+            if ($this->yesOrNo($player)) {
+                $playerShip->setMaxFuel($playerShip->getMaxFuel() + 10);
+                $playerShip->showStats();
             }
         }
     }
@@ -142,16 +140,13 @@ class PlanetSurface
         $options = ["Yes" => "Yes", "No" => "No"];
         $result = $this->output->getCli()->radio("Proceed with the upgrade?", $options)->prompt();
 
-        if ($result === "Yes")
-        {
-            if($player->getCredits() >= 2000)
-            {
+        if ($result === "Yes") {
+            if ($player->getCredits() >= 2000) {
                 $this->output->write("Upgrade Successful!");
                 $player->payCredits(2000);
                 return true;
             }
-            if($player->getCredits() < 2000)
-            {
+            if ($player->getCredits() < 2000) {
                 $this->output->write("You lack sufficient funds for an upgrade");
                 return false;
             }
@@ -174,35 +169,26 @@ class PlanetSurface
         $playerShip->setFuel($playerShip->getMaxFuel());
     }
 
-    private function searchForJob(QuestLog $questLog,HyperdriveNavigator $hyperdrive)
+    private function searchForJob(QuestLog $questLog, HyperdriveNavigator $hyperdrive)
     {
-        if(!$this->isJobFound())
-        {
+        $this->output->write("");
+        if (!$this->isJobFound()) {
+            $this->output->info("You found an additional job.");
             $questLog->addQuest(new Quest(cargo: $questLog->getRandomCargo(), destination: $hyperdrive->getRandomPlanet(), completed: false, main: false, exp: 2500, reward: $questLog->generateReward()));
             $this->setJobFound(true);
+        } else {
+            $this->output->info("You couldn't find additional jobs.");
         }
-
     }
 
-    /**
-     * @return bool
-     */
     public function isJobFound(): bool
     {
         return $this->jobFound;
     }
 
-    /**
-     * @param bool $jobFound
-     */
     public function setJobFound(bool $jobFound): void
     {
         $this->jobFound = $jobFound;
     }
-
-
-
-
-
 
 }

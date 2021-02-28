@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 require "./vendor/autoload.php";
 
@@ -21,24 +21,24 @@ use League\CLImate\CLImate;
 $atlas = GalaxyAtlasBuilder::buildFromYaml("./resources/routes.yaml");
 $hyperdrive = new HyperdriveNavigator(atlas: $atlas);
 $cli = new Output(new CLImate());
-$player = new Pilot(name: "placeholder", reputation: 0, skill: 0, credits: 0, exp: 0,output: $cli);
+$player = new Pilot(output: $cli, name: "placeholder", reputation: 0, skill: 0, credits: 0, exp: 0);
 $playerShip = new Ship(output: $cli, name: "placeholder", maxFuel: 0, maxHullIntegrity: 200, maxShields: 200, missileDamage: 60, laserDamage: 40);
 $selection = new CharacterSelection(output: $cli);
 $story = new Story(output: $cli);
-$questlog = new QuestLog(output: $cli,story: $story);
+$questlog = new QuestLog(output: $cli, story: $story);
 $event = new Event(output: $cli);
 
-$options = ["play" => "Start the Game!","tutorial" => "I would like to play the Tutorial first","quit" => "Quit Application"];
+$options = ["play" => "Start the Game!", "tutorial" => "I would like to play the Tutorial first", "quit" => "Quit Application"];
 $result = $cli->getCli()->radio("Welcome to the main menu:", $options)->prompt();
 
 if ($result === "tutorial") {
-    $tutorial = new Tutorial(output: $cli,player: $player,playerShip: $playerShip);
+    $tutorial = new Tutorial(output: $cli, player: $player, playerShip: $playerShip);
 }
 if ($result === "quit") {
     exit(0);
 }
 
-$selection->characterSelection($player,$playerShip);
+$selection->characterSelection($player, $playerShip);
 $story->intro();
 $questlog->generateStartingQuests($hyperdrive);
 
@@ -47,14 +47,14 @@ while (true) {
 
     $cli->write("");
     $cli->info("You're on the $planet. You can jump to:");
-    $cli->write("Remaining fuel: ".$playerShip->getFuel());
+    $cli->write("Remaining fuel: " . $playerShip->getFuel());
     $cli->write("");
     $options = $planet->getNeighbours()->toArray() + ["" => "[show more option]"];
     $result = $cli->getCli()->radio("Select a planet to jump to:", $options)->prompt();
 
 
     if (!$result) {
-        $options = ["return" => "return","stats" => "show pilot and ship stats","quests" => "show quests","land" => "land on current planet", "quit" => "quit application"];
+        $options = ["return" => "return", "stats" => "show pilot and ship stats", "quests" => "show quests", "land" => "land on current planet", "quit" => "quit application"];
         $result = $cli->getCli()->radio("Select option:", $options)->prompt();
 
         if ($result === "quests") {
@@ -75,9 +75,9 @@ while (true) {
         continue;
     }
 
-    $hyperdrive->jumpTo($playerShip,$result);
-    $questlog->checkIfCompleted($player,$result);
-    $event->randomSpaceEvents(player: $player, playerShip: $playerShip,hyperdrive: $hyperdrive, questlog: $questlog, surface: new PlanetSurface(output: $cli),event: $event);
+    $hyperdrive->jumpTo($playerShip, $result);
+    $questlog->checkIfCompleted($player, $result,$hyperdrive);
+    $event->randomSpaceEvents(player: $player, playerShip: $playerShip, hyperdrive: $hyperdrive, questlog: $questlog, surface: new PlanetSurface(output: $cli), event: $event);
 
 
 }

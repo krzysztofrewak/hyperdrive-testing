@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Hyperdrive\Combat;
 
 use Hyperdrive\Events\Event;
-use Hyperdrive\Geography\Planet;
 use Hyperdrive\Geography\PlanetSurface;
 use Hyperdrive\HyperdriveNavigator;
-use Hyperdrive\Output\Output;
 use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Quest\QuestLog;
 use Hyperdrive\Ship\Ship;
 use Illuminate\Support\Collection;
-use League\CLImate\CLImate;
 
 class Combat
 {
@@ -26,7 +23,7 @@ class Combat
         $this->output = $output;
     }
 
-    public function fight(Pilot $player,Ship $playerShip, Collection $enemies): void
+    public function fight(Pilot $player, Ship $playerShip, Collection $enemies): void
     {
         $aliveEnemies = $enemies->count();
 
@@ -35,8 +32,7 @@ class Combat
 
             $playerShip->TakeAction($enemies);
 
-            for ($i = 0; $i < $enemies->count(); $i++)
-            {
+            for ($i = 0; $i < $enemies->count(); $i++) {
                 if ($enemies->get($i)->getHullIntegrity() <= 0) {
                     $aliveEnemies--;
                 }
@@ -64,22 +60,20 @@ class Combat
         }
     }
 
-    public function landingOrFighting(Pilot $player,Ship $playerShip,Collection $enemies,PlanetSurface $surface, Event $event, QuestLog $questlog, HyperdriveNavigator $hyperdrive): void
+    public function landingOrFighting(Pilot $player, Ship $playerShip, Collection $enemies, PlanetSurface $surface, Event $event, QuestLog $questlog, HyperdriveNavigator $hyperdrive): void
     {
         $this->output->write("");
-        $options = ["Land" => "I will try to escape combat and land on ".$hyperdrive->getCurrentPlanet()->getName(), "Fight" => "I'm going to fight the enemy ships"];
+        $options = ["Land" => "I will try to escape combat and land on " . $hyperdrive->getCurrentPlanet()->getName(), "Fight" => "I'm going to fight the enemy ships"];
         $result = $this->output->getCli()->radio("You have been spotted by enemy ships! What will you do?", $options)->prompt();
 
-        if ($result === "Land")
-        {
+        if ($result === "Land") {
             $this->output->write("");
             $this->output->write("You decided to escape to planet's surface. You lost some fuel while using thrusters.");
             $fuelLost = 5 * (10 - $player->getSkill());
             $playerShip->loseFuel($fuelLost);
             $this->output->write("While escaping you were attacked by enemy ships!");
 
-            for ($i = 0; $i < $enemies->count(); $i++)
-            {
+            for ($i = 0; $i < $enemies->count(); $i++) {
                 $this->output->write("");
                 $enemies->get($i)->enemyAttacksPlayer($playerShip);
                 $this->output->info("Current Ship stats:");
@@ -91,9 +85,8 @@ class Combat
             $surface->whatToDo(player: $player, playerShip: $playerShip, hyperdrive: $hyperdrive, questlog: $questlog);
 
         }
-        if ($result === "Fight")
-        {
-            $this->fight($player,$playerShip,$enemies);
+        if ($result === "Fight") {
+            $this->fight($player, $playerShip, $enemies);
         }
     }
 

@@ -4,6 +4,7 @@ namespace Hyperdrive\Output;
 
 interface OutputContract
 {
-    function write(String $message);
-    function info(String $message);
+    function write(string $message);
+
+    function info(string $message);
 }
