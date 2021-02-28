@@ -1,0 +1,23 @@
+Planet confederacy:
+  - Planet confederacy
+  - descPlaceholder
+  - strength: 6
+  - ferocity: 1
+
+Raiders:
+  - Raiders
+  - descPlaceholder
+  - strength: 3
+  - ferocity: 3
+
+Sparta:
+  - Sparta
+  - descPlaceholder
+  - strength: 4
+  - ferocity: 3
+
+Traders:
+  - Merchant guild
+  - descPlaceholder
+  - strength: 2
+  - ferocity: 2

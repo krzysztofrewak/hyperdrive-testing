@@ -22,9 +22,9 @@ trait TextHandler
         $this->climate = new CLImate();
         foreach (str_split($sentence) as $letter) {
             $this->climate->inline($letter);
-            usleep(5000);
+            usleep(40000);
         }
-        //sleep(1);
+        sleep(2);
         echo PHP_EOL;
     }
 
@@ -32,8 +32,8 @@ trait TextHandler
     {
         $this->climate = new CLImate();
         $this->climate->addArt('./src/GameData/Art');
-        $this->climate->animation($id)->speed('70')->enterFrom('bottom');
-        //sleep(6);
+        $this->climate->animation($id)->speed('60')->enterFrom('bottom');
+        sleep(6);
     }
 
     public function loadingEffect(string $sentence, int $length = 3): void
