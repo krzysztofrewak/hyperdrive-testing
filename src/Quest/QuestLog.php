@@ -8,6 +8,7 @@ use Hyperdrive\Output\OutputContract;
 use Hyperdrive\Pilot\Pilot;
 use Hyperdrive\Story\Story;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\Pure;
 
 class QuestLog
 {
@@ -56,7 +57,7 @@ class QuestLog
         }
     }
 
-    public function generateReward(): int
+    #[Pure] public function generateReward(): int
     {
         return rand(100, 500) + 1000;
     }

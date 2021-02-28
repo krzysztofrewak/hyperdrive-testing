@@ -60,6 +60,7 @@ class Story
             $this->output->info("He gave you a hand and said 'Corran Horn, nice to meet you.'");
         }
         if ($mainQuestsCompleted == 2) {
+            $this->output->write("");
             $this->output->info("You arrived at your destination.");
             $this->output->info("You were about to exit your cockpit and talk to Master Horn but when you went to meet him you realized he was gone.");
             $this->output->info("All that was left of him was your payment and the mystery of not only him, but his box as well.");
