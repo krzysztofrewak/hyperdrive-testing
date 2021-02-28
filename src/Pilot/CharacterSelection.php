@@ -28,13 +28,13 @@ class CharacterSelection
     }
 
 
-    public function addPilot(Pilot $pilot): void
+    private function addPilot(Pilot $pilot): void
     {
         $this->pilots->add($pilot);
 
     }
 
-    public function addPilots(): void
+    private function addPilots(): void
     {
         $this->addPilot(new Pilot(output: $this->output, name: "Atton Rand", reputation: 5, skill: 5, credits: 3000, exp: 0));
         $this->addPilot(new Pilot(output: $this->output, name: "Jarrnes Corring", reputation: 3, skill: 3, credits: 3000, exp: 0));

@@ -26,7 +26,7 @@ class Tutorial
     }
 
 
-    public function choiceTutorial(): void
+    private function choiceTutorial(): void
     {
         $this->output->write("");
         $this->output->info("Hello and welcome to the game tutorial.");
@@ -52,7 +52,7 @@ class Tutorial
 
     }
 
-    public function fightTutorial(): void
+    private function fightTutorial(): void
     {
         $this->output->write("");
         $this->output->info("Great job!");

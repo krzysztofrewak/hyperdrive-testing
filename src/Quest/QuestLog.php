@@ -87,7 +87,7 @@ class QuestLog
         }
     }
 
-    public function questCompletion(Quest $quest, Pilot $player,HyperdriveNavigator $hyperdrive): void
+    private function questCompletion(Quest $quest, Pilot $player,HyperdriveNavigator $hyperdrive): void
     {
         $this->output->write("");
         $this->output->info("You completed a Quest!");

@@ -104,7 +104,7 @@ class Ship
         }
     }
 
-    public function takeDamage(int $damage, bool $isLaser)
+    private function takeDamage(int $damage, bool $isLaser)
     {
         if ($this->getShields() == 0) {
             $this->setHullIntegrity(($this->getHullIntegrity() - $damage));
@@ -129,12 +129,12 @@ class Ship
     }
 
 
-    public function playerAttacksWithMissile(Ship $enemyShip)
+    private function playerAttacksWithMissile(Ship $enemyShip)
     {
         $enemyShip->takeDamage($this->getMissileDamage(), false);
     }
 
-    public function playerAttacksWithLaser(Ship $enemyShip)
+    private function playerAttacksWithLaser(Ship $enemyShip)
     {
         $enemyShip->takeDamage($this->getLaserDamage(), true);
     }

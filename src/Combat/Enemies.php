@@ -45,9 +45,6 @@ class Enemies
         }
     }
 
-    /**
-     * @return Collection
-     */
     public function getEnemyShips(): Collection
     {
         return $this->enemyShips;
