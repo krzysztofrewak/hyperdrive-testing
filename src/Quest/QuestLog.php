@@ -65,9 +65,9 @@ class QuestLog
     public function showQuests(): void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++) {
-            if(!$this->getQuests()->get($i)->isCompleted()){
+            if (!$this->getQuests()->get($i)->isCompleted()) {
                 $this->output->write("");
-                $this->output->info("Quest #" . $i+1 . ":");
+                $this->output->info("Quest #" . $i + 1 . ":");
                 $this->output->write("Cargo: " . $this->getQuests()->get($i)->getCargo()->getName());
                 $this->output->write("Destination: " . $this->getQuests()->get($i)->getDestination());
                 $this->output->write("Type: " . $this->getQuests()->get($i)->mainToString());
@@ -78,16 +78,16 @@ class QuestLog
         }
     }
 
-    public function checkIfCompleted(Pilot $player, Planet $planet,HyperdriveNavigator $hyperdrive): void
+    public function checkIfCompleted(Pilot $player, Planet $planet, HyperdriveNavigator $hyperdrive): void
     {
         for ($i = 0; $i < $this->getQuests()->count(); $i++) {
             if ($this->getQuests()->get($i)->getDestination() === $planet && !$this->getQuests()->get($i)->isCompleted()) {
-                $this->questCompletion($this->getQuests()->get($i), $player,$hyperdrive);
+                $this->questCompletion($this->getQuests()->get($i), $player, $hyperdrive);
             }
         }
     }
 
-    private function questCompletion(Quest $quest, Pilot $player,HyperdriveNavigator $hyperdrive): void
+    private function questCompletion(Quest $quest, Pilot $player, HyperdriveNavigator $hyperdrive): void
     {
         $this->output->write("");
         $this->output->info("You completed a Quest!");

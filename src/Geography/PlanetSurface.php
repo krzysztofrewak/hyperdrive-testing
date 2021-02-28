@@ -23,7 +23,7 @@ class PlanetSurface
         $this->output = $output;
     }
 
-    public function payToll(Pilot $player):void
+    public function payToll(Pilot $player): void
     {
         $toll = $player->calculateToll();
         $this->output->info("You had to pay $toll credits in order to land on the planet");
@@ -81,7 +81,7 @@ class PlanetSurface
         $this->output->write("");
         $this->output->write("Welcome to the upgrade shop! Each upgrade costs 2000 Credits");
         $player->showCredits();
-        $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks","Return" => "Return"];
+        $options = ["Hull" => "Hull", "Shields" => "Shields", "Missile" => "Missiles", "Laser" => "Lasers", "Fuel" => "Fuel Tanks", "Return" => "Return"];
         $result = $this->output->getCli()->radio("What do you want to upgrade?", $options)->prompt();
 
         if ($result === "Hull") {
@@ -150,7 +150,7 @@ class PlanetSurface
                 $this->output->write("You lack sufficient funds for an upgrade");
                 return false;
             }
-        } else{
+        } else {
             return false;
         }
     }
@@ -159,12 +159,12 @@ class PlanetSurface
     {
         $repair = $playerShip->getMaxHullIntegrity() - $playerShip->getHullIntegrity();
         $repair = $repair * 10;
-        if($player->getCredits()>=$repair){
+        if ($player->getCredits() >= $repair) {
             $player->payCredits($repair);
             $playerShip->setHullIntegrity($playerShip->getMaxHullIntegrity());
             $this->output->write("Ship has been repaired for $repair credits.");
             $player->showCredits();
-        } else{
+        } else {
             $this->output->write("You lack sufficient funds for a repair.");
         }
 
@@ -174,12 +174,12 @@ class PlanetSurface
     {
         $refuel = $playerShip->getMaxFuel() - $playerShip->getFuel();
         $refuel = $refuel * 5;
-        if($player->getCredits()>=$refuel){
-        $player->payCredits($refuel);
-        $playerShip->setFuel($playerShip->getMaxFuel());
-        $this->output->write("Ship has been refueled for $refuel credits.");
-        $player->showCredits();
-        } else{
+        if ($player->getCredits() >= $refuel) {
+            $player->payCredits($refuel);
+            $playerShip->setFuel($playerShip->getMaxFuel());
+            $this->output->write("Ship has been refueled for $refuel credits.");
+            $player->showCredits();
+        } else {
             $this->output->write("You lack sufficient funds for a refuel.");
         }
     }
