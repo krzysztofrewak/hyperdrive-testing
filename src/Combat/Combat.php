@@ -77,6 +77,7 @@ class Combat
                 $this->output->write("");
                 $enemies->get($i)->enemyAttacksPlayer($playerShip);
                 $enemies->get($i)->enemyAttacksPlayer($playerShip);
+                $this->output->write("");
                 $this->output->info("Current Ship stats:");
                 $this->output->write("Shields:" . $playerShip->getShields());
                 $this->output->write("Hull Integrity:" . $playerShip->getHullIntegrity());
