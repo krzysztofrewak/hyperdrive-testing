@@ -16,11 +16,12 @@
 		}
 	},
 	"require": {
-		"php": "^7.4",
+		"php": "^8.0",
 		"symfony/yaml": "^5.1",
 		"illuminate/support": "^8.16",
-		"league/climate": "^3.6"
-	},
+		"league/climate": "^3.6",
+      "ext-decimal": "*"
+    },
 	"require-dev": {
 		"behat/behat": "^3.8",
 		"phpunit/phpunit": "^9.2",
